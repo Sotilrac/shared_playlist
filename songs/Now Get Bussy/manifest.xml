@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package uuid="nowgetbusy-05b6ab">
+ <names>
+  <name lang="en_US">Now Get Busy</name>
+ </names>
+ <supportedLanguages>
+  <language>en_US</language>
+ </supportedLanguages>
+ <descriptionLanguages>
+  <language>en_US</language>
+ </descriptionLanguages>
+ <contents>
+  <behaviorContent path="behavior_1">
+   <nature>interactive</nature>
+   <triggerSentences>
+    <sentence lang="en_US">get busy</sentence>
+    <sentence lang="en_US">now get busy</sentence>
+    <sentence lang="en_US">nao get busy</sentence>
+   </triggerSentences>
+   <loadingResponses/>
+   <autonomous/>
+   <permissions/>
+  </behaviorContent>
+ </contents>
+</package>

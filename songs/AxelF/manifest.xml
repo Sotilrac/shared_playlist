@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package uuid="axelf-2e9580">
+ <names>
+  <name lang="en_US">AxelF</name>
+ </names>
+ <supportedLanguages>
+  <language>en_US</language>
+ </supportedLanguages>
+ <descriptionLanguages>
+  <language>en_US</language>
+ </descriptionLanguages>
+ <contents>
+  <behaviorContent path="behavior_1">
+   <nature>interactive</nature>
+   <descriptions>
+    <description lang="en_US">Axel F</description>
+   </descriptions>
+   <triggerSentences>
+    <sentence lang="en_US">Axel</sentence>
+    <sentence lang="en_US">Axel F</sentence>
+    <sentence lang="en_US">Axel Folly</sentence>
+    <sentence lang="en_US">Beverly Hills</sentence>
+   </triggerSentences>
+   <permissions/>
+  </behaviorContent>
+ </contents>
+</package>
