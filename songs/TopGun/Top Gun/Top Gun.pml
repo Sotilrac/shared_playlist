@@ -11,6 +11,7 @@
         <File name="icon" src="icon.png" />
         <File name="ego" src="media/ego.mp3" />
         <File name="turnburn" src="media/turnburn.wav" />
+        <File name="danger-zone" src="media/danger-zone.ogg" />
     </Resources>
     <Topics />
     <IgnoredPaths />
