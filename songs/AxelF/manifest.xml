@@ -12,6 +12,9 @@
  <contents>
   <behaviorContent path="behavior_1">
    <nature>interactive</nature>
+   <names>
+    <name lang="en_US">song</name>
+   </names>
    <descriptions>
     <description lang="en_US">Axel F</description>
    </descriptions>
@@ -21,6 +24,8 @@
     <sentence lang="en_US">Axel Folly</sentence>
     <sentence lang="en_US">Beverly Hills</sentence>
    </triggerSentences>
+   <loadingResponses/>
+   <autonomous/>
    <permissions/>
   </behaviorContent>
  </contents>
