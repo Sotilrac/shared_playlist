@@ -12,6 +12,12 @@
  <contents>
   <behaviorContent path="behavior_1">
    <nature>interactive</nature>
+   <names>
+    <name lang="en_US">rap</name>
+   </names>
+   <triggerSentences/>
+   <loadingResponses/>
+   <autonomous/>
    <permissions/>
   </behaviorContent>
  </contents>
