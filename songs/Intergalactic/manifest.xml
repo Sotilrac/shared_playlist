@@ -12,6 +12,11 @@
  <contents>
   <behaviorContent path="behavior_1">
    <nature>interactive</nature>
+   <triggerSentences>
+    <sentence lang="en_US">Intergalactic</sentence>
+   </triggerSentences>
+   <loadingResponses/>
+   <autonomous/>
    <permissions/>
   </behaviorContent>
  </contents>

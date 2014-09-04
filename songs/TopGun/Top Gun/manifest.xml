@@ -12,6 +12,11 @@
  <contents>
   <behaviorContent path=".">
    <nature>interactive</nature>
+   <triggerSentences>
+    <sentence lang="en_US">Top Gun</sentence>
+   </triggerSentences>
+   <loadingResponses/>
+   <autonomous/>
    <permissions/>
   </behaviorContent>
  </contents>
