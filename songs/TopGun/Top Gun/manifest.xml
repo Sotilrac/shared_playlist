@@ -15,8 +15,6 @@
    <triggerSentences>
     <sentence lang="en_US">danger zone</sentence>
    </triggerSentences>
-   <loadingResponses/>
-   <autonomous/>
    <permissions/>
   </behaviorContent>
  </contents>
