@@ -12,6 +12,9 @@
  <contents>
   <behaviorContent path="behavior_1">
    <nature>interactive</nature>
+   <names>
+    <name lang="en_US">song</name>
+   </names>
    <triggerSentences>
     <sentence lang="en_US">take on me</sentence>
     <sentence lang="en_US">take me on</sentence>

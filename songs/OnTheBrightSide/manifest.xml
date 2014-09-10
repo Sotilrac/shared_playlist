@@ -12,6 +12,9 @@
  <contents>
   <behaviorContent path="behavior_1">
    <nature>interactive</nature>
+   <names>
+    <name lang="en_US">song</name>
+   </names>
    <triggerSentences>
     <sentence lang="en_US">always look at the bright side of life</sentence>
    </triggerSentences>
