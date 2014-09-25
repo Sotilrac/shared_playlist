@@ -12,6 +12,13 @@
  <contents>
   <behaviorContent path="Cool Down">
    <nature>interactive</nature>
+   <triggerSentences>
+    <sentence lang="en_US">Cool down the pace</sentence>
+    <sentence lang="en_US">Cool down the pace man</sentence>
+    <sentence lang="en_US">cool down</sentence>
+   </triggerSentences>
+   <loadingResponses/>
+   <autonomous/>
    <permissions/>
   </behaviorContent>
  </contents>
