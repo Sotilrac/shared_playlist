@@ -15,9 +15,11 @@
    <names>
     <name lang="en_US">rap</name>
    </names>
-   <triggerSentences/>
-   <loadingResponses/>
-   <autonomous/>
+   <triggerSentences>
+    <sentence lang="en_US">intergalactic</sentence>
+    <sentence lang="en_US">stir fry you in my wok</sentence>
+    <sentence lang="en_US">another dimension</sentence>
+   </triggerSentences>
    <permissions/>
   </behaviorContent>
  </contents>

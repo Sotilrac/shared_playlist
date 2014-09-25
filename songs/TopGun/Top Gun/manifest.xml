@@ -14,6 +14,7 @@
    <nature>interactive</nature>
    <triggerSentences>
     <sentence lang="en_US">danger zone</sentence>
+    <sentence lang="en_US">Top Gun</sentence>
    </triggerSentences>
    <permissions/>
   </behaviorContent>
