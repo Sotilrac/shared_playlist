@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package uuid="intheairtonight-4c5bda">
+ <names>
+  <name lang="en_US">InTheAirTonight</name>
+ </names>
+ <supportedLanguages>
+  <language>en_US</language>
+ </supportedLanguages>
+ <descriptionLanguages>
+  <language>en_US</language>
+ </descriptionLanguages>
+ <contents>
+  <behaviorContent path="behavior_1">
+   <nature>interactive</nature>
+   <names>
+    <name lang="en_US">song</name>
+   </names>
+   <triggerSentences>
+    <sentence lang="en_US">can you feel it</sentence>
+    <sentence lang="en_US">can you feel it coming in the air tonight</sentence>
+    <sentence lang="en_US">in the air tonight</sentence>
+   </triggerSentences>
+   <loadingResponses/>
+   <autonomous/>
+   <permissions/>
+  </behaviorContent>
+ </contents>
+</package>
