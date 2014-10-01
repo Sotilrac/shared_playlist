@@ -2,23 +2,34 @@
 <package uuid="intheairtonight-4c5bda">
  <names>
   <name lang="en_US">InTheAirTonight</name>
+  <name lang="es_ES">en el aire esta noche</name>
+  <name lang="fr_FR">Dans l'air cette nuit</name>
  </names>
  <supportedLanguages>
   <language>en_US</language>
+  <language>fr_FR</language>
+  <language>es_ES</language>
  </supportedLanguages>
  <descriptionLanguages>
   <language>en_US</language>
+  <language>fr_FR</language>
+  <language>es_ES</language>
  </descriptionLanguages>
  <contents>
   <behaviorContent path="behavior_1">
    <nature>interactive</nature>
    <names>
     <name lang="en_US">song</name>
+    <name lang="es_ES">canción</name>
+    <name lang="fr_FR">chanson</name>
    </names>
    <triggerSentences>
     <sentence lang="en_US">can you feel it</sentence>
     <sentence lang="en_US">can you feel it coming in the air tonight</sentence>
     <sentence lang="en_US">in the air tonight</sentence>
+    <sentence lang="es_ES">en el aire esta noche</sentence>
+    <sentence lang="es_ES">en el aire</sentence>
+    <sentence lang="fr_FR">dans l'air cette nuit</sentence>
    </triggerSentences>
    <loadingResponses/>
    <autonomous/>

@@ -10,7 +10,7 @@
   <language>en_US</language>
  </descriptionLanguages>
  <contents>
-  <behaviorContent path="behavior_1">
+  <behaviorContent path=".">
    <nature>interactive</nature>
    <names>
     <name lang="en_US">song</name>
@@ -23,9 +23,8 @@
     <sentence lang="en_US">Axel F</sentence>
     <sentence lang="en_US">Axel Folly</sentence>
     <sentence lang="en_US">Beverly Hills</sentence>
+    <sentence lang="en_US">Banana in the tailpipe</sentence>
    </triggerSentences>
-   <loadingResponses/>
-   <autonomous/>
    <permissions/>
   </behaviorContent>
  </contents>
