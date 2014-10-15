@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Package name="ALMusic" format_version="4">
     <Manifest src="manifest.xml" />
-    <BehaviorDescriptions />
-    <Dialogs />
+    <BehaviorDescriptions>
+        <BehaviorDescription name="behavior" src="Robot DJ" xar="behavior.xar" />
+    </BehaviorDescriptions>
+    <Dialogs>
+        <Dialog name="SongSelector" src="Robot DJ/dialog/SongSelector/SongSelector.dlg" />
+    </Dialogs>
     <Resources>
         <File name="icon" src="icon.png" />
         <File name="__init__" src="lib/grooveshark/__init__.py" />
@@ -20,7 +24,10 @@
         <File name="tokens" src="lib/grooveshark/utils/tokens.py" />
         <File name="version" src="lib/grooveshark/version.py" />
         <File name="almusic" src="lib/almusic.py" />
+        <File name="" src=".directory" />
     </Resources>
-    <Topics />
+    <Topics>
+        <Topic name="SongSelector_enu" src="Robot DJ/dialog/SongSelector/SongSelector_enu.top" topicName="SongSelector" language="en_US" />
+    </Topics>
     <IgnoredPaths />
 </Package>

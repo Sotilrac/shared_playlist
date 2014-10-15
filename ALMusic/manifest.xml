@@ -9,9 +9,15 @@
  <descriptionLanguages>
   <language>en_US</language>
  </descriptionLanguages>
- <contents/>
+ <contents>
+  <behaviorContent path="Robot DJ">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+ </contents>
  <requirements>
   <naoqiRequirement minVersion="2.1.0.19"/>
+  <robotRequirement/>
  </requirements>
  <services>
   <service autorun="true" execStart="/usr/bin/python2 lib/almusic.py" name="ALMusic-serv"/>
