@@ -60,6 +60,7 @@ class ALMusic:
         try:
             song = song_search.next()
             self.song_queue.append(self._fetch_song(song))
+            # self.song_queue.append(song.stream.url)
             return True
         except StopIteration:
             return False
