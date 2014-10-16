@@ -8,6 +8,7 @@ Created by Aldebaran Boston Studio.
 import qi
 import os
 import string
+import time
 import grooveshark
 import logging as logger
 
@@ -28,8 +29,14 @@ class ALMusic:
         self.session = session
         logger.basicConfig(filename='ALAdvancedTouch.log', level=logger.DEBUG)
         self.logger = logger
-        self.memory = self.session.service('ALMemory')
-        self.audio_player = self.session.service('ALAudioPlayer')
+
+        ## Connect services
+        self.serv_timeout = 300 * 1000000
+        self.run = True
+        self.memory = None
+        self.audio_player = None
+        self._connect_services()
+        
 
         ## Initialize cache directory where songs will be temporarily stored.
 
@@ -43,6 +50,25 @@ class ALMusic:
         self.previous_songs = []
         self.player_ids = []
         self.playing = False
+
+    def _connect_services(self):
+        """
+        Attempt to get references to other services (avoid race conditions).
+        """
+
+        def timeout():
+            """Give up connecting to services on timeout."""
+            self.run = False
+        qi.async(timeout, delay=self.serv_timeout)
+
+        while self.run:
+            try:
+                self.memory = self.session.service('ALMemory')
+                self.audio_player = self.session.service('ALAudioPlayer')
+                break
+            except RuntimeError as e:
+                time.sleep(1)
+                self.logger.warning('missing:\n {}'.format(e))
 
     def play_song(self, search_string):
         """
