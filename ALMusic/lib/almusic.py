@@ -76,8 +76,9 @@ class ALMusic:
     def play(self, search_string):
         """Searches for a song and plays it."""
         self.song_queue = []
-        self.enqueue(search_string)
+        success = self.enqueue(search_string)
         self.play_queue()
+        return success
 
     def enqueue(self, search_string):
         """
