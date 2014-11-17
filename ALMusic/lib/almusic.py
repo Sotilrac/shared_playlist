@@ -53,6 +53,9 @@ class ALMusic:
         self._init_radio_names()
         self.periodic = None
         self.say_song_name = False
+        self.volume = 1.0
+        self.pan = 1.0
+
 
     def _connect_services(self):
         """Attempt to get references to other services (avoid race conditions).
@@ -73,6 +76,24 @@ class ALMusic:
                 time.sleep(1)
                 self.logger.warning('missing:\n {}'.format(err))
 
+        
+    @qi.bind(returnType=qi.Float,
+             paramsType=(qi.Float,),
+             methodName="SetVolume")
+    def set_volume(self, volume):
+        """Set the volume of the songs to be played"""
+        self.volume = max([0, min([volume, 1])])
+        return self.volume
+
+
+    @qi.bind(returnType=qi.Float, paramsType=(qi.Float,), methodName="SetPan")
+    def set_pan(self, pan):
+        """Set the pan of the songs to be played"""
+        self.pan = max([-1, min([pan, 1])])
+        return self.pan
+
+
+    @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="Play")
     def play(self, search_string):
         """Searches for a song and plays it."""
         self.song_queue = []
@@ -80,10 +101,10 @@ class ALMusic:
         self.play_queue()
         return success
 
+
+    @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="Enqueue")
     def enqueue(self, search_string):
-        """
-        Add song to the queue
-        """
+        """Add song to the queue."""
         song_search = self.client.search(search_string)
         try:
             song = song_search.next()
@@ -93,12 +114,16 @@ class ALMusic:
         except StopIteration:
             return False
 
+
+    @qi.bind(returnType=qi.Bool, methodName="PlayQueue")
     def play_queue(self):
         """Plays the queue until it is empty."""
         self.playing = True
         while self.song_queue and self.playing:
             self.pop_queue()
 
+
+    @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="Enqueue")
     def play_radio(self, station):
         """Plays a radio station ad nauseam."""
         if station == 'popular':
@@ -138,14 +163,17 @@ class ALMusic:
                 self.periodic.stop()
 
 
+    @qi.nobind
     def pop_queue(self):
         """Plays first item in the queue."""
         file_path = self.song_queue.pop(0)
         self.previous_songs.append(file_path)
-        self.audio_player.playFile(file_path)
+        self.audio_player.playFile(file_path, self.volume, self.pan)
         _delete_file(file_path)
         return file_path
 
+
+    @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="Enqueue")
     def enqueue_next(self, search_string):
         """Adds song to the beginning of the queue."""
         song_search = self.client.search(search_string)
@@ -156,43 +184,60 @@ class ALMusic:
         except StopIteration:
             return False
 
+
+    @qi.bind(methodName="ClearQueue")
     def clear_queue(self):
         """Clears queue."""
         self.song_queue = []
 
+
+    @qi.bind(methodName="Next")
     def next(self):
         """Stops curently playing song or radio."""
         self.audio_player.stopAll()
 
+
+    @qi.bind(methodName="Stop")
     def stop(self):
         """Empties the queue and stops playing music."""
         if self.periodic:
             self.periodic.stop()
         self.clear_queue()
         self.next()
+        
 
+    @qi.nobind
     def pause(self):
         """Pauses current song or radio. Not implemented :( """
         pass
 
+
+    @qi.nobind
     def resume(self):
         """Resumes current song or radio. Not implemented :( """
         pass
 
+
+    @qi.nobind
     def previous(self):
         """Plays next song in current mix. Not implemented :( """
         pass
 
+
+    @qi.nobind
     def enable_say_song_name(self):
         """ALMusic uses ALTextToSpeech to enunciate the song name and artist
         before playing it.
         """
         self.say_song_name = True
 
+
+    @qi.nobind
     def disable_say_song_name(self):
         """ALMusic does not use ALTextToSpeech to enunciate the song name and
         artist before playing it."""
         self.say_song_name = False
+
 
     def _clear_cache(self):
         """Clears the song cache. Not implemented :( ."""
@@ -200,6 +245,7 @@ class ALMusic:
             f_path = os.path.join(self.cache_path, song)
             if os.path.isfile(f_path):
                 os.unlink(f_path)
+
 
     def _fetch_song(self, song):
         """Downloads a song and returns a path gto a file."""
@@ -221,10 +267,16 @@ class ALMusic:
         """
         pass
 
+
+    @qi.bind(returnType=qi.List(qi.String),
+             paramsType=(qi.String,),
+             methodName="GetRadioStations")
     def get_radio_stations(self):
         """Returns the possible radio station names."""
         return self.radio_names.keys()
 
+
+    @qi.nobind
     def _init_radio_names(self):
         """Sets the radio station names."""
         self.radio_names = {
@@ -401,6 +453,7 @@ def _make_file_name(song):
     fname = ''.join(c for c in fname if c in valid_chars)
 
     return fname
+
 
 def _delete_file(f_path):
     """Deletes a file."""
