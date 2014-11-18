@@ -54,7 +54,7 @@ class ALMusic:
         self.periodic = None
         self.say_song_name = False
         self.volume = 1.0
-        self.pan = 1.0
+        self.pan = 0
 
 
     def _connect_services(self):
