@@ -79,21 +79,21 @@ class ALMusic:
         
     @qi.bind(returnType=qi.Float,
              paramsType=(qi.Float,),
-             methodName="SetVolume")
+             methodName="setVolume")
     def set_volume(self, volume):
         """Set the volume of the songs to be played"""
         self.volume = max([0, min([volume, 1])])
         return self.volume
 
 
-    @qi.bind(returnType=qi.Float, paramsType=(qi.Float,), methodName="SetPan")
+    @qi.bind(returnType=qi.Float, paramsType=(qi.Float,), methodName="setPan")
     def set_pan(self, pan):
         """Set the pan of the songs to be played"""
         self.pan = max([-1, min([pan, 1])])
         return self.pan
 
 
-    @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="Play")
+    @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="play")
     def play(self, search_string):
         """Searches for a song and plays it."""
         self.song_queue = []
@@ -102,7 +102,7 @@ class ALMusic:
         return success
 
 
-    @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="Enqueue")
+    @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="enqueue")
     def enqueue(self, search_string):
         """Add song to the queue."""
         song_search = self.client.search(search_string)
@@ -115,7 +115,7 @@ class ALMusic:
             return False
 
 
-    @qi.bind(returnType=qi.Bool, methodName="PlayQueue")
+    @qi.bind(returnType=qi.Bool, methodName="playQueue")
     def play_queue(self):
         """Plays the queue until it is empty."""
         self.playing = True
@@ -123,7 +123,7 @@ class ALMusic:
             self.pop_queue()
 
 
-    @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="Enqueue")
+    @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="playRadio")
     def play_radio(self, station):
         """Plays a radio station ad nauseam."""
         if station == 'popular':
@@ -173,7 +173,9 @@ class ALMusic:
         return file_path
 
 
-    @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="Enqueue")
+    @qi.bind(returnType=qi.Bool,
+             paramsType=(qi.String,),
+             methodName="enqueueNext")
     def enqueue_next(self, search_string):
         """Adds song to the beginning of the queue."""
         song_search = self.client.search(search_string)
@@ -185,19 +187,19 @@ class ALMusic:
             return False
 
 
-    @qi.bind(methodName="ClearQueue")
+    @qi.bind(methodName="clearQueue")
     def clear_queue(self):
         """Clears queue."""
         self.song_queue = []
 
 
-    @qi.bind(methodName="Next")
+    @qi.bind(methodName="next")
     def next(self):
         """Stops curently playing song or radio."""
         self.audio_player.stopAll()
 
 
-    @qi.bind(methodName="Stop")
+    @qi.bind(methodName="stop")
     def stop(self):
         """Empties the queue and stops playing music."""
         if self.periodic:
@@ -270,7 +272,7 @@ class ALMusic:
 
     @qi.bind(returnType=qi.List(qi.String),
              paramsType=(qi.String,),
-             methodName="GetRadioStations")
+             methodName="getRadioStations")
     def get_radio_stations(self):
         """Returns the possible radio station names."""
         return self.radio_names.keys()
