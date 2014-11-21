@@ -124,16 +124,30 @@
      }
      
      .controls {
-       height: 100px;
        text-align: center;
      }
      
      ul {
        list-style-type: none;
+       display: inline-block;
      }
 
      ul li {
        float: left;
+       line-height: 0px;
+       padding: 0px 35px;
+     }
+
+     a:link {
+       color: #000000;
+     }
+
+     a:visited {
+       color: #000000;
+     }
+
+     a:hover {
+       color: #000000;
      }
 
      -->
@@ -163,10 +177,15 @@
     <div id="cc" class="control_container">
       <div id="control_pane" class="controls">
         <ul>
-          <li><i class="fa fa-play"></i></li>
-          <li><i class="fa fa-pause"></i></li>
-          <li><i class="fa fa-stop"></i></li>
-          <li><i class="fa fa-fast-forward"></i></li>
+          <li><a class="btn" href="#"><i class="fa fa-play"></i></a></li>
+          <li><a class="btn" href="#"><i class="fa fa-pause"></i></a></li>
+          <li><a class="btn" href="#"><i class="fa fa-stop"></i></a></li>
+          <li><a class="btn" href="#"><i class="fa fa-fast-forward"></i></a></li>
+          <li>&nbsp;</li>
+          <li>&nbsp;</li>
+          <li><a class="btn" href="#"><i class="fa fa-volume-off"></i></a></li>
+          <li><a class="btn" href="#"><i class="fa fa-volume-down"></i></a></li>
+          <li><a class="btn" href="#"><i class="fa fa-volume-up"></i></a></li>
         </ul>
       </div>
     </div>
@@ -254,6 +273,7 @@
            robot_color = Object.keys(colors)[color_idx]           
        }
        $('body').css('background-color', colors[robot_color]);
+       $('<style>a:active{color:'+colors[robot_color]+'}</style>').appendTo("head");
      }
 
      function get_language() {
