@@ -58,7 +58,7 @@
        margin: 0;
        font-family: sans-serif;
        font-size: 64px;
-       background-color: rgba(0,255,0,0.9);
+       background-color: rgba(242,242,242,0.9);
      }
 
      .display_container {
@@ -66,19 +66,45 @@
      }
 
      .header {
-       font-size: 128px;
        height: 200px;
-       background-color: rgba(255,255,0,0.9);
+       text-align: center;
+       background-color: rgba(242,242,242,1.0);
+     }
+
+     .logo {
+       float: left;
+       width: 30%;
+       height: 100%;
+       text-align: right;
+       //background-color: rgba(255,0,0,1.0);
+     }
+
+     .title_container{
+       float: right;
+       width: 70%;
+       text-align: left;
+     }
+     
+     .title{
+       font-size: 124px;
+       //background-color: rgba(0,255,0,1.0);
+     }
+
+     .dj {
+       font-size: 42px;
+       //background-color: rgba(0,0,255,1.0);
      }
 
      .control_container {
        position: fixed;
+       width: 100%;
        bottom: 0px;
+       background-color: rgba(242,242,242,0.9);
      }
      
      .controls {
        height: 100px;
-       background-color: rgba(0,255,255,0.9);
+       text-align: center;
      }
      
      -->
@@ -89,8 +115,19 @@
 
     <div id="dc" class="display_container">
       <div id="header" class="header">
-        ALMUSIC!!!!!!!!!!!!
+        <div id="logo" class="logo">
+          logo
+        </div>
+        <div id="title_c" class="title_container">
+          <div id="title" class="title">
+            ALMUSIC
+          </div>
+          <div id="dj" class="dj">
+            By: DJ [Robot name]
+          </div>
+        </div>
       </div>
+      
     </div>
 
     <div id="cc" class="control_container">
@@ -146,15 +183,15 @@
       $.getService('ALSystem', function(ALSystem) {
          ALSystem.robotName().done(
            function (name){
-             $('#robot_name').html(name);
+             //$('#robot_name').html(name);
              get_robot_color(name);
-             $(function(){
-               $('.name_tag').textfill({ maxFontPixels: 96,
-                                         explicitHeight: 200, 
-                                         explicitWidth: 460 
-                                         });
-               $('#robot_name').css('width', '465');
+             /* $(function(){
+             $('.name_tag').textfill({ maxFontPixels: 96,
+             explicitHeight: 200, 
+             explicitWidth: 460 
              });
+             $('#robot_name').css('width', '465');
+             }); */
            })
        });
      }
@@ -179,7 +216,7 @@
            color_idx = sum % Object.keys(colors).length
            robot_color = Object.keys(colors)[color_idx]           
        }
-       $('.stats_container').css({ color: colors[robot_color]});
+       $('body').css('background-color', colors[robot_color]);
      }
 
      function get_language() {
