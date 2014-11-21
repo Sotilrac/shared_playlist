@@ -54,7 +54,7 @@ class ALMusic:
         self.periodic = None
         self.say_song_name = False
         self.volume = 1.0
-        self.pan = 1.0
+        self.pan = 0
 
 
     def _connect_services(self):
@@ -270,9 +270,7 @@ class ALMusic:
         pass
 
 
-    @qi.bind(returnType=qi.List(qi.String),
-             paramsType=(qi.String,),
-             methodName="getRadioStations")
+    @qi.bind(returnType=qi.List(qi.String), methodName="getRadioStations")
     def get_radio_stations(self):
         """Returns the possible radio station names."""
         return self.radio_names.keys()
