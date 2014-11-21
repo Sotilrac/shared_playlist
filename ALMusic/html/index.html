@@ -47,7 +47,7 @@
     <script language="JavaScript" src="js/jquery-2.1.1.min.js"></script>
     <script language="JavaScript" src="js/jquery.qimhelpers.js"></script>
     <script language="JavaScript" src="js/jquery.textfill.min.js"></script>
-    <script language="JavaScript" src="js/jquery-ui.js"></script>
+    <script language="JavaScript" src="js/jquery-2.1..js"></script>
 
     <style type="text/css">
      <!--
@@ -128,6 +128,14 @@
        text-align: center;
      }
      
+     ul {
+       list-style-type: none;
+     }
+
+     ul li {
+       float: left;
+     }
+
      -->
     </style>
     <!-- <link rel="stylesheet" href="css/jquery-ui.css"> -->
@@ -153,7 +161,12 @@
 
     <div id="cc" class="control_container">
       <div id="control_pane" class="controls">
-        These are controls for ALMusic.
+        <ul>
+          <li><i class="fa fa-play"></i></li>
+          <li><i class="fa fa-pause"></i></li>
+          <li><i class="fa fa-stop"></i></li>
+          <li><i class="fa fa-fast-forward"></i></li>
+        </ul>
       </div>
     </div>
 
