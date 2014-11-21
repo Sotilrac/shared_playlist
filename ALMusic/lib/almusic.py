@@ -23,12 +23,9 @@ class SimpleSong(object):
         self.title = song.name
         self.artist = song.artist.name
         self.album = song.album.name
-        self.cover = song.album.cover
+        self.cover = song.album._cover_url
         self.cache_path = os.path.expanduser('~/.almusic_cache')
         self.path = None
-
-    def __str__(self):
-        return json.dumps(self)
 
 
 @qi.multiThreaded()
@@ -127,10 +124,10 @@ class ALMusic(object):
         song_search = self.client.search(search_string)
         try:
             song = song_search.next()
-            simple_song = SimpleSong(song_search.next())
-            song.path = _fetch_song(song)
-            self.song_queue.append(song)
-            return str(song)
+            simple_song = SimpleSong(song)
+            simple_song.path = self._fetch_song(song)
+            self.song_queue.append(simple_song)
+            return json.dumps(simple_song)
         except StopIteration:
             return ""
 
