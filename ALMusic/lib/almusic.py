@@ -9,6 +9,7 @@ import os
 import string
 import time
 import functools
+import json
 import grooveshark
 import logging as logger
 
@@ -102,7 +103,7 @@ class ALMusic:
         return success
 
 
-    @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="enqueue")
+    @qi.bind(returnType=qi.String, paramsType=(qi.String,), methodName="enqueue")
     def enqueue(self, search_string):
         """Add song to the queue."""
         song_search = self.client.search(search_string)
@@ -110,9 +111,9 @@ class ALMusic:
             song = song_search.next()
             self.song_queue.append(self._fetch_song(song))
             # self.song_queue.append(song.stream.url)
-            return True
+            return str(song)
         except StopIteration:
-            return False
+            return ""
 
 
     @qi.bind(returnType=qi.Bool, methodName="playQueue")
@@ -123,7 +124,7 @@ class ALMusic:
             self.pop_queue()
 
 
-    @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="playRadio")
+    @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="radio")
     def play_radio(self, station):
         """Plays a radio station ad nauseam."""
         if station == 'popular':
