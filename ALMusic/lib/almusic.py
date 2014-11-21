@@ -270,9 +270,7 @@ class ALMusic:
         pass
 
 
-    @qi.bind(returnType=qi.List(qi.String),
-             paramsType=(qi.String,),
-             methodName="getRadioStations")
+    @qi.bind(returnType=qi.List(qi.String), methodName="getRadioStations")
     def get_radio_stations(self):
         """Returns the possible radio station names."""
         return self.radio_names.keys()
