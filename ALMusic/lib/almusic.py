@@ -13,8 +13,26 @@ import json
 import grooveshark
 import logging as logger
 
+class SimpleSong(object):
+    """Class SimpleSong
+
+    Contains simple information about a song.
+    """
+    def __init__(self, song):
+
+        self.title = song.name
+        self.artist = song.artist.name
+        self.album = song.album.name
+        self.cover = song.album.cover
+        self.cache_path = os.path.expanduser('~/.almusic_cache')
+        self.path = None
+
+    def __str__(self):
+        return json.dumps(self)
+
+
 @qi.multiThreaded()
-class ALMusic:
+class ALMusic(object):
     """Class: ALMusic
 
     Pump up the jam
@@ -109,8 +127,9 @@ class ALMusic:
         song_search = self.client.search(search_string)
         try:
             song = song_search.next()
-            self.song_queue.append(self._fetch_song(song))
-            # self.song_queue.append(song.stream.url)
+            simple_song = SimpleSong(song_search.next())
+            song.path = _fetch_song(song)
+            self.song_queue.append(song)
             return str(song)
         except StopIteration:
             return ""
@@ -167,7 +186,7 @@ class ALMusic:
     @qi.nobind
     def pop_queue(self):
         """Plays first item in the queue."""
-        file_path = self.song_queue.pop(0)
+        file_path = self.song_queue.pop(0).path
         self.previous_songs.append(file_path)
         self.audio_player.playFile(file_path, self.volume, self.pan)
         _delete_file(file_path)
@@ -220,6 +239,18 @@ class ALMusic:
         """Resumes current song or radio. Not implemented :( """
         pass
 
+    def _fetch_song(self, song):
+        """Downloads a song and returns a path to a file."""
+        song_file_name = _make_file_name(song)
+
+        song_path = os.path.join(self.cache_path,
+                                 song_file_name)
+
+        if not os.path.exists(song_path):
+            with open(song_path, 'w') as song_file:
+                data = song.safe_download()
+                song_file.write(data)
+        return song_path
 
     @qi.nobind
     def previous(self):
@@ -248,20 +279,6 @@ class ALMusic:
             f_path = os.path.join(self.cache_path, song)
             if os.path.isfile(f_path):
                 os.unlink(f_path)
-
-
-    def _fetch_song(self, song):
-        """Downloads a song and returns a path gto a file."""
-        song_file_name = _make_file_name(song)
-
-        song_path = os.path.join(self.cache_path,
-                                 song_file_name)
-
-        if not os.path.exists(song_path):
-            with open(song_path, 'w') as song_file:
-                data = song.safe_download()
-                song_file.write(data)
-        return song_path
 
 
     def _maintain_cache(self, max_size):
