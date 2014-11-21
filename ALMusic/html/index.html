@@ -1,0 +1,296 @@
+<!doctype html>
+<!-- Tablet Resolution: 1707x1067 -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ALMusic </title>
+
+    <script type="text/javascript">
+     
+     // get URL parameters by name
+     function getParameterByName(name) {
+       name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+       var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+       results = regex.exec(location.search);
+       return results == null ? '' : decodeURIComponent(results[1].replace(/\+/g, " "));
+     }
+
+     //get robot name from url and determine robot address
+     var robotName = getParameterByName('robot');
+     var robotAddress = (robotName == '') ? '' : 'http://' + robotName + '.local';
+
+     //List ids of sections to be shown/hidden
+     var divIdList = ['ntc', 'nt', 'stats'];
+
+     var colors = {}
+     colors["blue"] = "#109EDC"
+     colors["orange"] = "#E59230"
+     colors["green"] = "#5ABF41"
+     colors["teal"] = "#43C0C0"
+     colors["red"] = "#EF2929"
+     colors["purple"] = "#8265B2"
+     colors["dpurp"] = "#5F3BD7"
+     colors["efuchsia"] = "#C138A1"
+
+
+     var robot_color = null
+
+     //load appropriate qimessaging depending on running from robot or with a robot name specified in the URL
+     document.write("<script type='text/javascript' src=" +
+     robotAddress +
+     "/libs/qimessaging/1.0/qimessaging.js><\/script>");
+    </script>
+
+    <!-- Load libs -->
+    <script language="JavaScript" src="js/jquery-2.1.0.min.js"></script>
+    <script language="JavaScript" src="js/jquery.qimhelpers.js"></script>
+    <script language="JavaScript" src="js/jquery.textfill.min.js"></script>
+    <script language="JavaScript" src="js/jquery-ui.js"></script>
+    <script language="JavaScript" src="js/pixastic.custom.js"></script>
+    <script language="JavaScript" src="js/dynlib.js"></script>
+
+    <style type="text/css">
+     <!--
+
+     body {
+       height: 100%;
+       width: 100%;
+       margin: 0;
+       font-family: sans-serif;
+       font-size: 64px;
+       background-color: rgba(0,255,0,0.9);
+     }
+
+     .display_container {
+        width: 100%;
+     }
+
+     .header {
+       font-size: 128px;
+       height: 200px;
+       background-color: rgba(255,255,0,0.9);
+     }
+
+     .control_container {
+       position: fixed;
+       bottom: 0px;
+     }
+     
+     .controls {
+       height: 100px;
+       background-color: rgba(0,255,255,0.9);
+     }
+     
+     -->
+    </style>
+    <!-- <link rel="stylesheet" href="css/jquery-ui.css"> -->
+  </head>
+  <body>
+
+    <div id="dc" class="display_container">
+      <div id="header" class="header">
+        ALMUSIC!!!!!!!!!!!!
+      </div>
+    </div>
+
+    <div id="cc" class="control_container">
+      <div id="control_pane" class="controls">
+        These are controls for ALMusic.
+      </div>
+    </div>
+
+    <script type="text/javascript">
+
+     //Layout and formatting
+     // Displays a section given its ID and hides the other ones
+     // uses divIdList
+     function displaySection(id) {
+       if (divIdList.indexOf(id)>-1) {
+         var i = divIdList.indexOf(id);
+         var list = divIdList.slice(0);
+         list.splice(i, 1);
+         console.log(list);
+       }
+       $('#'+id).fadeIn();
+     }
+
+     // URL paramters
+
+     function reactToURL(){
+       //valid commands
+       var urlCommands = ['show_name_tag','show_stats'];
+       
+       for(var i in urlCommands) {
+         var p = getParameterByName(urlCommands[i]);
+         if (p!='') {
+           switch (urlCommands[i]) {
+             case 'show_name_tag':
+               displaySection('nameTag');
+               break;
+             case 'show_stats':
+               displaySection('stats');
+               break;
+           }
+         }
+       }
+     }
+     reactToURL();
+     ///////////////////////////////////////////////
+
+     //Change Qimessaging connection if robot name is passed in URL
+     if (robotAddress != '') {
+       $.qim = new QiSession(robotAddress);
+     }
+
+     function get_robot_name() {
+      $.getService('ALSystem', function(ALSystem) {
+         ALSystem.robotName().done(
+           function (name){
+             $('#robot_name').html(name);
+             get_robot_color(name);
+             $(function(){
+               $('.name_tag').textfill({ maxFontPixels: 96,
+                                         explicitHeight: 200, 
+                                         explicitWidth: 460 
+                                         });
+               $('#robot_name').css('width', '465');
+             });
+           })
+       });
+     }
+
+     function get_robot_color(name) {
+       name = name.toLowerCase();
+       switch (name) {
+         case "raphael":
+           robot_color = "red";
+           break;
+         case "michelangelo":
+           robot_color = "orange";
+           break;
+         case "donatello":
+           robot_color = "dpurp";
+           break;
+         case "leonardo":
+           robot_color = "blue";
+           break;
+         default:
+           var sum = $.map(name.split(""), function(c) {return c.charCodeAt()}).reduce(function(a, b) {return a + b})
+           color_idx = sum % Object.keys(colors).length
+           robot_color = Object.keys(colors)[color_idx]           
+       }
+       $('.stats_container').css({ color: colors[robot_color]});
+     }
+
+     function get_language() {
+       $.getService('ALSpeechRecognition', function(ALSpeechRecognition) {
+         ALSpeechRecognition.getLanguage().done(function (lang){
+           var clang = $('#language_value').text();
+           if (lang != clang) {
+             $('#language_value').html(lang);
+             switch(lang) {
+               case "English":
+                 switch_to_english();
+                 break;
+               case "Spanish":
+                 switch_to_spanish();
+                 break;
+               case "French":
+                 switch_to_french();
+                 break;
+               default:
+                 console.log("Language currently unsupported; default to english");
+                 switch_to_english();
+             }
+           }
+         })
+       });
+     }
+
+     function switch_to_english() {
+       //$('#nt').css("background-image", "url(img/mni_"+robot_color+"_en.png)");
+       //$('#naoqi_version_label').html("Version:");
+       //$('#wireless_label').html("Network:");
+       //$('#ip_label').html("IP:");
+       //$('#battery_label').html("Battery:");
+       //$('#temperature_label').html("Temperature (&deg;C):");
+     }
+
+     function switch_to_french() {
+       /* $('#nt').css("background-image", "url(img/mni_"+robot_color+"_fr.png)");
+       $('#naoqi_version_label').html("Version:");
+       $('#wireless_label').html("Resseau:");
+       $('#ip_label').html("IP:");
+       $('#battery_label').html("Batterie:");
+       $('#temperature_label').html("Temp&eacute;rature (&deg;C):"); */
+     }
+
+     function switch_to_spanish() {
+       /* $('#nt').css("background-image", "url(img/mni_"+robot_color+"_es.png)");
+       $('#naoqi_version_label').html("Versi&oacute;n:");
+       $('#wireless_label').html("Red:");
+       $('#ip_label').html("IP:");
+       $('#battery_label').html("Bater&iacute;a:");
+       $('#temperature_label').html("Temperatura (&deg;C):"); */
+     }
+
+     function zip(arrays) {
+      return arrays[0].map(function(_,i){
+        return arrays.map(function(array){return array[i]})
+       });
+      }
+
+     // URL parameter used to display image in case we need it
+
+     // ALMemory Subscriptions
+     /* $.subscribeToALMemoryEvent('ALConnectionManager/NetworkServiceStateChanged', function(eventValue) {
+     get_network();
+     });
+     
+     $.subscribeToALMemoryEvent('ALBattery/BatteryChargeChanged', function(eventValue) {
+     //get_battery();
+     }); */
+
+     /* var tablet_down_signal;
+     var tablet;
+
+     function onTabletTouched(x, y) {
+     console.log("Tablet touched");
+     init();
+     }
+
+     $.qim.service("ALTabletService").done(function (ts) {
+     tablet = ts;
+     tablet.onTouchDown.connect(onTabletTouched).done(function (link) {
+     tablet_down_signal = link;
+     }).fail(function (error) {
+     console.log("An error occurred: " + error);
+     });
+     }); */
+
+     // Connect/Disconnect signals
+     $.qim.socket().on('connect', init() );
+
+     function init() {
+       $.when(get_robot_name()).done(function(){
+         get_language();
+       });
+       /* .done(function(){
+       place_name_tag();
+       });
+       get_network();
+       get_battery();
+       get_robot_temperature();
+       get_naoqi_version();
+       setInterval(function(){get_robot_temperature();}, 5000); */
+       $('body').fadeIn();
+     }
+
+     $.qim.socket().on('disconnect', function() {
+       //$('.states_container').css('color:gray');
+       //tablet.onTouchDown.disconnect(tablet_down_signal);
+     });
+
+    </script>
+  </body>
+</html>

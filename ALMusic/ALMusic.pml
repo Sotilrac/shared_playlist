@@ -21,6 +21,13 @@
         <File name="version" src="lib/grooveshark/version.py" />
         <File name="almusic" src="lib/almusic.py" />
         <File name="" src=".directory" />
+        <File name="index" src="html/index.html" />
+        <File name="dynlib" src="html/js/dynlib.js" />
+        <File name="jquery-2.1.0.min" src="html/js/jquery-2.1.0.min.js" />
+        <File name="jquery-ui" src="html/js/jquery-ui.js" />
+        <File name="jquery.qimhelpers" src="html/js/jquery.qimhelpers.js" />
+        <File name="jquery.textfill.min" src="html/js/jquery.textfill.min.js" />
+        <File name="pixastic.custom" src="html/js/pixastic.custom.js" />
     </Resources>
     <Topics />
     <IgnoredPaths />
