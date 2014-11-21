@@ -22,12 +22,27 @@
         <File name="almusic" src="lib/almusic.py" />
         <File name="" src=".directory" />
         <File name="index" src="html/index.html" />
-        <File name="dynlib" src="html/js/dynlib.js" />
-        <File name="jquery-2.1.0.min" src="html/js/jquery-2.1.0.min.js" />
-        <File name="jquery-ui" src="html/js/jquery-ui.js" />
         <File name="jquery.qimhelpers" src="html/js/jquery.qimhelpers.js" />
         <File name="jquery.textfill.min" src="html/js/jquery.textfill.min.js" />
         <File name="pixastic.custom" src="html/js/pixastic.custom.js" />
+        <File name="crossdomain" src="html/crossdomain.xml" />
+        <File name="font-awesome" src="html/css/font-awesome.css" />
+        <File name="font-awesome.min" src="html/css/font-awesome.min.css" />
+        <File name="normalize" src="html/css/normalize.css" />
+        <File name="style" src="html/css/style.css" />
+        <File name="favicon" src="html/favicon.ico" />
+        <File name="BEBAS___" src="html/font/BEBAS___.ttf" />
+        <File name="Flat-it License" src="html/font/Flat-it License.txt" />
+        <File name="Freeware License" src="html/font/Freeware License.txt" />
+        <File name="Softfade" src="html/font/Softfade.ttf" />
+        <File name="Softplain" src="html/font/Softplain.ttf" />
+        <File name="FontAwesome" src="html/fonts/FontAwesome.otf" />
+        <File name="fontawesome-webfont" src="html/fonts/fontawesome-webfont.eot" />
+        <File name="fontawesome-webfont" src="html/fonts/fontawesome-webfont.svg" />
+        <File name="fontawesome-webfont" src="html/fonts/fontawesome-webfont.ttf" />
+        <File name="fontawesome-webfont" src="html/fonts/fontawesome-webfont.woff" />
+        <File name="jquery-2.1.1.min" src="html/js/jquery-2.1.1.min.js" />
+        <File name="utils" src="html/js/utils.js" />
     </Resources>
     <Topics />
     <IgnoredPaths />
