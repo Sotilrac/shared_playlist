@@ -252,7 +252,7 @@
        $.getService('ALSystem', function(ALSystem) {
          ALSystem.robotIcon().done(
            function (buffer){
-             $('#logo').html("<img src=http://Donatello.local/advanced/media/buddy_icons/buddy.icon-1 />");
+             $('#logo').html("<img src=data:unknown;base64," + buffer + "></img>");
            })
        });
      }
