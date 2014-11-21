@@ -37,124 +37,127 @@
 
      var robot_color = null
 
+     /* var muted = false;
+     var unmute_vol = 50; */
+
      //load appropriate qimessaging depending on running from robot or with a robot name specified in the URL
      document.write("<script type='text/javascript' src=" +
-     robotAddress +
-     "/libs/qimessaging/1.0/qimessaging.js><\/script>");
-    </script>
+                             robotAddress +
+                             "/libs/qimessaging/1.0/qimessaging.js><\/script>");
+     </script>
 
-    <!-- Load libs -->
-    <script language="JavaScript" src="js/jquery-2.1.1.min.js"></script>
-    <script language="JavaScript" src="js/jquery.qimhelpers.js"></script>
-    <script language="JavaScript" src="js/jquery.textfill.min.js"></script>
-    <script language="JavaScript" src="js/jquery-2.1..js"></script>
+     <!-- Load libs -->
+     <script language="JavaScript" src="js/jquery-2.1.1.min.js"></script>
+     <script language="JavaScript" src="js/jquery.qimhelpers.js"></script>
+     <script language="JavaScript" src="js/jquery.textfill.min.js"></script>
+     <script language="JavaScript" src="js/jquery-2.1..js"></script>
 
-    <style type="text/css">
-     <!--
+     <style type="text/css">
+      <!--
 
-     @font-face {
-       font-family: Bebas;
-       src: url(font/BEBAS___.ttf);
-     }
+      @font-face {
+      font-family: Bebas;
+      src: url(font/BEBAS___.ttf);
+      }
 
-     @font-face {
-       font-family: Softfade;
-       src: url(font/Softfade.ttf);
-     }
+      @font-face {
+      font-family: Softfade;
+      src: url(font/Softfade.ttf);
+      }
 
-     @font-face {
-       font-family: Softplain;
-       src: url(font/Softplain.ttf);
-     }
+      @font-face {
+      font-family: Softplain;
+      src: url(font/Softplain.ttf);
+      }
 
-     body {
-       height: 100%;
-       width: 100%;
-       margin: 0;
-       font-family: sans-serif;
-       font-size: 64px;
-       background-color: rgba(242,242,242,0.9);
-     }
+      body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      font-family: sans-serif;
+      font-size: 64px;
+      background-color: rgba(242,242,242,0.9);
+      }
 
-     .display_container {
-        width: 100%;
-     }
+      .display_container {
+      width: 100%;
+      }
 
-     .header {
-       height: 220px;
-       text-align: center;
-       background-color: rgba(242,242,242,1.0);
-     }
+      .header {
+      height: 220px;
+      text-align: center;
+      background-color: rgba(242,242,242,1.0);
+      }
 
-     .logo {
-       float: left;
-       width: 36%;
-       height: 100%;
-       overflow: auto;
-       padding-right: 40px;
-       text-align: right;
-     }
+      .logo {
+      float: left;
+      width: 36%;
+      height: 100%;
+      overflow: auto;
+      padding-right: 40px;
+      text-align: right;
+      }
 
-     .logo img {
-       width: auto;
-       height: 90%;
-     }
+      .logo img {
+      width: auto;
+      height: 90%;
+      }
 
-     .title_container{
-       float: right;
-       width: 60%;
-       text-align: left;
-     }
-     
-     .title{
-       font-family: Bebas;
-       font-size: 112px;
-     }
+      .title_container{
+      float: right;
+      width: 60%;
+      text-align: left;
+      }
+      
+      .title{
+      font-family: Bebas;
+      font-size: 112px;
+      }
 
-     .dj {
-       font-family: Softplain;
-       font-size: 42px;
-     }
+      .dj {
+      font-family: Softplain;
+      font-size: 42px;
+      }
 
-     .control_container {
-       position: fixed;
-       width: 100%;
-       height: 100px;
-       bottom: 0px;
-       background-color: rgba(242,242,242,0.9);
-     }
-     
-     .controls {
-       text-align: center;
-     }
-     
-     ul {
-       list-style-type: none;
-       display: inline-block;
-       margin: 0px;
-     }
+      .control_container {
+      position: fixed;
+      width: 100%;
+      height: 100px;
+      bottom: 0px;
+      background-color: rgba(242,242,242,0.9);
+      }
+      
+      .controls {
+      text-align: center;
+      }
+      
+      ul {
+      list-style-type: none;
+      display: inline-block;
+      margin: 0px;
+      }
 
-     ul li {
-       float: left;
-       line-height: 100px;
-       padding: 0px 35px;
-     }
+      ul li {
+        float: left;
+        line-height: 100px;
+        padding: 0px 35px;
+      }
 
-     a:link {
-       color: #000000;
-     }
+      a:link {
+        color: #000000;
+      }
 
-     a:visited {
-       color: #000000;
-     }
+      a:visited {
+        color: #000000;
+      }
 
-     a:hover {
-       color: #000000;
-     }
+      a:hover {
+        color: #000000;
+      }
 
-     -->
-    </style>
-    <link rel="stylesheet" href="./css/font-awesome.min.css">
+      -->
+     </style>
+     <link rel="stylesheet" href="./css/font-awesome.min.css">
 
   </head>
   <body>
@@ -179,15 +182,15 @@
     <div id="cc" class="control_container">
       <div id="control_pane" class="controls">
         <ul>
-          <li><a class="btn" href="#"><i class="fa fa-play"></i></a></li>
-          <li><a class="btn" href="#"><i class="fa fa-pause"></i></a></li>
-          <li><a class="btn" href="#"><i class="fa fa-stop"></i></a></li>
-          <li><a class="btn" href="#"><i class="fa fa-fast-forward"></i></a></li>
+          <li><a id="am_play" class="btn" href="#"><i class="fa fa-play"></i></a></li>
+          <li><a id="am_pause" class="btn" href="#"><i class="fa fa-pause"></i></a></li>
+          <li><a id="am_stop" class="btn" href="#"><i class="fa fa-stop"></i></a></li>
+          <li><a id="am_next" class="btn" href="#"><i class="fa fa-fast-forward"></i></a></li>
           <li>&nbsp;</li>
           <li>&nbsp;</li>
-          <li><a class="btn" href="#"><i class="fa fa-volume-off"></i></a></li>
-          <li><a class="btn" href="#"><i class="fa fa-volume-down"></i></a></li>
-          <li><a class="btn" href="#"><i class="fa fa-volume-up"></i></a></li>
+          <li><a id="am_vol_mute" class="btn" href="#"><i class="fa fa-volume-off"></i></a></li>
+          <li><a id="am_vol_down" class="btn" href="#"><i class="fa fa-volume-down"></i></a></li>
+          <li><a id="am_vol_up" class="btn" href="#"><i class="fa fa-volume-up"></i></a></li>
         </ul>
       </div>
     </div>
@@ -236,7 +239,7 @@
      }
 
      function get_robot_name() {
-      $.getService('ALSystem', function(ALSystem) {
+       $.getService('ALSystem', function(ALSystem) {
          ALSystem.robotName().done(
            function (name){
              get_robot_color(name);
@@ -246,10 +249,10 @@
      }
 
      function get_robot_icon() {
-      $.getService('ALSystem', function(ALSystem) {
+       $.getService('ALSystem', function(ALSystem) {
          ALSystem.robotIcon().done(
            function (buffer){
-             $('#logo').html("<img src=http://donatello.local/advanced/media/buddy_icons/buddy.icon-1 />");
+             $('#logo').html("<img src=http://Donatello.local/advanced/media/buddy_icons/buddy.icon-1 />");
            })
        });
      }
@@ -275,7 +278,8 @@
            robot_color = Object.keys(colors)[color_idx]           
        }
        $('body').css('background-color', colors[robot_color]);
-       $('<style>a:active{color:'+colors[robot_color]+'}</style>').appendTo("head");
+       // PUT THAT FUNCTION BACK!!!!
+       $('<style>a:active{color:' + colors[robot_color] + '}</style>').appendTo("head");       
      }
 
      function get_language() {
@@ -336,7 +340,59 @@
        });
       }
 
-     // URL parameter used to display image in case we need it
+     /////////////////////////////
+     // Control Button Handlers //
+     /////////////////////////////
+
+     function volume_control(action) {
+       $.getService('ALAudioDevice', function(ALAudioDevice) {
+         ALAudioDevice.getOutputVolume().done(
+           function (volume){
+             switch(action) {
+               case "Up":
+                 volume = volume + 10;
+                 if (volume > 100){
+                   volume = 100;
+                 }
+                 ALAudioDevice.setOutputVolume(volume);
+                 break;
+               case "Down":
+                 volume = volume - 10;
+                 if (volume < 0){
+                   volume = 0;
+                 }
+                 ALAudioDevice.setOutputVolume(volume);
+                 break;
+               case "Mute":
+                 ALAudioDevice.isAudioOutMuted().done(
+                   function(muted){
+                     if (muted) {
+                       ALAudioDevice.muteAudioOut(false);
+                     }
+                     else {
+                       ALAudioDevice.muteAudioOut(true);
+                     }
+                })
+             }
+           })
+       });
+     }
+     
+     $("#am_vol_mute").click(function() {
+       volume_control("Mute")
+     });
+
+     $("#am_vol_down").click(function() {
+       volume_control("Down")
+     });
+
+     $("#am_vol_up").click(function() {
+       volume_control("Up")
+     });
+
+
+     //////////////////////////
+
 
      // ALMemory Subscriptions
      /* $.subscribeToALMemoryEvent('ALConnectionManager/NetworkServiceStateChanged', function(eventValue) {
@@ -347,23 +403,6 @@
      //get_battery();
      }); */
 
-     /* var tablet_down_signal;
-     var tablet;
-
-     function onTabletTouched(x, y) {
-     console.log("Tablet touched");
-     init();
-     }
-
-     $.qim.service("ALTabletService").done(function (ts) {
-     tablet = ts;
-     tablet.onTouchDown.connect(onTabletTouched).done(function (link) {
-     tablet_down_signal = link;
-     }).fail(function (error) {
-     console.log("An error occurred: " + error);
-     });
-     }); */
-
      // Connect/Disconnect signals
      $.qim.socket().on('connect', init() );
 
@@ -372,21 +411,12 @@
          get_language();
        });
        get_robot_icon();
-       /* .done(function(){
-       place_name_tag();
-       });
-       get_network();
-       get_battery();
-       get_robot_temperature();
-       get_naoqi_version();
-       setInterval(function(){get_robot_temperature();}, 5000); */
        $('body').fadeIn();
      }
 
      $.qim.socket().on('disconnect', function() {
-       //$('.states_container').css('color:gray');
-       //tablet.onTouchDown.disconnect(tablet_down_signal);
-     });
+       $('body').css('background-color','gray');
+           });
 
     </script>
   </body>
