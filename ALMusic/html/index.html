@@ -2,6 +2,8 @@
 <!-- Tablet Resolution: 1707x1067 -->
 <html lang="en">
   <head>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"> 
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
     <meta charset="utf-8" />
     <title>ALMusic </title>
 
@@ -58,7 +60,7 @@
        margin: 0;
        font-family: sans-serif;
        font-size: 64px;
-       background-color: rgba(0,255,0,0.9);
+       background-color: rgba(242,242,242,0.9);
      }
 
      .display_container {
@@ -66,19 +68,48 @@
      }
 
      .header {
-       font-size: 128px;
        height: 200px;
-       background-color: rgba(255,255,0,0.9);
+       text-align: center;
+       background-color: rgba(242,242,242,1.0);
+     }
+
+     .logo {
+       float: left;
+       width: 40%;
+       height: 100%;
+       overflow: auto;
+       text-align: right;
+     }
+
+     .logo img {
+       width: auto;
+       height: 90%;
+     }
+
+     .title_container{
+       float: right;
+       width: 60%;
+       text-align: left;
+     }
+     
+     .title{
+       font-size: 124px;
+     }
+
+     .dj {
+       font-size: 42px;
      }
 
      .control_container {
        position: fixed;
+       width: 100%;
        bottom: 0px;
+       background-color: rgba(242,242,242,0.9);
      }
      
      .controls {
        height: 100px;
-       background-color: rgba(0,255,255,0.9);
+       text-align: center;
      }
      
      -->
@@ -89,8 +120,19 @@
 
     <div id="dc" class="display_container">
       <div id="header" class="header">
-        ALMUSIC!!!!!!!!!!!!
+        <div id="logo" class="logo">
+          <!-- <img id="logo_img" src="#" /> -->
+        </div>
+        <div id="title_c" class="title_container">
+          <div id="title" class="title">
+            ALMUSIC
+          </div>
+          <div id="dj" class="dj">
+            By: <span id="robot_name"></span>
+          </div>
+        </div>
       </div>
+      
     </div>
 
     <div id="cc" class="control_container">
@@ -146,15 +188,17 @@
       $.getService('ALSystem', function(ALSystem) {
          ALSystem.robotName().done(
            function (name){
-             $('#robot_name').html(name);
              get_robot_color(name);
-             $(function(){
-               $('.name_tag').textfill({ maxFontPixels: 96,
-                                         explicitHeight: 200, 
-                                         explicitWidth: 460 
-                                         });
-               $('#robot_name').css('width', '465');
-             });
+             $('#robot_name').html("DJ " + name ).css({'color': colors[robot_color]});
+           })
+       });
+     }
+
+     function get_robot_icon() {
+      $.getService('ALSystem', function(ALSystem) {
+         ALSystem.robotIcon().done(
+           function (buffer){
+             $('#logo').html("<img src=http://donatello.local/advanced/media/buddy_icons/buddy.icon-1 />");
            })
        });
      }
@@ -179,7 +223,7 @@
            color_idx = sum % Object.keys(colors).length
            robot_color = Object.keys(colors)[color_idx]           
        }
-       $('.stats_container').css({ color: colors[robot_color]});
+       $('body').css('background-color', colors[robot_color]);
      }
 
      function get_language() {
@@ -275,6 +319,7 @@
        $.when(get_robot_name()).done(function(){
          get_language();
        });
+       get_robot_icon();
        /* .done(function(){
        place_name_tag();
        });
