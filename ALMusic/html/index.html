@@ -69,6 +69,7 @@
         </div>
       </div>
       <div id="queue_c" class="queue_container">
+        <div id="dynamic_c"></div>
         <!--  -->
         <!-- BEGIN DYNAMICALLY GENERATED QUEUE CARDS -->
         <!--  -->
@@ -88,14 +89,14 @@
         <div id="test-controls" class="queue_card_controls">
         <div id="test-controls-reorder" class="qc_controls_reorder">
         <div>
-        <a id="test-move_up" class="btn" href="#"><i class="fa fa-sort-asc"></i>
+        <a id="test-Move_Up" class="btn" href="#"><i class="fa fa-sort-asc"></i>
         </div>
         <div>
-        <a id="test-move_down" class="btn" href="#"><i class="fa fa-sort-desc"></i>
+        <a id="test-Move_Down" class="btn" href="#"><i class="fa fa-sort-desc"></i>
         </div>
         </div>
         <div id="test-controls-remove" class="qc_controls_remove">
-        <a id="test-remove" class="btn" href="#"><i class="fa fa-remove"></i>
+        <a id="test-Remove" class="btn" href="#"><i class="fa fa-remove"></i>
         </div>
         </div>
         </div> -->
@@ -103,18 +104,20 @@
         <!--  -->
         <!-- END DYNAMICALLY GENERATED QUEUE CARDS -->
         <!--  -->
-        <div id="add" class="queue_add_card">
-          <div id="add-info" class="queue_card_info">
-            <div id="add-info-artist" class="qc_info_field">
-              <input id="queue_add" type="text" size="80px" class="queue_add">
+        <div id="static_c">
+          <div id="add" class="queue_add_card">
+            <div id="add-info" class="queue_card_info">
+              <div id="add-info-artist" class="qc_info_field">
+                <input id="queue_add" type="text" size="80px" class="queue_add">
+              </div>
+            </div>
+            <div id="add-controls" class="queue_card_controls">
+              <a id="am_enqueue" class="btn" href="#">ADD</a>
             </div>
           </div>
-          <div id="add-controls" class="queue_card_controls">
-            <a id="am_enqueue" class="btn" href="#">ADD</a>
+          <div id="clear" class="queue_clear_card">
+            <a id="am_clear" class="btn" href="#">CLEAR</a>
           </div>
-        </div>
-        <div id="clear" class="queue_clear_card">
-          <a id="am_clear" class="btn" href="#">CLEAR</a>
         </div>
       </div>
     </div>
@@ -264,6 +267,42 @@
        });
       }
 
+     
+     function generateQueue() {
+       // Do stuff with queue
+       $.getService('ALMusic', function(ALMusic) {
+         ALMusic.getQueue().done(
+           function(queue) {
+             $('#dynamic_c').empty();
+             for (song in queue['queue']) {
+               id = queue['queue'][song]['id'];
+               title = queue['queue'][song]['title'];
+               artist = queue['queue'][song]['artist'];
+
+               $('#dynamic_c').append(
+                 '<div id="' + id + '" class="queue_card">' +
+                 '<div class="queue_card_info">' +
+                 '<div class="qc_info_field">' +
+                 'Artist: ' + artist + '</div>' +
+                 '<div class="qc_info_field">' + 
+                 'SONG: ' + title + '</div></div>' +
+                 '<div class="queue_card_controls">' +
+                 '<div class="qc_controls_reorder">' +
+                 '<div><a id="' + id + '-Move_Up" class="btn" href="#">' +
+                 '<i class="fa fa-sort-asc"></i></a></div>' +
+                 '<div><a id="' + id + '-Move_Down" class="btn" href="#">' +
+                 '<i class="fa fa-sort-desc"></i></a></div></div>' +
+                 '<div id="' + id + '-controls-remove" class="qc_controls_remove">' +
+                 '<a id="' + id + '-Remove" class="btn" href="#"><i class="fa fa-remove"></i>' +
+                 '</div></div></div>'
+               ); //.insertBefore('#static_c'); 
+             }
+         })
+       });
+     }
+
+     
+
      ////////////////////
      // Queue Handlers //
      ////////////////////
@@ -310,7 +349,7 @@
      function volume_control(action) {
        $.getService('ALAudioDevice', function(ALAudioDevice) {
          ALAudioDevice.getOutputVolume().done(
-           function (volume){
+           function (volume) {
              switch(action) {
                case "Up":
                  volume = volume + 5;
@@ -392,13 +431,13 @@
 
 
      // ALMemory Subscriptions
-     /* $.subscribeToALMemoryEvent('ALConnectionManager/NetworkServiceStateChanged', function(eventValue) {
-     get_network();
+     $.subscribeToALMemoryEvent('ALMusic/onQueueChange', function(eventValue) {
+       generateQueue();
      });
      
      $.subscribeToALMemoryEvent('ALBattery/BatteryChargeChanged', function(eventValue) {
-     //get_battery();
-     }); */
+       //get_battery();
+     });
 
      // Connect/Disconnect signals
      $.qim.socket().on('connect', init() );
@@ -408,6 +447,7 @@
          get_language();
        });
        get_robot_icon();
+       generateQueue();
        $('body').fadeIn();
      }
 
