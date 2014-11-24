@@ -132,12 +132,15 @@ class ALMusic(object):
         return self.pan
 
 
-    @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="play")
+    @qi.bind(returnType=qi.Map(qi.String, qi.String),
+             paramsType=(qi.String,),
+             methodName="play")
     def play(self, search_string):
         """Searches for a song and plays it."""
-        self.song_queue = []
+        self.clear_queue()
         success = self.enqueue(search_string)
-        self.play_queue()
+        if success:
+            self.play_queue()
         return success
 
 
@@ -171,9 +174,14 @@ class ALMusic(object):
                 """Pop the queue while there are songs in it"""
                 while self.song_queue and self.playing:
                     self.pop_queue()
+                self.playing = False
             qi.async(go_through_queue)
         return self.playing
 
+    @qi.bind(returnType=qi.Bool, methodName="isPlaying")
+    def is_playing(self):
+        """Returns true is queue is playing. False otherwhise"""
+        return self.playing
 
     @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="radio")
     def play_radio(self, station):
@@ -189,13 +197,18 @@ class ALMusic(object):
 
         self.clear_queue()
         try:
-            song = radio.song
-            self.song_queue.append(self._fetch_song(song))
+            try:
+                song = SimpleSong(radio.song)
+                func = functools.partial(self._maintain_radio_queue,
+                                         song_generator=radio,
+                                         count=3)
+            except AttributeError:
+                song = SimpleSong(radio.next())
+                func = functools.partial(self._maintain_popular_queue,
+                                         song_generator=radio,
+                                         count=3)
+            self.song_queue.append(song)
             qi.async(self.play_queue)
-            func = functools.partial(self._maintain_radio_queue,
-                                     song_generator=radio,
-                                     count=3
-                                     )
             self.periodic = qi.PeriodicTask()
             self.periodic.setCallback(func)
             self.periodic.setUsPeriod(15000000)
@@ -209,8 +222,17 @@ class ALMusic(object):
         """Maintains the queue to be of length "count". """
         while len(self.song_queue) < count:
             try:
-                song = song_generator.song
-                self.song_queue.append(self._fetch_song(song))  
+                song = SimpleSong(song_generator.song)
+                self.song_queue.append(song)  
+            except StopIteration:
+                self.periodic.stop()
+
+    def _maintain_popular_queue(self, song_generator, count):
+        """Maintains the queue to be of length "count". """
+        while len(self.song_queue) < count:
+            try:
+                song = SimpleSong(song_generator.next())
+                self.song_queue.append(song)  
             except StopIteration:
                 self.periodic.stop()
 
@@ -225,24 +247,28 @@ class ALMusic(object):
         return path
 
 
-    @qi.bind(returnType=qi.Bool,
-             paramsType=(qi.String,),
-             methodName="enqueueNext")
-    def enqueue_next(self, search_string):
-        """Adds song to the beginning of the queue."""
+    @qi.bind(returnType=qi.Map(qi.String, qi.String),
+             paramsType=(qi.String, qi.Int32),
+             methodName="enqueueAt")
+    def enqueue_at(self, search_string, position):
+        """Adds song to a position in the queue."""
         song_search = self.client.search(search_string)
         try:
-            song = song_search.next()
-            self.song_queue.insert(0, self._fetch_song(song))
-            return True
+            song = SimpleSong(song_search.next())
+            self.song_queue.insert(position, song)
+            return song.__dict__()
         except StopIteration:
-            return False
+            return {}
+        except IndexError:
+            self.logger.warning('Invalid index: {}'.format(position))
+            return {}
 
 
     @qi.bind(methodName="clearQueue")
     def clear_queue(self):
         """Clears queue."""
         self.song_queue = []
+        self._clear_cache()
 
 
     @qi.bind(methodName="next")
@@ -264,13 +290,6 @@ class ALMusic(object):
     def pause(self):
         """Pauses current song or radio. Not implemented :( """
         pass
-
-
-    @qi.nobind
-    def resume(self):
-        """Resumes current song or radio. Not implemented :( """
-        pass
-
 
     @qi.nobind
     def previous(self):
@@ -301,6 +320,7 @@ class ALMusic(object):
                 os.unlink(f_path)
 
 
+    @qi.nobind
     def _maintain_cache(self, max_size):
         """Removes old files form the cache until they cache size is less than
         or equal to the max_size.
