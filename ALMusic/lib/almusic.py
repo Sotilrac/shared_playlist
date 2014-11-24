@@ -254,11 +254,11 @@ class ALMusic(object):
     def pop_queue(self):
         """Plays first item in the queue."""
         self.active_song = self.song_queue.pop(0)
+        self.memory.raiseEvent('ALMusic/onQueueChange', 'remove')
         path = self.active_song.path
         self.previous_songs.append(self.active_song)
         self.audio_player.playFile(path, self.volume, self.pan)
         _delete_file(path)
-        self.memory.raiseEvent('ALMusic/onQueueChange', 'remove')
         return self.active_song
 
 
