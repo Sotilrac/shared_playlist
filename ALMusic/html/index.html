@@ -218,7 +218,7 @@
        }
        $('body').css('background-color', colors[robot_color]);
        // PUT THAT FUNCTION BACK!!!!
-
+       $('<style>a:active{color:' + colors[robot_color] + '}</style>').appendTo("head");
      }
 
      function get_language() {
