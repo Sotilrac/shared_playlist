@@ -76,6 +76,7 @@ class ALMusic(object):
         self.audio_player = None
         self.tts = None
         self._connect_services()
+        self.memory.declareEvent('ALMusic/onQueueChange')
         
 
         ## Initialize cache directory where songs will be temporarily stored.
@@ -156,6 +157,7 @@ class ALMusic(object):
         try:
             song = SimpleSong(song_search.next())
             self.song_queue.append(song)
+            self.memory.raiseEvent('ALMusic/onQueueChange', 'add')
             return song.__dict__()
         except StopIteration:
             return {}
@@ -256,6 +258,7 @@ class ALMusic(object):
         self.previous_songs.append(self.active_song)
         self.audio_player.playFile(path, self.volume, self.pan)
         _delete_file(path)
+        self.memory.raiseEvent('ALMusic/onQueueChange', 'remove')
         return self.active_song
 
 
@@ -268,6 +271,7 @@ class ALMusic(object):
         try:
             song = SimpleSong(song_search.next())
             self.song_queue.insert(position, song)
+            self.memory.raiseEvent('ALMusic/onQueueChange', 'add')
             return song.__dict__()
         except StopIteration:
             return {}
@@ -280,6 +284,7 @@ class ALMusic(object):
     def clear_queue(self):
         """Clears queue."""
         self.song_queue = []
+        self.memory.raiseEvent('ALMusic/onQueueChange', 'clear')
         self._clear_cache()
 
 
