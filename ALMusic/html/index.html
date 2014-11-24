@@ -37,9 +37,6 @@
 
      var robot_color = null
 
-     /* var muted = false;
-     var unmute_vol = 50; */
-
      //load appropriate qimessaging depending on running from robot or with a robot name specified in the URL
      document.write("<script type='text/javascript' src=" +
                              robotAddress +
@@ -72,42 +69,52 @@
         </div>
       </div>
       <div id="queue_c" class="queue_container">
-        <div id="a_test" class="queue_active_card">
-          Active test
+        <!--  -->
+        <!-- BEGIN DYNAMICALLY GENERATED QUEUE CARDS -->
+        <!--  -->
+
+        <!-- <div id="a_test" class="queue_active_card">
+        Active test
         </div>
         <div id="test" class="queue_card">
-          <div id="test-info" class="queue_card_info">
-            <div id="test-info-artist" class="qc_info_field">
-               Artist: Carlos
-            </div>
-            <div id="test-info-song" class="qc_info_field">
-               Song: Lavrova Caos
-            </div>
-          </div>
-          <div id="test-controls" class="queue_card_controls">
-            <div id="test-controls-reorder" class="qc_controls_reorder">
-              <div>
-                <a id="test-move_up" class="btn" href="#"><i class="fa fa-sort-asc"></i>
-              </div>
-              <div>
-                <a id="test-move_down" class="btn" href="#"><i class="fa fa-sort-desc"></i>
-              </div>
-            </div>
-            <div id="test-controls-remove" class="qc_controls_remove">
-              <a id="test-remove" class="btn" href="#"><i class="fa fa-remove"></i>
-            </div>
-          </div>
+        <div id="test-info" class="queue_card_info">
+        <div id="test-info-artist" class="qc_info_field">
+        Artist: Carlos
         </div>
-        <div id="add" class="queue_card">
-          <div id="add-info" class="queue_card_info">
+        <div id="test-info-song" class="qc_info_field">
+        Song: Lavrova Caos
+        </div>
+        </div>
+        <div id="test-controls" class="queue_card_controls">
+        <div id="test-controls-reorder" class="qc_controls_reorder">
+        <div>
+        <a id="test-move_up" class="btn" href="#"><i class="fa fa-sort-asc"></i>
+        </div>
+        <div>
+        <a id="test-move_down" class="btn" href="#"><i class="fa fa-sort-desc"></i>
+        </div>
+        </div>
+        <div id="test-controls-remove" class="qc_controls_remove">
+        <a id="test-remove" class="btn" href="#"><i class="fa fa-remove"></i>
+        </div>
+        </div>
+        </div> -->
 
+        <!--  -->
+        <!-- END DYNAMICALLY GENERATED QUEUE CARDS -->
+        <!--  -->
+        <div id="add" class="queue_add_card">
+          <div id="add-info" class="queue_card_info">
+            <div id="add-info-artist" class="qc_info_field">
+              <input id="queue_add" type="text" size="80px" class="queue_add">
+            </div>
           </div>
           <div id="add-controls" class="queue_card_controls">
-
+            <a id="am_enqueue" class="btn" href="#">ADD</a>
           </div>
         </div>
-        <div id="c_test" class="queue_clear_card">
-          Clear
+        <div id="clear" class="queue_clear_card">
+          <a id="am_clear" class="btn" href="#">CLEAR</a>
         </div>
       </div>
     </div>
@@ -211,7 +218,7 @@
        }
        $('body').css('background-color', colors[robot_color]);
        // PUT THAT FUNCTION BACK!!!!
-
+       $('<style>a:active{color:' + colors[robot_color] + '}</style>').appendTo("head");
      }
 
      function get_language() {
@@ -240,30 +247,15 @@
      }
 
      function switch_to_english() {
-       //$('#nt').css("background-image", "url(img/mni_"+robot_color+"_en.png)");
-       //$('#naoqi_version_label').html("Version:");
-       //$('#wireless_label').html("Network:");
-       //$('#ip_label').html("IP:");
-       //$('#battery_label').html("Battery:");
-       //$('#temperature_label').html("Temperature (&deg;C):");
+       //
      }
 
      function switch_to_french() {
-       /* $('#nt').css("background-image", "url(img/mni_"+robot_color+"_fr.png)");
-       $('#naoqi_version_label').html("Version:");
-       $('#wireless_label').html("Resseau:");
-       $('#ip_label').html("IP:");
-       $('#battery_label').html("Batterie:");
-       $('#temperature_label').html("Temp&eacute;rature (&deg;C):"); */
+       //
      }
 
      function switch_to_spanish() {
-       /* $('#nt').css("background-image", "url(img/mni_"+robot_color+"_es.png)");
-       $('#naoqi_version_label').html("Versi&oacute;n:");
-       $('#wireless_label').html("Red:");
-       $('#ip_label').html("IP:");
-       $('#battery_label').html("Bater&iacute;a:");
-       $('#temperature_label').html("Temperatura (&deg;C):"); */
+       //
      }
 
      function zip(arrays) {
@@ -271,6 +263,45 @@
         return arrays.map(function(array){return array[i]})
        });
       }
+
+     ////////////////////
+     // Queue Handlers //
+     ////////////////////
+
+     function queue_control(action, data) {
+       $.getService('ALMusic', function(ALMusic) {
+         switch(action) {
+           case "Enqueue":
+             ALMusic.enqueue(data);
+             break;
+           case "Remove":
+             console.log("Remove functionality not implemented.");
+             break;
+           case "Clear":
+             console.log("Move Down functionality not implemented.");
+             ALMusic.stop();
+             break;
+           case "Move_Up":
+             console.log("Move Down functionality not implemented.");
+             ALMusic.stop();
+             break;
+           case "Move_Down":
+             console.log("Move down functionality not implemented.");
+             break;
+         }
+       });
+     }
+
+     $("#am_enqueue").click(function() {       
+       query = $('#queue_add').val();
+       if (query.length > 0){
+         queue_control("Enqueue", query);
+       }
+     });
+
+     $("#am_clear").click(function() {       
+       queue_control("Clear", null);
+     });
 
      /////////////////////////////
      // Control Button Handlers //
