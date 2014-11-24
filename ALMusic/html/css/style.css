@@ -176,7 +176,7 @@ body {
 }
 
 .queue_clear_card {
-    margin: 0 auto;
+    margin: 0 auto 150px;
     height: 42px;
     width: 980px;
     font-size: 24px;
