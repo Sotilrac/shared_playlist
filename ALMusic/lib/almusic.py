@@ -9,7 +9,7 @@ import os
 import string
 import time
 import functools
-import json
+import uuid
 import grooveshark
 import logging as logger
 
@@ -26,6 +26,7 @@ class SimpleSong(object):
         self.duration = song.duration
         self.cover = song.album._cover_url
         self.cache_path = os.path.expanduser('~/.almusic_cache')
+        self.id = uuid.uuid1()
         self.path = self.fetch(song)
 
     def __str__(self):
@@ -36,7 +37,8 @@ class SimpleSong(object):
                 'artist':self.artist,
                 'album':self.album,
                 'cover':self.cover,
-                'duration':self.duration}
+                'duration':self.duration,
+                'id':self.id}
 
     def fetch(self, song):
         """Downloads a song and returns a path to a file."""
@@ -85,6 +87,7 @@ class ALMusic(object):
         self.client = grooveshark.Client()
         self.client.init()
         self.song_queue = []
+        self.active_song = None
         self.previous_songs = []
         self.player_ids = []
         self.playing = False
@@ -240,11 +243,12 @@ class ALMusic(object):
     @qi.nobind
     def pop_queue(self):
         """Plays first item in the queue."""
-        path = self.song_queue.pop(0).path
-        self.previous_songs.append(path)
+        self.active_song = self.song_queue.pop(0)
+        path = self.active_song.path
+        self.previous_songs.append(self.active_song)
         self.audio_player.playFile(path, self.volume, self.pan)
         _delete_file(path)
-        return path
+        return self.active_song
 
 
     @qi.bind(returnType=qi.Map(qi.String, qi.String),
