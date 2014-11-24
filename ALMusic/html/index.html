@@ -278,8 +278,7 @@
              console.log("Remove functionality not implemented.");
              break;
            case "Clear":
-             console.log("Move Down functionality not implemented.");
-             ALMusic.stop();
+             ALMusic.clearQueue();
              break;
            case "Move_Up":
              console.log("Move Down functionality not implemented.");
@@ -296,6 +295,7 @@
        query = $('#queue_add').val();
        if (query.length > 0){
          queue_control("Enqueue", query);
+         $('#queue_add').val('');
        }
      });
 
