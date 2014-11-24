@@ -76,12 +76,34 @@
           Active test
         </div>
         <div id="test" class="queue_card">
-          <div id="test-info" class="queue_card_info" 
+          <div id="test-info" class="queue_card_info">
+            <div id="test-info-artist" class="qc_info_field">
                Artist: Carlos
+            </div>
+            <div id="test-info-song" class="qc_info_field">
                Song: Lavrova Caos
+            </div>
           </div>
           <div id="test-controls" class="queue_card_controls">
-            UP DOWN X
+            <div id="test-controls-reorder" class="qc_controls_reorder">
+              <div>
+                <a id="test-move_up" class="btn" href="#"><i class="fa fa-sort-asc"></i>
+              </div>
+              <div>
+                <a id="test-move_down" class="btn" href="#"><i class="fa fa-sort-desc"></i>
+              </div>
+            </div>
+            <div id="test-controls-remove" class="qc_controls_remove">
+              <a id="test-remove" class="btn" href="#"><i class="fa fa-remove"></i>
+            </div>
+          </div>
+        </div>
+        <div id="add" class="queue_card">
+          <div id="add-info" class="queue_card_info">
+
+          </div>
+          <div id="add-controls" class="queue_card_controls">
+
           </div>
         </div>
         <div id="c_test" class="queue_clear_card">
@@ -304,7 +326,7 @@
        $.getService('ALMusic', function(ALMusic) {
          switch(action) {
            case "Play":
-             ALMusic.playQueue();
+             ALMusic.play();
              break;
            case "Pause":
              console.log("Pause functionality not implemented.");
