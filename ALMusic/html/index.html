@@ -52,111 +52,7 @@
      <script language="JavaScript" src="js/jquery.textfill.min.js"></script>
      <script language="JavaScript" src="js/jquery-2.1..js"></script>
 
-     <style type="text/css">
-      <!--
-
-      @font-face {
-      font-family: Bebas;
-      src: url(font/BEBAS___.ttf);
-      }
-
-      @font-face {
-      font-family: Softfade;
-      src: url(font/Softfade.ttf);
-      }
-
-      @font-face {
-      font-family: Softplain;
-      src: url(font/Softplain.ttf);
-      }
-
-      body {
-      height: 100%;
-      width: 100%;
-      margin: 0;
-      font-family: sans-serif;
-      font-size: 64px;
-      background-color: rgba(242,242,242,0.9);
-      }
-
-      .display_container {
-      width: 100%;
-      }
-
-      .header {
-      height: 220px;
-      text-align: center;
-      background-color: rgba(242,242,242,1.0);
-      }
-
-      .logo {
-      float: left;
-      width: 36%;
-      height: 100%;
-      overflow: auto;
-      padding-right: 40px;
-      text-align: right;
-      }
-
-      .logo img {
-      width: auto;
-      height: 90%;
-      }
-
-      .title_container{
-      float: right;
-      width: 60%;
-      text-align: left;
-      }
-      
-      .title{
-      font-family: Bebas;
-      font-size: 112px;
-      }
-
-      .dj {
-      font-family: Softplain;
-      font-size: 42px;
-      }
-
-      .control_container {
-      position: fixed;
-      width: 100%;
-      height: 100px;
-      bottom: 0px;
-      background-color: rgba(242,242,242,0.9);
-      }
-      
-      .controls {
-      text-align: center;
-      }
-      
-      ul {
-      list-style-type: none;
-      display: inline-block;
-      margin: 0px;
-      }
-
-      ul li {
-        float: left;
-        line-height: 100px;
-        padding: 0px 35px;
-      }
-
-      a:link {
-        color: #000000;
-      }
-
-      a:visited {
-        color: #000000;
-      }
-
-      a:hover {
-        color: #000000;
-      }
-
-      -->
-     </style>
+     <link rel="stylesheet" href="./css/style.css">
      <link rel="stylesheet" href="./css/font-awesome.min.css">
 
   </head>
@@ -165,7 +61,6 @@
     <div id="dc" class="display_container">
       <div id="header" class="header">
         <div id="logo" class="logo">
-          <!-- <img id="logo_img" src="#" /> -->
         </div>
         <div id="title_c" class="title_container">
           <div id="title" class="title">
@@ -176,9 +71,24 @@
           </div>
         </div>
       </div>
-      
+      <div id="queue_c" class="queue_container">
+        <div id="a_test" class="queue_active_card">
+          Active test
+        </div>
+        <div id="test" class="queue_card">
+          <div id="test-info" class="queue_card_info" 
+               Artist: Carlos
+               Song: Lavrova Caos
+          </div>
+          <div id="test-controls" class="queue_card_controls">
+            UP DOWN X
+          </div>
+        </div>
+        <div id="c_test" class="queue_clear_card">
+          Clear
+        </div>
+      </div>
     </div>
-
     <div id="cc" class="control_container">
       <div id="control_pane" class="controls">
         <ul>
@@ -279,7 +189,7 @@
        }
        $('body').css('background-color', colors[robot_color]);
        // PUT THAT FUNCTION BACK!!!!
-       $('<style>a:active{color:' + colors[robot_color] + '}</style>').appendTo("head");       
+
      }
 
      function get_language() {
