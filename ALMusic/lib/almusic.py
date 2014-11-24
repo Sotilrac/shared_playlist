@@ -197,12 +197,18 @@ class ALMusic(object):
 
         self.clear_queue()
         try:
-            song = SimpleSong(radio.song)
+            try:
+                song = SimpleSong(radio.song)
+                func = functools.partial(self._maintain_radio_queue,
+                                         song_generator=radio,
+                                         count=3)
+            except AttributeError:
+                song = SimpleSong(radio.next())
+                func = functools.partial(self._maintain_popular_queue,
+                                         song_generator=radio,
+                                         count=3)
             self.song_queue.append(song)
             qi.async(self.play_queue)
-            func = functools.partial(self._maintain_radio_queue,
-                                     song_generator=radio,
-                                     count=3)
             self.periodic = qi.PeriodicTask()
             self.periodic.setCallback(func)
             self.periodic.setUsPeriod(15000000)
@@ -217,6 +223,15 @@ class ALMusic(object):
         while len(self.song_queue) < count:
             try:
                 song = SimpleSong(song_generator.song)
+                self.song_queue.append(song)  
+            except StopIteration:
+                self.periodic.stop()
+
+    def _maintain_popular_queue(self, song_generator, count):
+        """Maintains the queue to be of length "count". """
+        while len(self.song_queue) < count:
+            try:
+                song = SimpleSong(song_generator.next())
                 self.song_queue.append(song)  
             except StopIteration:
                 self.periodic.stop()
@@ -253,6 +268,7 @@ class ALMusic(object):
     def clear_queue(self):
         """Clears queue."""
         self.song_queue = []
+        self._clear_cache()
 
 
     @qi.bind(methodName="next")
