@@ -350,14 +350,14 @@
            function (volume){
              switch(action) {
                case "Up":
-                 volume = volume + 10;
+                 volume = volume + 5;
                  if (volume > 100){
                    volume = 100;
                  }
                  ALAudioDevice.setOutputVolume(volume);
                  break;
                case "Down":
-                 volume = volume - 10;
+                 volume = volume - 5;
                  if (volume < 0){
                    volume = 0;
                  }
@@ -379,17 +379,51 @@
      }
      
      $("#am_vol_mute").click(function() {
-       volume_control("Mute")
+       volume_control("Mute");
      });
 
      $("#am_vol_down").click(function() {
-       volume_control("Down")
+       volume_control("Down");
      });
 
      $("#am_vol_up").click(function() {
-       volume_control("Up")
+       volume_control("Up");
+     }); 
+
+     function playback_control(action) {
+       $.getService('ALMusic', function(ALMusic) {
+         switch(action) {
+           case "Play":
+             ALMusic.playQueue();
+             break;
+           case "Pause":
+             console.log("Pause functionality not implemented.");
+             break;
+           case "Stop":
+             ALMusic.stop();
+             break;
+           case "Next":
+             ALMusic.next();
+             break;
+         }
+       });
+     }
+
+     $("#am_play").click(function() {
+       playback_control("Play");
      });
 
+     $("#am_pause").click(function() {
+       playback_control("Pause");
+     });
+
+     $("#am_stop").click(function() {
+       playback_control("Stop");
+     });
+
+     $("#am_next").click(function() {
+       playback_control("Next");
+     });
 
      //////////////////////////
 
