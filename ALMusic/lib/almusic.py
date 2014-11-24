@@ -23,10 +23,33 @@ class SimpleSong(object):
         self.title = song.name
         self.artist = song.artist.name
         self.album = song.album.name
+        self.duration = song.duration
         self.cover = song.album._cover_url
         self.cache_path = os.path.expanduser('~/.almusic_cache')
-        self.path = None
+        self.path = self.fetch(song)
 
+    def __str__(self):
+        return '{} by {}. {}'.format(self.title, self.artist, self.album)
+
+    def __dict__(self):
+        return {'title':self.title,
+                'artist':self.artist,
+                'album':self.album,
+                'cover':self.cover,
+                'duration':self.duration}
+
+    def fetch(self, song):
+        """Downloads a song and returns a path to a file."""
+        song_file_name = _make_file_name(song)
+
+        song_path = os.path.join(self.cache_path,
+                                 song_file_name)
+
+        if not os.path.exists(song_path):
+            with open(song_path, 'w') as song_file:
+                data = song.safe_download()
+                song_file.write(data)
+        return song_path
 
 @qi.multiThreaded()
 class ALMusic(object):
@@ -118,26 +141,38 @@ class ALMusic(object):
         return success
 
 
-    @qi.bind(returnType=qi.String, paramsType=(qi.String,), methodName="enqueue")
+    @qi.bind(returnType=qi.Map(qi.String, qi.String),
+             paramsType=(qi.String,),
+             methodName="enqueue")
     def enqueue(self, search_string):
         """Add song to the queue."""
         song_search = self.client.search(search_string)
         try:
-            song = song_search.next()
-            simple_song = SimpleSong(song)
-            simple_song.path = self._fetch_song(song)
-            self.song_queue.append(simple_song)
-            return json.dumps(simple_song)
+            song = SimpleSong(song_search.next())
+            self.song_queue.append(song)
+            return song.__dict__()
         except StopIteration:
-            return ""
+            return {}
 
 
-    @qi.bind(returnType=qi.Bool, methodName="playQueue")
+    @qi.bind(returnType=qi.List(qi.Map(qi.String, qi.String)),
+             methodName="getQueue")
+    def get_queue(self):
+        """Get current queue as a list of dictionaries."""
+        return [s.__dict__() for s in self.song_queue]
+
+
+    @qi.bind(returnType=qi.Bool, methodName="play")
     def play_queue(self):
         """Plays the queue until it is empty."""
-        self.playing = True
-        while self.song_queue and self.playing:
-            self.pop_queue()
+        if not self.playing:
+            self.playing = True
+            def go_through_queue():
+                """Pop the queue while there are songs in it"""
+                while self.song_queue and self.playing:
+                    self.pop_queue()
+            qi.async(go_through_queue)
+        return self.playing
 
 
     @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="radio")
@@ -183,11 +218,11 @@ class ALMusic(object):
     @qi.nobind
     def pop_queue(self):
         """Plays first item in the queue."""
-        file_path = self.song_queue.pop(0).path
-        self.previous_songs.append(file_path)
-        self.audio_player.playFile(file_path, self.volume, self.pan)
-        _delete_file(file_path)
-        return file_path
+        path = self.song_queue.pop(0).path
+        self.previous_songs.append(path)
+        self.audio_player.playFile(path, self.volume, self.pan)
+        _delete_file(path)
+        return path
 
 
     @qi.bind(returnType=qi.Bool,
@@ -218,10 +253,10 @@ class ALMusic(object):
 
     @qi.bind(methodName="stop")
     def stop(self):
-        """Empties the queue and stops playing music."""
+        """Stops playing music."""
         if self.periodic:
             self.periodic.stop()
-        self.clear_queue()
+        self.playing = False
         self.next()
         
 
@@ -236,18 +271,6 @@ class ALMusic(object):
         """Resumes current song or radio. Not implemented :( """
         pass
 
-    def _fetch_song(self, song):
-        """Downloads a song and returns a path to a file."""
-        song_file_name = _make_file_name(song)
-
-        song_path = os.path.join(self.cache_path,
-                                 song_file_name)
-
-        if not os.path.exists(song_path):
-            with open(song_path, 'w') as song_file:
-                data = song.safe_download()
-                song_file.write(data)
-        return song_path
 
     @qi.nobind
     def previous(self):
