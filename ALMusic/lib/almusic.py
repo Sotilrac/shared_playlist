@@ -20,13 +20,13 @@ class SimpleSong(object):
     """
     def __init__(self, song):
 
-        self.title = song.name
-        self.artist = song.artist.name
-        self.album = song.album.name
+        self.title = song.name.encode('utf8', 'replace')
+        self.artist = song.artist.name.encode('utf8', 'replace')
+        self.album = song.album.name.encode('utf8', 'replace')
         self.duration = song.duration
         self.cover = song.album._cover_url
+        self.id = str(uuid.uuid1())
         self.cache_path = os.path.expanduser('~/.almusic_cache')
-        self.id = uuid.uuid1()
         self.path = self.fetch(song)
 
     def __str__(self):
@@ -161,11 +161,12 @@ class ALMusic(object):
             return {}
 
 
-    @qi.bind(returnType=qi.List(qi.Map(qi.String, qi.String)),
+    @qi.bind(returnType=qi.Map(qi.String, qi.List(qi.Map(qi.String, qi.String))),
              methodName="getQueue")
     def get_queue(self):
         """Get current queue as a list of dictionaries."""
-        return [s.__dict__() for s in self.song_queue]
+        return {'queue':[s.__dict__() for s in self.song_queue],
+                'active':[self.active_song.__dict__()]}
 
 
     @qi.bind(returnType=qi.Bool, methodName="play")
