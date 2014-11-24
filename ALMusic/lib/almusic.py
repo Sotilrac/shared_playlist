@@ -165,8 +165,15 @@ class ALMusic(object):
              methodName="getQueue")
     def get_queue(self):
         """Get current queue as a list of dictionaries."""
-        return {'queue':[s.__dict__() for s in self.song_queue],
-                'active':[self.active_song.__dict__()]}
+
+        queue = [s.__dict__() for s in self.song_queue]
+        try:
+            active = [self.active_song.__dict__()]
+        except AttributeError:
+            active = []
+
+        return {'queue':queue,
+                'active':active}
 
 
     @qi.bind(returnType=qi.Bool, methodName="play")
