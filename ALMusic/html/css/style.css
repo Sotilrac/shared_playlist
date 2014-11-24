@@ -71,7 +71,6 @@ body {
 
 .queue_card {
     margin: 0 auto;
-    position: inline-block;
     height: 80px;
     width: 1000px;
     font-size: 24px;
@@ -79,17 +78,32 @@ body {
 }
 
 .queue_card_info {
-    float: right;
-    width: 30%;
-    height: 100%;
-    background-color: red;
+    float: left;
+    width: 80%;
+    padding-top: 5px;
+}
+
+.qc_info_field {
+    padding-left: 20px;
 }
 
 .queue_card_controls {
+    float: right;
+    width: 20%;
+    text-align: center;
+}
+
+.qc_controls_reorder {
     float: left;
-    width: 70%;
+    width: 50%;
+    padding-top: 4px;
+}
+
+.qc_controls_remove {
+    float: right;
+    width: 50%;
     height: 100%;
-    background-color: green;
+    padding-top: 20px;
 }
 
 .queue_active_card {
@@ -102,8 +116,9 @@ body {
 .queue_clear_card {
     margin: 0 auto;
     height: 50px;
-    width: 1000px;
+    width: 980px;
     font-size: 24px;
+    padding-left: 20px;
     background-color: rgba(242,242,242,0.3);
 }
 
