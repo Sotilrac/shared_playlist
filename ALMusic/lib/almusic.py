@@ -162,12 +162,17 @@ class ALMusic(object):
         return [s.__dict__() for s in self.song_queue]
 
 
-    @qi.bind(returnType=qi.Bool, methodName="playQueue")
+    @qi.bind(returnType=qi.Bool, methodName="play")
     def play_queue(self):
         """Plays the queue until it is empty."""
-        self.playing = True
-        while self.song_queue and self.playing:
-            self.pop_queue()
+        if not self.playing:
+            self.playing = True
+            def go_through_queue():
+                """Pop the queue while there are songs in it"""
+                while self.song_queue and self.playing:
+                    self.pop_queue()
+            qi.async(go_through_queue)
+        return self.playing
 
 
     @qi.bind(returnType=qi.Bool, paramsType=(qi.String,), methodName="radio")
@@ -248,10 +253,10 @@ class ALMusic(object):
 
     @qi.bind(methodName="stop")
     def stop(self):
-        """Empties the queue and stops playing music."""
+        """Stops playing music."""
         if self.periodic:
             self.periodic.stop()
-        self.clear_queue()
+        self.playing = False
         self.next()
         
 
