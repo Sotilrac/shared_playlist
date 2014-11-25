@@ -139,26 +139,32 @@ function generateQueue() {
 ////////////////////
 
 function queue_control(action, data) {
- $.getService('ALMusic', function(ALMusic) {
-   switch(action) {
-     case "Enqueue":
-       ALMusic.enqueue(data);
-       break;
-     case "Remove":
-       console.log("Remove functionality not implemented.");
-       break;
-     case "Clear":
-       ALMusic.clearQueue();
-       break;
-     case "Move_Up":
-       console.log("Move Down functionality not implemented.");
-       ALMusic.stop();
-       break;
-     case "Move_Down":
-       console.log("Move down functionality not implemented.");
-       break;
-   }
- });
+  $.getService('ALMusic', function(ALMusic) {
+    switch(action) {
+      case "Enqueue":
+        animate_add(true)
+        ALMusic.enqueue(data).done(function(song){
+          console.log(song);
+          animate_add(false);
+          if(song){
+            shake_add();
+        }
+      });
+      break;
+      case "Remove":
+      console.log("Remove functionality not implemented.");
+      break;
+      case "Clear":
+      ALMusic.clearQueue();
+      break;
+      case "Move_Up":
+      console.log("Move Down functionality not implemented.");
+      break;
+      case "Move_Down":
+      console.log("Move down functionality not implemented.");
+      break;
+    }
+  });
 }
 
 $("#am_enqueue").click(function() {       
@@ -176,6 +182,19 @@ $("#queue_add").bind("enterKey",function() {
    $('#queue_add').val('');
  }
 });
+
+function animate_add(enable){
+  if(enable){
+    $('#add_icon').addClass('fa-spin');
+  }
+  else{
+    $('#add_icon').removeClass('fa-spin');
+  }
+}
+
+function shake_add(){
+  $('#add_icon').effect('shake', { times:3, distance:20}, 800);
+}
 
 $("#queue_add").keyup(function(e){
     if(e.keyCode == 13)

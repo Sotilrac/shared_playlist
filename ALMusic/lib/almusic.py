@@ -189,6 +189,7 @@ class ALMusic(object):
                     self.pop_queue()
                 self.playing = False
                 self.active_song = None
+                self.memory.raiseEvent('ALMusic/onQueueChange', 'remove')
             qi.async(go_through_queue)
         return self.playing
 
