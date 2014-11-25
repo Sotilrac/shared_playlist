@@ -89,7 +89,7 @@ function generateQueue() {
  $.getService('ALMusic', function(ALMusic) {
    ALMusic.getQueue().done(
      function(queue) {
-        $('#active_song').empty;
+        $('#active_song').empty();
         for (song in queue['active']) {
           var id = queue['active'][song]['id'];
           var title = queue['active'][song]['title'];
@@ -106,13 +106,13 @@ function generateQueue() {
             '<li class="asong_album"><span class="lable">Album: </span>' + album + '</li>'+
             '</ul>');
         }
-       $('#dynamic_c').empty();
-       for (song in queue['queue']) {
-         id = queue['queue'][song]['id'];
-         title = queue['queue'][song]['title'];
-         artist = queue['queue'][song]['artist'];
+        $('#dynamic_c').empty();
+        for (song in queue['queue']) {
+          id = queue['queue'][song]['id'];
+          title = queue['queue'][song]['title'];
+          artist = queue['queue'][song]['artist'];
 
-         $('#dynamic_c').append(
+          $('#dynamic_c').append(
            '<div id="' + id + '" class="queue_card card card_shadow">' +
            '<div class="queue_card_info">' +
            '<div class="qc_info_field">' +
@@ -126,9 +126,7 @@ function generateQueue() {
            '<div><a id="' + id + '-Move_Down" class="btn" href="#">' +
            '<i class="fa fa-sort-desc"></i></a></div></div>' +
            '<div id="' + id + '-controls-remove" class="qc_controls_remove">' +
-           '<a id="' + id + '-Remove" class="btn" href="#"><i class="fa fa-remove"></i>' +
-           '</div></div></div>'
-         ); //.insertBefore('#static_c'); 
+           '<a id="' + id + '-Remove" class="btn" href="#"><i class="fa fa-remove"></i>');
        }
    })
  });
