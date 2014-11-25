@@ -4,11 +4,6 @@
 }
 
 @font-face {
-    font-family: Softfade;
-    src: url(../fonts/Softfade.ttf);
-}
-
-@font-face {
     font-family: Softplain;
     src: url(../fonts/Softplain.ttf);
 }

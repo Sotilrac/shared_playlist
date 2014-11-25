@@ -31,11 +31,6 @@
         <File name="normalize" src="html/css/normalize.css" />
         <File name="style" src="html/css/style.css" />
         <File name="favicon" src="html/favicon.ico" />
-        <File name="BEBAS___" src="html/font/BEBAS___.ttf" />
-        <File name="Flat-it License" src="html/font/Flat-it License.txt" />
-        <File name="Freeware License" src="html/font/Freeware License.txt" />
-        <File name="Softfade" src="html/font/Softfade.ttf" />
-        <File name="Softplain" src="html/font/Softplain.ttf" />
         <File name="FontAwesome" src="html/fonts/FontAwesome.otf" />
         <File name="fontawesome-webfont" src="html/fonts/fontawesome-webfont.eot" />
         <File name="fontawesome-webfont" src="html/fonts/fontawesome-webfont.svg" />

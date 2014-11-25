@@ -294,6 +294,7 @@ class ALMusic(object):
     def next(self):
         """Stops curently playing song or radio."""
         self.audio_player.stopAll()
+        self.memory.raiseEvent('ALMusic/onQueueChange', 'remove')
 
 
     @qi.bind(methodName="stop")

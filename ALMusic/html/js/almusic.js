@@ -89,7 +89,7 @@ function generateQueue() {
  $.getService('ALMusic', function(ALMusic) {
    ALMusic.getQueue().done(
      function(queue) {
-        $('#active_song').empty();
+        $('#active_song').fadeOut().empty();
         for (song in queue['active']) {
           var id = queue['active'][song]['id'];
           var title = queue['active'][song]['title'];
@@ -104,7 +104,7 @@ function generateQueue() {
             '<li class="asong_title"><span class="lable">Title: </span>' + title + '</li>'+
             '<li class="asong_artist"><span class="lable">Artist: </span>' + artist + '</li>'+
             '<li class="asong_album"><span class="lable">Album: </span>' + album + '</li>'+
-            '</ul>');
+            '</ul>').fadeIn();
         }
         $('#dynamic_c').empty();
         for (song in queue['queue']) {
@@ -142,12 +142,12 @@ function queue_control(action, data) {
   $.getService('ALMusic', function(ALMusic) {
     switch(action) {
       case "Enqueue":
-        animate_add(true)
+        wait_add(true)
         ALMusic.enqueue(data).done(function(song){
           console.log(song);
-          animate_add(false);
+          wait_add(false);
           if(song){
-            shake_add();
+            fail_add();
         }
       });
       break;
@@ -183,7 +183,7 @@ $("#queue_add").bind("enterKey",function() {
  }
 });
 
-function animate_add(enable){
+function wait_add(enable){
   if(enable){
     $('#add_icon').addClass('fa-spin');
   }
@@ -192,8 +192,8 @@ function animate_add(enable){
   }
 }
 
-function shake_add(){
-  $('#add_icon').effect('shake', { times:3, distance:20}, 800);
+function fail_add(){
+  $('#add_icon').effect('pulsate', {times:3}, 800);
 }
 
 $("#queue_add").keyup(function(e){
