@@ -42,19 +42,21 @@ function shuffle(list) {
     }
 }
 
-function display_image(id, path) {
-    $(id).css('background-image', 'url(' + path + ')').fadeIn('slow');
+function zip(arrays) {
+return arrays[0].map(function(_,i){
+  return arrays.map(function(array){return array[i]})
+ });
 }
 
- var colors = {}
-     colors["blue"] = "#109EDC";
-     colors["orange"] = "#E59230";
-     colors["green"] = "#5ABF41";
-     colors["teal"] = "#43C0C0";
-     colors["red"] = "#EF2929";
-     colors["purple"] = "#8265B2";
-     colors["dpurp"] = "#5F3BD7";
-     colors["efuchsia"] = "#C138A1";
+var colors = {}
+colors["blue"] = "#109EDC";
+colors["orange"] = "#E59230";
+colors["green"] = "#5ABF41";
+colors["teal"] = "#43C0C0";
+colors["red"] = "#EF2929";
+colors["purple"] = "#8265B2";
+colors["dpurp"] = "#5F3BD7";
+colors["efuchsia"] = "#C138A1";
 
 var robot_color = null
 

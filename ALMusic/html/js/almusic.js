@@ -84,18 +84,28 @@ function switch_to_spanish() {
  //
 }
 
-function zip(arrays) {
-return arrays[0].map(function(_,i){
-  return arrays.map(function(array){return array[i]})
- });
-}
-
-
 function generateQueue() {
  // Do stuff with queue
  $.getService('ALMusic', function(ALMusic) {
    ALMusic.getQueue().done(
      function(queue) {
+        $('#active_song').empty;
+        for (song in queue['active']) {
+          var id = queue['active'][song]['id'];
+          var title = queue['active'][song]['title'];
+          var artist = queue['active'][song]['artist'];
+          var album = queue['active'][song]['album'];
+          var cover = queue['active'][song]['cover'];
+          
+          $('#active_song').append(
+            '<img class="asong_cover" src="' + cover + '" alt="' + title + '"/>'+
+            '<div class="asong_info" id="song_data">' +
+            '<ul>' +
+            '<li class="asong_title"><span class="lable">Title: </span>' + title + '</li>'+
+            '<li class="asong_artist"><span class="lable">Artist: </span>' + artist + '</li>'+
+            '<li class="asong_album"><span class="lable">Album: </span>' + album + '</li>'+
+            '</ul>');
+        }
        $('#dynamic_c').empty();
        for (song in queue['queue']) {
          id = queue['queue'][song]['id'];
@@ -103,12 +113,12 @@ function generateQueue() {
          artist = queue['queue'][song]['artist'];
 
          $('#dynamic_c').append(
-           '<div id="' + id + '" class="queue_card">' +
+           '<div id="' + id + '" class="queue_card card card_shadow">' +
            '<div class="queue_card_info">' +
            '<div class="qc_info_field">' +
-           'Artist: ' + artist + '</div>' +
+           '<span class="lable">Artist: </span>' + artist + '</div>' +
            '<div class="qc_info_field">' + 
-           'SONG: ' + title + '</div></div>' +
+           '<span class="lable">Song: </span>' + title + '</div></div>' +
            '<div class="queue_card_controls">' +
            '<div class="qc_controls_reorder">' +
            '<div><a id="' + id + '-Move_Up" class="btn" href="#">' +
@@ -160,6 +170,23 @@ $("#am_enqueue").click(function() {
    $('#queue_add').val('');
  }
 });
+
+$("#queue_add").bind("enterKey",function() {       
+ query = $('#queue_add').val();
+ if (query.length > 0){
+   queue_control("Enqueue", query);
+   $('#queue_add').val('');
+ }
+});
+
+$("#queue_add").keyup(function(e){
+    if(e.keyCode == 13)
+    {
+        $(this).trigger("enterKey");
+    }
+});
+
+
 
 $("#am_clear").click(function() {       
  queue_control("Clear", null);
@@ -256,10 +283,6 @@ $("#am_next").click(function() {
 // ALMemory Subscriptions
 $.subscribeToALMemoryEvent('ALMusic/onQueueChange', function(eventValue) {
  generateQueue();
-});
-
-$.subscribeToALMemoryEvent('ALBattery/BatteryChargeChanged', function(eventValue) {
- //get_battery();
 });
 
 // Connect/Disconnect signals

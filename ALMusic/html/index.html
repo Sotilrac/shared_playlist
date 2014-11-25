@@ -12,13 +12,12 @@
      <script language="JavaScript" src="js/jquery-2.1.1.min.js"></script>
      <script language="JavaScript" src="js/jquery.qimhelpers.js"></script>
      <script language="JavaScript" src="js/jquery.textfill.min.js"></script>
-     <script language="JavaScript" src="js/almusic.js"></script>
 
      <link rel="stylesheet" href="css/style.css">
      <link rel="stylesheet" href="css/font-awesome.min.css">
 
   </head>
-  <body>
+  <body style="display:hidden;">
 
     <div id="dc" class="display_container">
       <div id="header" class="header">
@@ -26,44 +25,41 @@
         </div>
         <div id="title_c" class="title_container">
           <div id="title" class="title">
-            ALMUSIC
+            ALMusic
           </div>
           <div id="dj" class="dj">
-            <font face="Bebas">By:</font> <span id="robot_name"></span>
+            <span class="lable">By</span>
+            <span class="dj_name" id="robot_name"></span>
           </div>
         </div>
       </div>
       <div id="queue_c" class="queue_container">
-        <!--  -->
         <!-- BEGIN DYNAMICALLY GENERATED QUEUE CARDS -->
-        <!--  -->
-        <div id="a_test" class="queue_active_card">
-        Active test
+        <div id="active_song" class="card card_shadow card_rounded queue_card queue_active_card">
+        </div>
         </div>
         <div id="dynamic_c"></div>
-        <!--  -->
         <!-- END DYNAMICALLY GENERATED QUEUE CARDS -->
-        <!--  -->
         <div id="static_c">
-          <div id="add" class="queue_add_card">
+          <div id="add" class="queue_card queue_add_card card card_shadow card_rounded">
             <div id="add-info" class="queue_card_info">
               <div id="add-info-artist" class="qc_info_field">
-                <input id="queue_add" type="text" size="80px" class="queue_add">
+                <input id="queue_add" type="text" size="59" class="queue_add">
               </div>
             </div>
             <div id="add-controls" class="queue_card_controls">
-              <a id="am_enqueue" class="btn" href="#">ADD</a>
+              <a id="am_enqueue" class="btn lable" href="#">Add</a>
             </div>
           </div>
-          <div id="clear" class="queue_clear_card">
-            <a id="am_clear" class="btn" href="#">CLEAR</a>
+          <div id="clear" class="queue_clear_card card card_rounded">
+            <a id="am_clear" class="btn lable" href="#">Clear</a>
           </div>
         </div>
       </div>
     </div>
     <div id="cc" class="control_container">
       <div id="control_pane" class="controls">
-        <ul>
+        <ul class="control_buttons">
           <li><a id="am_play" class="btn" href="#"><i class="fa fa-play"></i></a></li>
           <li><a id="am_pause" class="btn" href="#"><i class="fa fa-pause"></i></a></li>
           <li><a id="am_stop" class="btn" href="#"><i class="fa fa-stop"></i></a></li>
@@ -76,5 +72,6 @@
         </ul>
       </div>
     </div>
+    <script language="JavaScript" src="js/almusic.js"></script>
   </body>
 </html>

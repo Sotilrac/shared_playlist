@@ -188,6 +188,7 @@ class ALMusic(object):
                 while self.song_queue and self.playing:
                     self.pop_queue()
                 self.playing = False
+                self.active_song = None
             qi.async(go_through_queue)
         return self.playing
 
