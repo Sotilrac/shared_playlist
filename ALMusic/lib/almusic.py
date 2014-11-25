@@ -260,6 +260,7 @@ class ALMusic(object):
         path = self.active_song.path
         self.previous_songs.append(self.active_song)
         self.audio_player.playFile(path, self.volume, self.pan)
+        self.memory.raiseEvent('ALMusic/onQueueChange', 'remove')
         _delete_file(path)
         return self.active_song
 
@@ -294,7 +295,6 @@ class ALMusic(object):
     def next(self):
         """Stops curently playing song or radio."""
         self.audio_player.stopAll()
-        self.memory.raiseEvent('ALMusic/onQueueChange', 'remove')
 
 
     @qi.bind(methodName="stop")
