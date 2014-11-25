@@ -1,0 +1,279 @@
+//Change Qimessaging connection if robot name is passed in URL
+if (robotAddress != '') {
+ $.qim = new QiSession(robotAddress);
+}
+
+function get_robot_name() {
+ $.getService('ALSystem', function(ALSystem) {
+   ALSystem.robotName().done(
+     function (name){
+       get_robot_color(name);
+       $('#robot_name').html("DJ " + name ).css({'color': colors[robot_color]});
+     })
+ });
+}
+
+function get_robot_icon() {
+ $.getService('ALSystem', function(ALSystem) {
+   ALSystem.robotIcon().done(
+     function (buffer){
+       $('#logo').html("<img src=data:unknown;base64," + buffer + "></img>");
+     })
+ });
+}
+
+function get_robot_color(name) {
+ name = name.toLowerCase();
+ switch (name) {
+   case "raphael":
+     robot_color = "red";
+     break;
+   case "michelangelo":
+     robot_color = "orange";
+     break;
+   case "donatello":
+     robot_color = "dpurp";
+     break;
+   case "leonardo":
+     robot_color = "blue";
+     break;
+   default:
+     var sum = $.map(name.split(""), function(c) {return c.charCodeAt()}).reduce(function(a, b) {return a + b})
+     color_idx = sum % Object.keys(colors).length
+     robot_color = Object.keys(colors)[color_idx]           
+ }
+ $('body').css('background-color', colors[robot_color]);
+ // PUT THAT FUNCTION BACK!!!!
+
+}
+
+function get_language() {
+ $.getService('ALSpeechRecognition', function(ALSpeechRecognition) {
+   ALSpeechRecognition.getLanguage().done(function (lang){
+     var clang = $('#language_value').text();
+     if (lang != clang) {
+       $('#language_value').html(lang);
+       switch(lang) {
+         case "English":
+           switch_to_english();
+           break;
+         case "Spanish":
+           switch_to_spanish();
+           break;
+         case "French":
+           switch_to_french();
+           break;
+         default:
+           console.log("Language currently unsupported; default to english");
+           switch_to_english();
+       }
+     }
+   })
+ });
+}
+
+function switch_to_english() {
+ //
+}
+
+function switch_to_french() {
+ //
+}
+
+function switch_to_spanish() {
+ //
+}
+
+function zip(arrays) {
+return arrays[0].map(function(_,i){
+  return arrays.map(function(array){return array[i]})
+ });
+}
+
+
+function generateQueue() {
+ // Do stuff with queue
+ $.getService('ALMusic', function(ALMusic) {
+   ALMusic.getQueue().done(
+     function(queue) {
+       $('#dynamic_c').empty();
+       for (song in queue['queue']) {
+         id = queue['queue'][song]['id'];
+         title = queue['queue'][song]['title'];
+         artist = queue['queue'][song]['artist'];
+
+         $('#dynamic_c').append(
+           '<div id="' + id + '" class="queue_card">' +
+           '<div class="queue_card_info">' +
+           '<div class="qc_info_field">' +
+           'Artist: ' + artist + '</div>' +
+           '<div class="qc_info_field">' + 
+           'SONG: ' + title + '</div></div>' +
+           '<div class="queue_card_controls">' +
+           '<div class="qc_controls_reorder">' +
+           '<div><a id="' + id + '-Move_Up" class="btn" href="#">' +
+           '<i class="fa fa-sort-asc"></i></a></div>' +
+           '<div><a id="' + id + '-Move_Down" class="btn" href="#">' +
+           '<i class="fa fa-sort-desc"></i></a></div></div>' +
+           '<div id="' + id + '-controls-remove" class="qc_controls_remove">' +
+           '<a id="' + id + '-Remove" class="btn" href="#"><i class="fa fa-remove"></i>' +
+           '</div></div></div>'
+         ); //.insertBefore('#static_c'); 
+       }
+   })
+ });
+}
+
+
+
+////////////////////
+// Queue Handlers //
+////////////////////
+
+function queue_control(action, data) {
+ $.getService('ALMusic', function(ALMusic) {
+   switch(action) {
+     case "Enqueue":
+       ALMusic.enqueue(data);
+       break;
+     case "Remove":
+       console.log("Remove functionality not implemented.");
+       break;
+     case "Clear":
+       ALMusic.clearQueue();
+       break;
+     case "Move_Up":
+       console.log("Move Down functionality not implemented.");
+       ALMusic.stop();
+       break;
+     case "Move_Down":
+       console.log("Move down functionality not implemented.");
+       break;
+   }
+ });
+}
+
+$("#am_enqueue").click(function() {       
+ query = $('#queue_add').val();
+ if (query.length > 0){
+   queue_control("Enqueue", query);
+   $('#queue_add').val('');
+ }
+});
+
+$("#am_clear").click(function() {       
+ queue_control("Clear", null);
+});
+
+/////////////////////////////
+// Control Button Handlers //
+/////////////////////////////
+
+function volume_control(action) {
+ $.getService('ALAudioDevice', function(ALAudioDevice) {
+   ALAudioDevice.getOutputVolume().done(
+     function (volume) {
+       switch(action) {
+         case "Up":
+           volume = volume + 5;
+           if (volume > 100){
+             volume = 100;
+           }
+           ALAudioDevice.setOutputVolume(volume);
+           break;
+         case "Down":
+           volume = volume - 5;
+           if (volume < 0){
+             volume = 0;
+           }
+           ALAudioDevice.setOutputVolume(volume);
+           break;
+         case "Mute":
+           ALAudioDevice.isAudioOutMuted().done(
+             function(muted){
+               if (muted) {
+                 ALAudioDevice.muteAudioOut(false);
+               }
+               else {
+                 ALAudioDevice.muteAudioOut(true);
+               }
+          })
+       }
+     })
+ });
+}
+
+$("#am_vol_mute").click(function() {
+ volume_control("Mute");
+});
+
+$("#am_vol_down").click(function() {
+ volume_control("Down");
+});
+
+$("#am_vol_up").click(function() {
+ volume_control("Up");
+}); 
+
+function playback_control(action) {
+ $.getService('ALMusic', function(ALMusic) {
+   switch(action) {
+     case "Play":
+       ALMusic.play();
+       break;
+     case "Pause":
+       console.log("Pause functionality not implemented.");
+       break;
+     case "Stop":
+       ALMusic.stop();
+       break;
+     case "Next":
+       ALMusic.next();
+       break;
+   }
+ });
+}
+
+$("#am_play").click(function() {
+ playback_control("Play");
+});
+
+$("#am_pause").click(function() {
+ playback_control("Pause");
+});
+
+$("#am_stop").click(function() {
+ playback_control("Stop");
+});
+
+$("#am_next").click(function() {
+ playback_control("Next");
+});
+
+//////////////////////////
+
+
+// ALMemory Subscriptions
+$.subscribeToALMemoryEvent('ALMusic/onQueueChange', function(eventValue) {
+ generateQueue();
+});
+
+$.subscribeToALMemoryEvent('ALBattery/BatteryChargeChanged', function(eventValue) {
+ //get_battery();
+});
+
+// Connect/Disconnect signals
+$.qim.socket().on('connect', init() );
+
+function init() {
+ $.when(get_robot_name()).done(function(){
+   get_language();
+ });
+ get_robot_icon();
+ generateQueue();
+ $('body').fadeIn();
+}
+
+$.qim.socket().on('disconnect', function() {
+ $('body').css('background-color','gray');
+     });

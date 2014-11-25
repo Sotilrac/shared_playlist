@@ -1,4 +1,4 @@
-// Avoid `console` errors in browsers that lack a console.
+// Avoid 'console' errors in browsers that lack a console.
 (function() {
     var method;
     var noop = function () {};
@@ -46,27 +46,24 @@ function display_image(id, path) {
     $(id).css('background-image', 'url(' + path + ')').fadeIn('slow');
 }
 
-function hide_image(id) {
-    $(id).css('background-image', 'none');
-    $(id).parent().css('padding', '0 0').css('max-width', '100%').css('max-height', '100%');
-}
+ var colors = {}
+     colors["blue"] = "#109EDC";
+     colors["orange"] = "#E59230";
+     colors["green"] = "#5ABF41";
+     colors["teal"] = "#43C0C0";
+     colors["red"] = "#EF2929";
+     colors["purple"] = "#8265B2";
+     colors["dpurp"] = "#5F3BD7";
+     colors["efuchsia"] = "#C138A1";
 
-function display_portrait(id, path) {
-    $(id).parent().css('padding', '5% 10%').css('max-width', '80%').css('max-height', '90%');
-    display_image(id, path);
-}
+var robot_color = null
 
-function display_choices (choices_str) {
-    var id = '#choices';
-    $(id).empty();
-    try {
-        choices = jQuery.parseJSON(choices_str);
-        for (c in choices) {
-            $(id).append($('<li style="background-image:url('+ choices[c].image + ');">'+ choices[c].name +'</li>'));
-        }
-        $(id).parent().fadeIn('slow');
-    }
-    catch(err) {
-        console.log(err);
-    } 
-}
+var robotName = get_url_parameter('robot');
+var robotAddress = (robotName == '') ? '' : 'http://' + robotName + '.local';
+
+
+// Load appropriate qimessaging depending on running from robot or with a robot
+// name specified in the URL
+document.write("<script type='text/javascript' src=" +
+                robotAddress +
+                "/libs/qimessaging/1.0/qimessaging.js><\/script>");
