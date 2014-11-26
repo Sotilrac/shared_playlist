@@ -42,7 +42,7 @@ class SimpleSong(object):
 
     def fetch(self, song):
         """Downloads a song and returns a path to a file."""
-        song_file_name = _make_file_name(song)
+        song_file_name = "{} - {}".format(self.id, _make_file_name(song))
 
         song_path = os.path.join(self.cache_path,
                                  song_file_name)
