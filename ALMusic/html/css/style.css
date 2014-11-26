@@ -66,7 +66,7 @@ body {
 
 .queue_container {
     margin: 0 auto;
-    padding: 20px;
+    padding: 20px 0 0;
     width: 1200px;
     /*font-family: Bebas;*/
 }
@@ -121,7 +121,7 @@ body {
 
 .queue_add {
     border: 0px solid #000000;
-    border-bottom-width: 2px;
+    border-width: 0 0 2px 2px;
     font-size: 20px;
 }
 
@@ -145,6 +145,7 @@ body {
     padding-left: 20px;
     padding-top: 8px;
     background-color: rgba(242,242,242,0.3);
+    text-align: center;
 }
 
 .control_container {
