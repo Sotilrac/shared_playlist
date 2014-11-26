@@ -86,16 +86,23 @@ function switch_to_spanish() {
 
 function generateQueue() {
  // Do stuff with queue
- $.getService('ALMusic', function(ALMusic) {
-   ALMusic.getQueue().done(
-     function(queue) {
+  $.getService('ALMusic', function(ALMusic) {
+    ALMusic.getQueue().done(
+      function(queue) {
+        
+        var id;
+        var title;
+        var artist;
+        var album;
+        var cover;
+
         $('#active_song').fadeOut().empty();
         for (song in queue['active']) {
-          var id = queue['active'][song]['id'];
-          var title = queue['active'][song]['title'];
-          var artist = queue['active'][song]['artist'];
-          var album = queue['active'][song]['album'];
-          var cover = queue['active'][song]['cover'];
+          id = queue['active'][song]['id'];
+          title = queue['active'][song]['title'];
+          artist = queue['active'][song]['artist'];
+          album = queue['active'][song]['album'];
+          cover = queue['active'][song]['cover'];
           
           $('#active_song').append(
             '<img class="asong_cover" src="' + cover + '" alt="' + title + '"/>'+
