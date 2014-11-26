@@ -89,7 +89,7 @@ function generateQueue() {
   $.getService('ALMusic', function(ALMusic) {
     ALMusic.getQueue().done(
       function(queue) {
-        
+
         var id;
         var title;
         var artist;
@@ -123,9 +123,9 @@ function generateQueue() {
            '<div id="' + id + '" class="queue_card card card_shadow">' +
            '<div class="queue_card_info">' +
            '<div class="qc_info_field">' +
-           '<span class="lable">Artist: </span>' + artist + '</div>' +
+           '<span class="lable">Title: </span>' + title + '</div>' +
            '<div class="qc_info_field">' + 
-           '<span class="lable">Song: </span>' + title + '</div></div>' +
+           '<span class="lable">Artist: </span>' + artist + '</div></div>' +
            '<div class="queue_card_controls">' +
            '<div class="qc_controls_reorder">' +
            '<div><a id="' + id + '-Move_Up" class="btn" href="#">' +
