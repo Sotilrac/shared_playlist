@@ -157,7 +157,7 @@ body {
 .control_container {
     position: fixed;
     width: 100%;
-    height: 100px;
+    height: 80px;
     bottom: 0px;
     background-color: rgba(242,242,242,0.9);
 }
@@ -185,7 +185,7 @@ body {
 
 .control_buttons li {
     float: left;
-    line-height: 100px;
+    line-height: 80px;
     padding: 0px 35px;
     margin: 0px;
 }
