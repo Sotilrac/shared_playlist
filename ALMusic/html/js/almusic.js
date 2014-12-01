@@ -17,7 +17,7 @@ function get_robot_icon() {
     $.getService('ALSystem', function(ALSystem) {
         ALSystem.robotIcon().done(
             function (buffer){
-                $('#logo').html("<img src=data:unknown;base64," + buffer + "></img>");
+                $('#logo').html("<img src=data:image/png;base64," + buffer + "></img>");
             })
     });
 }
