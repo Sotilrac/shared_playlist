@@ -42,21 +42,14 @@
         <File name="fontawesome-webfont" src="html/fonts/fontawesome-webfont.svg" />
         <File name="fontawesome-webfont" src="html/fonts/fontawesome-webfont.ttf" />
         <File name="fontawesome-webfont" src="html/fonts/fontawesome-webfont.woff" />
-        <File name="CooperHewitt-Bold" src="html/fonts/CooperHewitt-Bold.otf" />
-        <File name="CooperHewitt-BoldItalic" src="html/fonts/CooperHewitt-BoldItalic.otf" />
-        <File name="CooperHewitt-Book" src="html/fonts/CooperHewitt-Book.otf" />
-        <File name="CooperHewitt-BookItalic" src="html/fonts/CooperHewitt-BookItalic.otf" />
-        <File name="CooperHewitt-Heavy" src="html/fonts/CooperHewitt-Heavy.otf" />
-        <File name="CooperHewitt-HeavyItalic" src="html/fonts/CooperHewitt-HeavyItalic.otf" />
-        <File name="CooperHewitt-Light" src="html/fonts/CooperHewitt-Light.otf" />
-        <File name="CooperHewitt-LightItalic" src="html/fonts/CooperHewitt-LightItalic.otf" />
-        <File name="CooperHewitt-Medium" src="html/fonts/CooperHewitt-Medium.otf" />
-        <File name="CooperHewitt-MediumItalic" src="html/fonts/CooperHewitt-MediumItalic.otf" />
-        <File name="CooperHewitt-Semibold" src="html/fonts/CooperHewitt-Semibold.otf" />
-        <File name="CooperHewitt-SemiboldItalic" src="html/fonts/CooperHewitt-SemiboldItalic.otf" />
-        <File name="CooperHewitt-Thin" src="html/fonts/CooperHewitt-Thin.otf" />
-        <File name="CooperHewitt-ThinItalic" src="html/fonts/CooperHewitt-ThinItalic.otf" />
         <File name="SIL Open Font License" src="html/fonts/SIL Open Font License.txt" />
+        <File name="BebasNeue-Bold" src="html/fonts/BebasNeue-Bold.ttf" />
+        <File name="BebasNeue-Book" src="html/fonts/BebasNeue-Book.ttf" />
+        <File name="BebasNeue-Light" src="html/fonts/BebasNeue-Light.ttf" />
+        <File name="BebasNeue-Regular" src="html/fonts/BebasNeue-Regular.ttf" />
+        <File name="BebasNeue-Thin" src="html/fonts/BebasNeue-Thin.ttf" />
+        <File name="FFF_EULA_license" src="html/fonts/FFF_EULA_license.pdf" />
+        <File name="Glober Pro Specimen" src="html/fonts/Glober Pro Specimen.pdf" />
     </Resources>
     <Topics />
     <IgnoredPaths />
