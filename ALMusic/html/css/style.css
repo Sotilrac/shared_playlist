@@ -273,7 +273,8 @@ a:hover {
 .dj_name {
     display: inline-block;
     width: 334px;
-    text-align: center;
+    font-size: 56px;
+    /* text-align: center; */
 }
 
 .label {
