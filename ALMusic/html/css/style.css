@@ -109,7 +109,8 @@ body {
 .qc_controls_reorder {
     float: left;
     width: 50%;
-    padding-top: 4px;
+    line-height: 0px;
+    padding-top: 14px;
 }
 
 .qc_controls_remove {
