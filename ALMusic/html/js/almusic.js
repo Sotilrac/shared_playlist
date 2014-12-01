@@ -158,7 +158,6 @@ function queue_control(action, data) {
             });
             break;
         case "Remove":
-            ALMusic.remove();
             console.log("Remove functionality not implemented.");
             break;
         case "Clear":

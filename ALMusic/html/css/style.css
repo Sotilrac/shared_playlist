@@ -26,15 +26,21 @@ body {
     width: 100%;
 }
 
-.header {
+.header_container {
     height: 220px;
     text-align: center;
     background-color: rgba(242,242,242,1.0);
-    box-shadow: 0 8px 6px -6px rgba(0,0,0, 0.1);
+    box-shadow: 0 8px 6px -6px rgba(0,0,0, 0.5);
     border-radius: 0 0 2px 2px;
     white-space: nowrap;
     overflow-x: hidden;
     min-width: 1000px;
+}
+
+.header {
+    height: 100%;
+    width: 1000px;
+    margin: 0px auto;
 }
 
 .logo {
@@ -70,15 +76,17 @@ body {
 .queue_container {
     margin: 0 auto;
     padding: 20px 0 0;
-    width: 1000px;
+    /* width: 1000px; */
     /*font-family: Bebas;*/
 }
 
 .queue_card {
     margin: 0 auto;
     height: 80px;
-    width: 1000px;
+    /*width: 1000px;*/
     font-size: 24px;
+    max-width: 1000px;
+    width: 100%;
 }
 
 .card {
@@ -131,7 +139,7 @@ body {
 }
 
 .queue_active_card {
-    width: 1000px;
+    /* width: 1000px; */
     height: 200px;
     background-color: rgba(242,242,242,0.8);
     margin: 0 auto 3px;
@@ -146,9 +154,9 @@ body {
 .queue_clear_card {
     margin: 0 auto 150px;
     height: 42px;
-    width: 980px;
+    /* width: 980px; */
     font-size: 24px;
-    padding-left: 20px;
+    /* padding-left: 20px; */
     padding-top: 8px;
     background-color: rgba(242,242,242,0.3);
     text-align: center;
@@ -160,11 +168,14 @@ body {
     height: 80px;
     bottom: 0px;
     background-color: rgba(242,242,242,0.9);
+    box-shadow: 0px -3px 3px 0px rgba(0,0,0, 0.2);
+    border-radius: 0 0 2px 2px;
 }
 
 .controls {
     text-align: center;
-    width: 1000px;
+    max-width: 1000px;
+    width: 100%;
     margin: 0px auto;
 }
 
