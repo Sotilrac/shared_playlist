@@ -73,6 +73,7 @@ body {
     width: 36%;
     height: 100%;
     overflow: auto;
+    padding-top: 10px;
     padding-right: 40px;
     text-align: right;
 }
@@ -162,7 +163,6 @@ body {
 }
 
 .queue_active_card {
-    /* width: 1000px; */
     height: 200px;
     background-color: rgba(242,242,242,0.8);
     margin: 0 auto 3px;
@@ -177,9 +177,7 @@ body {
 .queue_clear_card {
     margin: 0 auto 150px;
     height: 42px;
-    /* width: 980px; */
     font-size: 24px;
-    /* padding-left: 20px; */
     padding-top: 8px;
     background-color: rgba(242,242,242,0.3);
     text-align: center;
