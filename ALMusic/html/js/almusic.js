@@ -107,9 +107,9 @@ function generateQueue() {
                         '<img class="asong_cover" src="' + cover + '" alt="' + title + '"/>'+
                             '<div class="asong_info" id="song_data">' +
                             '<ul>' +
-                            '<li class="asong_title"><span class="label">Title: </span>' + title + '</li>'+
-                            '<li class="asong_artist"><span class="label">Artist: </span>' + artist + '</li>'+
-                            '<li class="asong_album"><span class="label">Album: </span>' + album + '</li>'+
+                            '<li class="asong_title"><span class="asong_title_label">' + title + '</span></li>'+
+                            '<li class="asong_artist"><span class="asong_artist_label">' + artist + '</span></li>'+
+                            '<li class="asong_album"><span class="asong_album_label">' + album + '</span></li>'+
                             '</ul>').fadeIn();
                 }
                 $('#dynamic_c').empty();
@@ -122,9 +122,9 @@ function generateQueue() {
                         '<div id="' + id + '" class="queue_card card card_shadow">' +
                             '<div class="queue_card_info">' +
                             '<div class="qc_info_field">' +
-                            '<span class="label">Title: </span>' + title + '</div>' +
+                            '<span class="title_label">' + title + '</span></div>' +
                             '<div class="qc_info_field">' + 
-                            '<span class="label">Artist: </span>' + artist + '</div></div>' +
+                            '<span class="artist_label">' + artist + '</span></div></div>' +
                             '<div class="queue_card_controls">' +
                             '<div class="qc_controls_reorder">' +
                             '<div><a id="' + id + '-Move_Up" class="btn" href="#">' +

@@ -13,11 +13,36 @@
     src: url(../fonts/Roboto-Regular.ttf);
 }
 
+@font-face {
+    font-family: BebasNeue-Light;
+    src: url(../fonts/BebasNeue-Light.ttf);
+}
+
+@font-face {
+    font-family: BebasNeue-Thin;
+    src: url(../fonts/BebasNeue-Thin.ttf);
+}
+
+@font-face {
+    font-family: BebasNeue-Book;
+    src: url(../fonts/BebasNeue-Book.ttf);
+}
+
+@font-face {
+    font-family: BebasNeue-Regular;
+    src: url(../fonts/BebasNeue-Regular.ttf);
+}
+
+@font-face {
+    font-family: BebasNeue-Bold;
+    src: url(../fonts/BebasNeue-Bold.ttf);
+}
+
 body {
     height: 100%;
     width: 100%;
     margin: 0;
-    font-family: Roboto, sans-serif;
+    font-family: BebasNeue-Regular, sans-serif;
     font-size: 64px;
     background-color: rgba(242,242,242,0.9);
 }
@@ -104,7 +129,7 @@ body {
 .queue_card_info {
     float: left;
     width: 80%;
-    padding-top: 5px;
+    padding-top: 15px;
 }
 
 .qc_info_field {
@@ -128,14 +153,15 @@ body {
     float: right;
     width: 50%;
     height: 100%;
-    padding-top: 20px;
+    padding-top: 25px;
 }
 
 .queue_add {
     border: 0px solid #000000;
-    border-width: 0 0 2px 2px;
+    border-width: 0 0 2px 0;
     background-color: rgba(242,242,242,0.0);
-    font-size: 20px;
+    font-family: BebasNeue-Bold;
+    font-size: 24px;
 }
 
 .queue_active_card {
@@ -175,6 +201,7 @@ body {
 .controls {
     text-align: center;
     max-width: 1000px;
+    min-width: 600px;
     width: 100%;
     margin: 0px auto;
 }
@@ -226,6 +253,21 @@ a:hover {
     padding: 0 40px;
 }
 
+.asong_title_label {
+    font-family: BebasNeue-Bold;
+    font-size: 48px;
+}
+
+.asong_artist_label {
+    font-family: BebasNeue-Book;
+    font-size: 36px;
+}
+
+.asong_album_label {
+    font-family: BebasNeue-Thin;
+    font-size: 36px;
+}
+
 .asong_info ul {
     list-style-type: none;
     margin 0;
@@ -241,4 +283,13 @@ a:hover {
 
 .label {
     font-family: Bebas;
+}
+
+.title_label {
+    font-family: BebasNeue-Regular;
+}
+
+.artist_label {
+    font-family: BebasNeue-Book;
+    font-size: 18px;
 }

@@ -42,6 +42,21 @@
         <File name="fontawesome-webfont" src="html/fonts/fontawesome-webfont.svg" />
         <File name="fontawesome-webfont" src="html/fonts/fontawesome-webfont.ttf" />
         <File name="fontawesome-webfont" src="html/fonts/fontawesome-webfont.woff" />
+        <File name="CooperHewitt-Bold" src="html/fonts/CooperHewitt-Bold.otf" />
+        <File name="CooperHewitt-BoldItalic" src="html/fonts/CooperHewitt-BoldItalic.otf" />
+        <File name="CooperHewitt-Book" src="html/fonts/CooperHewitt-Book.otf" />
+        <File name="CooperHewitt-BookItalic" src="html/fonts/CooperHewitt-BookItalic.otf" />
+        <File name="CooperHewitt-Heavy" src="html/fonts/CooperHewitt-Heavy.otf" />
+        <File name="CooperHewitt-HeavyItalic" src="html/fonts/CooperHewitt-HeavyItalic.otf" />
+        <File name="CooperHewitt-Light" src="html/fonts/CooperHewitt-Light.otf" />
+        <File name="CooperHewitt-LightItalic" src="html/fonts/CooperHewitt-LightItalic.otf" />
+        <File name="CooperHewitt-Medium" src="html/fonts/CooperHewitt-Medium.otf" />
+        <File name="CooperHewitt-MediumItalic" src="html/fonts/CooperHewitt-MediumItalic.otf" />
+        <File name="CooperHewitt-Semibold" src="html/fonts/CooperHewitt-Semibold.otf" />
+        <File name="CooperHewitt-SemiboldItalic" src="html/fonts/CooperHewitt-SemiboldItalic.otf" />
+        <File name="CooperHewitt-Thin" src="html/fonts/CooperHewitt-Thin.otf" />
+        <File name="CooperHewitt-ThinItalic" src="html/fonts/CooperHewitt-ThinItalic.otf" />
+        <File name="SIL Open Font License" src="html/fonts/SIL Open Font License.txt" />
     </Resources>
     <Topics />
     <IgnoredPaths />
