@@ -32,6 +32,9 @@ body {
     background-color: rgba(242,242,242,1.0);
     box-shadow: 0 8px 6px -6px rgba(0,0,0, 0.1);
     border-radius: 0 0 2px 2px;
+    white-space: nowrap;
+    overflow-x: hidden;
+    min-width: 1000px;
 }
 
 .logo {
@@ -67,7 +70,7 @@ body {
 .queue_container {
     margin: 0 auto;
     padding: 20px 0 0;
-    width: 1200px;
+    width: 1000px;
     /*font-family: Bebas;*/
 }
 
@@ -128,9 +131,10 @@ body {
 }
 
 .queue_active_card {
+    width: 1000px;
     height: 200px;
     background-color: rgba(242,242,242,0.8);
-    margin-bottom: 3px;
+    margin: 0 auto 3px;
 }
 
 .queue_add_card {
@@ -160,18 +164,30 @@ body {
 
 .controls {
     text-align: center;
+    width: 1000px;
+    margin: 0px auto;
+}
+
+.playback_control {
+    float: left;
+}
+
+.volume_control {
+    float: right;
 }
 
 .control_buttons {
     list-style-type: none;
-    display: inline-block;
+    font-size: 36px;
     margin: 0px;
+    padding: 0px;
 }
 
 .control_buttons li {
     float: left;
     line-height: 100px;
     padding: 0px 35px;
+    margin: 0px;
 }
 
 a:link {

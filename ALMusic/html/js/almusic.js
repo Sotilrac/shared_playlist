@@ -107,9 +107,9 @@ function generateQueue() {
                         '<img class="asong_cover" src="' + cover + '" alt="' + title + '"/>'+
                             '<div class="asong_info" id="song_data">' +
                             '<ul>' +
-                            '<li class="asong_title"><span class="lable">Title: </span>' + title + '</li>'+
-                            '<li class="asong_artist"><span class="lable">Artist: </span>' + artist + '</li>'+
-                            '<li class="asong_album"><span class="lable">Album: </span>' + album + '</li>'+
+                            '<li class="asong_title"><span class="label">Title: </span>' + title + '</li>'+
+                            '<li class="asong_artist"><span class="label">Artist: </span>' + artist + '</li>'+
+                            '<li class="asong_album"><span class="label">Album: </span>' + album + '</li>'+
                             '</ul>').fadeIn();
                 }
                 $('#dynamic_c').empty();
@@ -122,9 +122,9 @@ function generateQueue() {
                         '<div id="' + id + '" class="queue_card card card_shadow">' +
                             '<div class="queue_card_info">' +
                             '<div class="qc_info_field">' +
-                            '<span class="lable">Title: </span>' + title + '</div>' +
+                            '<span class="label">Title: </span>' + title + '</div>' +
                             '<div class="qc_info_field">' + 
-                            '<span class="lable">Artist: </span>' + artist + '</div></div>' +
+                            '<span class="label">Artist: </span>' + artist + '</div></div>' +
                             '<div class="queue_card_controls">' +
                             '<div class="qc_controls_reorder">' +
                             '<div><a id="' + id + '-Move_Up" class="btn" href="#">' +
@@ -164,10 +164,10 @@ function queue_control(action, data) {
             ALMusic.clearQueue();
             break;
         case "Move_Up":
-            console.log("Move Down functionality not implemented.");
+            console.log("Move Up functionality not implemented.");
             break;
         case "Move_Down":
-            console.log("Move down functionality not implemented.");
+            console.log("Move Down functionality not implemented.");
             break;
         }
     });

@@ -29,17 +29,16 @@
             ALMusic
           </div>
           <div id="dj" class="dj">
-            <span class="lable">By</span>
+            <span class="label">By</span>
             <span class="dj_name" id="robot_name"></span>
           </div>
         </div>
       </div>
       <div id="queue_c" class="queue_container">
         <!-- BEGIN DYNAMICALLY GENERATED QUEUE CARDS -->
-        <div id="active_song" class="card card_shadow card_rounded queue_card queue_active_card" style="display:none;">
-        </div>
-      </div>
-      <div id="dynamic_c"></div>
+        <div id="active_song" class="card card_shadow card_rounded
+      queue_card queue_active_card" style="display:none;"> </div>
+        <div id="dynamic_c"> </div>
         <!-- END DYNAMICALLY GENERATED QUEUE CARDS -->
         <div id="static_c">
           <div id="add" class="queue_card queue_add_card card card_shadow card_rounded">
@@ -60,17 +59,23 @@
     </div>
     <div id="cc" class="control_container">
       <div id="control_pane" class="controls">
-        <ul class="control_buttons">
-          <li><a id="am_play" class="btn" href="#"><i class="fa fa-play"></i></a></li>
-          <li><a id="am_pause" class="btn" href="#"><i class="fa fa-pause"></i></a></li>
-          <li><a id="am_stop" class="btn" href="#"><i class="fa fa-stop"></i></a></li>
-          <li><a id="am_next" class="btn" href="#"><i class="fa fa-fast-forward"></i></a></li>
-          <li>&nbsp;</li>
-          <li>&nbsp;</li>
-          <li><a id="am_vol_mute" class="btn" href="#"><i class="fa fa-volume-off"></i></a></li>
-          <li><a id="am_vol_down" class="btn" href="#"><i class="fa fa-volume-down"></i></a></li>
-          <li><a id="am_vol_up" class="btn" href="#"><i class="fa fa-volume-up"></i></a></li>
-        </ul>
+        <div id="playback_controls" class="playback_control">
+          <ul class="control_buttons">
+            <li><a id="am_play" class="btn" href="#"><i class="fa fa-play"></i></a></li>
+            <li><a id="am_pause" class="btn" href="#"><i class="fa fa-pause"></i></a></li>
+            <li><a id="am_stop" class="btn" href="#"><i class="fa fa-stop"></i></a></li>
+            <li><a id="am_next" class="btn" href="#"><i class="fa fa-fast-forward"></i></a></li>
+          </ul>
+        </div>
+      </div>
+      <div id="control_pane" class="controls">
+        <div id="volume_controls" class="volume_control">
+          <ul class="control_buttons volume_control">
+            <li><a id="am_vol_mute" class="btn" href="#"><i class="fa fa-volume-off"></i></a></li>
+            <li><a id="am_vol_down" class="btn" href="#"><i class="fa fa-volume-down"></i></a></li>
+            <li><a id="am_vol_up" class="btn" href="#"><i class="fa fa-volume-up"></i></a></li>
+          </ul>
+        </div>
       </div>
     </div>
     <script language="JavaScript" src="js/almusic.js"></script>
