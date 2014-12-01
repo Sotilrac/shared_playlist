@@ -1,7 +1,7 @@
 //Change Qimessaging connection if robot name is passed in URL
-    if (robotAddress != '') {
-        $.qim = new QiSession(robotAddress);
-    }
+if (robotAddress != '') {
+    $.qim = new QiSession(robotAddress);
+}
 
 function get_robot_name() {
     $.getService('ALSystem', function(ALSystem) {
@@ -43,7 +43,6 @@ function get_robot_color(name) {
         robot_color = Object.keys(colors)[color_idx]           
     }
     $('body').css('background-color', colors[robot_color]);
-    // PUT THAT FUNCTION BACK!!!!
     $('<style>a:active{color:' + colors[robot_color] + '}</style>').appendTo("head");
 }
 
@@ -209,8 +208,6 @@ $("#queue_add").keyup(function(e){
         $(this).trigger("enterKey");
     }
 });
-
-
 
 $("#am_clear").click(function() {       
     queue_control("Clear", null);
