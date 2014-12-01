@@ -73,7 +73,7 @@ body {
     width: 36%;
     height: 100%;
     overflow: auto;
-    padding-top: 10px;
+    /* padding-top: 10px; */
     padding-right: 40px;
     text-align: right;
 }
@@ -245,7 +245,7 @@ a:hover {
     font-size: 25px;
     position: relative;
     float: left;
-    padding: 0 40px;
+    padding: 32px 40px;
 }
 
 .asong_title_label {
