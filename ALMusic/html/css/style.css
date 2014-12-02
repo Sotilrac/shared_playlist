@@ -130,6 +130,12 @@ body {
     padding-top: 15px;
 }
 
+.queue_card_add {
+    float: left;
+    width: 80%;
+    padding-top: 5px;
+}
+
 .qc_info_field {
     padding-left: 20px;
 }
