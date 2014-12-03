@@ -241,6 +241,10 @@ a:hover {
     color: #000000;
 }
 
+a:disabled {
+    color: rgba(121, 121, 121, 0.9);
+}
+
 .asong_cover {
     height:200px;
     position: relative;

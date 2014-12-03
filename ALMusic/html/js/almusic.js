@@ -1,3 +1,5 @@
+global_vol = 0
+
 //Change Qimessaging connection if robot name is passed in URL
 if (robotAddress != '') {
     $.qim = new QiSession(robotAddress);
@@ -221,32 +223,37 @@ function volume_control(action) {
     $.getService('ALAudioDevice', function(ALAudioDevice) {
         ALAudioDevice.getOutputVolume().done(
             function (volume) {
-                switch(action) {
-                case "Up":
-                    volume = volume + 5;
-                    if (volume > 100){
-                        volume = 100;
-                    }
-                    ALAudioDevice.setOutputVolume(volume);
-                    break;
-                case "Down":
-                    volume = volume - 5;
-                    if (volume < 0){
-                        volume = 0;
-                    }
-                    ALAudioDevice.setOutputVolume(volume);
-                    break;
-                case "Mute":
-                    ALAudioDevice.isAudioOutMuted().done(
-                        function(muted){
-                            if (muted) {
-                                ALAudioDevice.muteAudioOut(false);
-                            }
-                            else {
+                ALAudioDevice.isAudioOutMuted().done(
+                    function(muted){
+                        if (muted) {
+                            ALAudioDevice.muteAudioOut(false);
+                            volume = global_vol
+                            ALAudioDevice.setOutputVolume(volume);
+                            $('#am_vol_mute').css('color', '#000000');
+                        }
+                        else {
+                            switch(action) {
+                            case "Up":
+                                volume = volume + 5;
+                                if (volume > 100) {
+                                    volume = 100;
+                                }
+                                ALAudioDevice.setOutputVolume(volume);
+                                break;
+                            case "Down":
+                                volume = volume - 5;
+                                if (volume < 0) {
+                                    volume = 0;
+                                }
+                                ALAudioDevice.setOutputVolume(volume);
+                                break;
+                            case "Mute":
+                                global_vol = volume;
                                 ALAudioDevice.muteAudioOut(true);
+                                $('#am_vol_mute').css('color', colors[robot_color]);
                             }
-                        })
-                }
+                        }
+                    })
             })
     });
 }
@@ -261,7 +268,7 @@ $("#am_vol_down").click(function() {
 
 $("#am_vol_up").click(function() {
     volume_control("Up");
-}); 
+});
 
 function playback_control(action) {
     $.getService('ALMusic', function(ALMusic) {
