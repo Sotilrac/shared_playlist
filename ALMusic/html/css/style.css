@@ -255,7 +255,7 @@ a:disabled {
     font-size: 25px;
     position: relative;
     float: left;
-    padding: 32px 40px;
+    padding: 20px 40px;
 }
 
 .asong_title_label {
@@ -298,4 +298,12 @@ a:disabled {
 .artist_label {
     font-family: BebasNeue-Book;
     font-size: 18px;
+}
+
+.ellipsis {
+    width: 555px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
 }
