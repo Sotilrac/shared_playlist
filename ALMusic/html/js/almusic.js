@@ -107,9 +107,9 @@ function generateQueue() {
                         '<img class="asong_cover" src="' + cover + '" alt="' + title + '"/>'+
                             '<div class="asong_info" id="song_data">' +
                             '<ul>' +
-                            '<li class="asong_title"><span class="asong_title_label">' + title + '</span></li>'+
-                            '<li class="asong_artist"><span class="asong_artist_label">' + artist + '</span></li>'+
-                            '<li class="asong_album"><span class="asong_album_label">' + album + '</span></li>'+
+                            '<li class="asong_title"><span class="asong_title_label ellipsis">' + title + '</span></li>'+
+                            '<li class="asong_artist"><span class="asong_artist_label ellipsis">' + artist + '</span></li>'+
+                            '<li class="asong_album"><span class="asong_album_label ellipsis">' + album + '</span></li>'+
                             '</ul>').fadeIn();
                 }
                 $('#dynamic_c').empty();
