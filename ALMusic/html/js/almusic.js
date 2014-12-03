@@ -128,11 +128,11 @@ function generateQueue() {
                             '<div class="queue_card_controls">' +
                             '<div class="qc_controls_reorder">' +
                             '<div><a id="' + id + '-Move_Up" class="btn" href="#">' +
-                            '<i class="fa fa-sort-asc"></i></a></div>' +
+                            '<i class="fa fa-sort-asc fa-fw"></i></a></div>' +
                             '<div><a id="' + id + '-Move_Down" class="btn" href="#">' +
-                            '<i class="fa fa-sort-desc"></i></a></div></div>' +
+                            '<i class="fa fa-sort-desc fa-fw"></i></a></div></div>' +
                             '<div id="' + id + '-controls-remove" class="qc_controls_remove">' +
-                            '<a id="' + id + '-Remove" class="btn" href="#"><i class="fa fa-remove"></i>');
+                            '<a id="' + id + '-Remove" class="btn" href="#"><i class="fa fa-remove fa-fw"></i>');
                 }
             })
     });
