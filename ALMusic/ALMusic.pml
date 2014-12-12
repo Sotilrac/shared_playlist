@@ -29,11 +29,33 @@
         <File name="almusic" src="html/js/almusic.js" />
         <File name="jquery-ui.min" src="html/js/jquery-ui.min.js" />
         <File name="crossdomain" src="html/crossdomain.xml" />
+        <File name="broweserconfig" src="html/broweserconfig.xml" />
         <File name="font-awesome" src="html/css/font-awesome.css" />
         <File name="font-awesome.min" src="html/css/font-awesome.min.css" />
         <File name="normalize" src="html/css/normalize.css" />
         <File name="style" src="html/css/style.css" />
         <File name="favicon" src="html/favicon.ico" />
+        <File name="favicon-160x160" src="html/favicon-160x160.png" />
+        <File name="favicon-16x16" src="html/favicon-16x16.png" />
+        <File name="favicon-192x192" src="html/favicon-192x192.png" />
+        <File name="favicon-32x32" src="html/favicon-32x32.png" />
+        <File name="favicon-96x96" src="html/favicon-96x96.png" />
+        <File name="mstile-144x144" src="html/mstile-144x144.png" />
+        <File name="mstile-150x150" src="html/mstile-150x150.png" />
+        <File name="mstile-310x150" src="html/mstile-310x150.png" />
+        <File name="mstile-310x310" src="html/mstile-310x310.png" />
+        <File name="mstile-70x70" src="html/mstile-70x70.png" />
+        <File name="apple-touch-icon-114x114" src="html/apple-touch-icon-114x114.png" />
+        <File name="apple-touch-icon-120x120" src="html/apple-touch-icon-120x120.png" />
+        <File name="apple-touch-icon-144x144" src="html/apple-touch-icon-144x144.png" />
+        <File name="apple-touch-icon-152x152" src="html/apple-touch-icon-152x152.png" />
+        <File name="apple-touch-icon-180x180" src="html/apple-touch-icon-180x180.png" />
+        <File name="apple-touch-icon-57x57" src="html/apple-touch-icon-57x57.png" />
+        <File name="apple-touch-icon-60x60" src="html/apple-touch-icon-60x60.png" />
+        <File name="apple-touch-icon-72x72" src="html/apple-touch-icon-72x72.png" />
+        <File name="apple-touch-icon-76x76" src="html/apple-touch-icon-76x76.png" />
+        <File name="apple-touch-icon-precomposed src="html/apple-touch-icon-precomposed.png" />
+        <File name="apple-touch-icon src="html/apple-touch-icon.png" />
         <File name="BEBAS___" src="html/fonts/BEBAS___.ttf" />
         <File name="Roboto-Regular" src="html/fonts/Roboto-Regular.ttf" />
         <File name="Softplain" src="html/fonts/Softplain.ttf" />
