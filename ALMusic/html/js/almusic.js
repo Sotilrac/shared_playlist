@@ -226,10 +226,10 @@ function volume_control(action) {
                 ALAudioDevice.isAudioOutMuted().done(
                     function(muted){
                         if (muted) {
+                            $('#am_vol_mute').css('color', '#000000');
                             ALAudioDevice.muteAudioOut(false);
                             volume = global_vol
                             ALAudioDevice.setOutputVolume(volume);
-                            $('#am_vol_mute').css('color', '#000000');
                         }
                         else {
                             switch(action) {
@@ -249,8 +249,8 @@ function volume_control(action) {
                                 break;
                             case "Mute":
                                 global_vol = volume;
-                                ALAudioDevice.muteAudioOut(true);
                                 $('#am_vol_mute').css('color', colors[robot_color]);
+                                ALAudioDevice.muteAudioOut(true);
                             }
                         }
                     })
