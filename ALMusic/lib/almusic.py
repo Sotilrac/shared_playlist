@@ -354,6 +354,24 @@ class ALMusic(object):
         return self.radio_names.keys()
 
 
+    @qi.bind(returnType=qi.List(qi.Map(qi.String, qi.String)),
+             paramsType=(qi.String, qi.Int32),
+             methodName="search")
+    def search(self, query, results):
+        """Returns song search results for a given query."""
+        song_search = self.client.search(query)
+        search_results = list()
+        while len(search_results) < results:
+
+            try:
+                song = SimpleSong(song_search.next())
+                search_results.append(song.__dict__())
+            except StopIteration:
+                break
+
+        return search_results
+
+
     @qi.nobind
     def _init_radio_names(self):
         """Sets the radio station names."""
