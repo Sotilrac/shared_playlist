@@ -141,9 +141,14 @@ body {
 }
 
 .queue_card_controls {
-    float: right;
+    float: left;
     width: 20%;
     text-align: center;
+}
+
+.queue_card_control {
+    width: 50%;
+    float: left;
 }
 
 .qc_controls_reorder {
