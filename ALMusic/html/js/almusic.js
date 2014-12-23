@@ -112,7 +112,7 @@ function generateQueue() {
                             '<li class="asong_title"><span class="asong_title_label ellipsis">' + title + '</span></li>'+
                             '<li class="asong_artist"><span class="asong_artist_label ellipsis">' + artist + '</span></li>'+
                             '<li class="asong_album"><span class="asong_album_label ellipsis">' + album + '</span></li>'+
-                            '</ul>').fadeIn();
+                            '</ul></div>').fadeIn();
                 }
                 $('#dynamic_c').empty();
                 for (song in queue['queue']) {
@@ -215,6 +215,14 @@ $("#am_clear").click(function() {
     queue_control("Clear", null);
 });
 
+
+/////////////////////////////
+//     Search Handlers     //
+/////////////////////////////
+
+
+
+
 /////////////////////////////
 // Control Button Handlers //
 /////////////////////////////
@@ -226,10 +234,10 @@ function volume_control(action) {
                 ALAudioDevice.isAudioOutMuted().done(
                     function(muted){
                         if (muted) {
+                            $('#am_vol_mute').css('color', '#000000');
                             ALAudioDevice.muteAudioOut(false);
                             volume = global_vol
                             ALAudioDevice.setOutputVolume(volume);
-                            $('#am_vol_mute').css('color', '#000000');
                         }
                         else {
                             switch(action) {
@@ -249,8 +257,8 @@ function volume_control(action) {
                                 break;
                             case "Mute":
                                 global_vol = volume;
-                                ALAudioDevice.muteAudioOut(true);
                                 $('#am_vol_mute').css('color', colors[robot_color]);
+                                ALAudioDevice.muteAudioOut(true);
                             }
                         }
                     })

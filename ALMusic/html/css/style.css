@@ -241,10 +241,6 @@ a:hover {
     color: #000000;
 }
 
-a:disabled {
-    color: rgba(121, 121, 121, 0.9);
-}
-
 .asong_cover {
     height:200px;
     position: relative;
@@ -255,7 +251,7 @@ a:disabled {
     font-size: 25px;
     position: relative;
     float: left;
-    padding: 20px 40px;
+    padding: 30px 40px;
 }
 
 .asong_title_label {
@@ -277,14 +273,13 @@ a:disabled {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    line-height: 45px;
+    line-height: 48px;
 }
 
 .dj_name {
     display: inline-block;
     width: 334px;
     font-size: 56px;
-    /* text-align: center; */
 }
 
 .label {
@@ -305,5 +300,5 @@ a:disabled {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    display: inline-block;
+    display: block;
 }
