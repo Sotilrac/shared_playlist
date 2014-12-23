@@ -23,11 +23,13 @@ class SimpleSong(object):
         self.title = song.name.encode('utf8', 'replace')
         self.artist = song.artist.name.encode('utf8', 'replace')
         self.album = song.album.name.encode('utf8', 'replace')
+        self.song_id = song.id
         self.duration = song.duration
         self.cover = song.album._cover_url
         self.id = str(uuid.uuid1())
         self.cache_path = os.path.expanduser('~/.almusic_cache')
-        self.path = self.fetch(song)
+        self.path = None
+        self.song_obj = song
 
     def __str__(self):
         return '{} by {}. {}'.format(self.title, self.artist, self.album)
@@ -38,19 +40,23 @@ class SimpleSong(object):
                 'album':self.album,
                 'cover':self.cover,
                 'duration':self.duration,
-                'id':self.id}
+                'id':self.id,
+                'song_id': self.song_id}
 
-    def fetch(self, song):
+    def fetch(self):
         """Downloads a song and returns a path to a file."""
-        song_file_name = "{} - {}".format(self.id, _make_file_name(song))
+        song_file_name = "{} - {}".format(self.id,
+                                          make_file_name(self.song_obj))
 
         song_path = os.path.join(self.cache_path,
                                  song_file_name)
 
         if not os.path.exists(song_path):
             with open(song_path, 'w') as song_file:
-                data = song.safe_download()
+                data = self.song_obj.safe_download()
                 song_file.write(data)
+
+        self.path = song_path
         return song_path
 
 @qi.multiThreaded()
@@ -156,6 +162,7 @@ class ALMusic(object):
         song_search = self.client.search(search_string)
         try:
             song = SimpleSong(song_search.next())
+            song.fetch()
             self.song_queue.append(song)
             self.memory.raiseEvent('ALMusic/onQueueChange', 'add')
             return song.__dict__()
@@ -214,11 +221,13 @@ class ALMusic(object):
         try:
             try:
                 song = SimpleSong(radio.song)
+                song.fetch()
                 func = functools.partial(self._maintain_radio_queue,
                                          song_generator=radio,
                                          count=3)
             except AttributeError:
                 song = SimpleSong(radio.next())
+                song.fetch()
                 func = functools.partial(self._maintain_popular_queue,
                                          song_generator=radio,
                                          count=3)
@@ -261,7 +270,7 @@ class ALMusic(object):
         self.previous_songs.append(self.active_song)
         self.audio_player.playFile(path, self.volume, self.pan)
         self.memory.raiseEvent('ALMusic/onQueueChange', 'remove')
-        _delete_file(path)
+        delete_file(path)
         return self.active_song
 
 
@@ -541,7 +550,7 @@ class ALMusic(object):
             'zydeco': grooveshark.Radio.GENRE_ZYDECO
                             }
 
-def _make_file_name(song):
+def make_file_name(song):
     """Returns a valid file name for a song object."""
     valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
     fname = '{} - {}.mp3'.format(song.name.encode('utf8', 'replace'),
@@ -551,7 +560,7 @@ def _make_file_name(song):
     return fname
 
 
-def _delete_file(f_path):
+def delete_file(f_path):
     """Deletes a file."""
     if os.path.isfile(f_path):
         os.unlink(f_path)
