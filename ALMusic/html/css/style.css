@@ -251,7 +251,7 @@ a:hover {
     font-size: 25px;
     position: relative;
     float: left;
-    padding: 20px 40px;
+    padding: 30px 40px;
 }
 
 .asong_title_label {
@@ -273,7 +273,7 @@ a:hover {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    line-height: 45px;
+    line-height: 48px;
 }
 
 .dj_name {
@@ -300,5 +300,5 @@ a:hover {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    display: inline-block;
+    display: block;
 }

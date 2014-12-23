@@ -112,7 +112,7 @@ function generateQueue() {
                             '<li class="asong_title"><span class="asong_title_label ellipsis">' + title + '</span></li>'+
                             '<li class="asong_artist"><span class="asong_artist_label ellipsis">' + artist + '</span></li>'+
                             '<li class="asong_album"><span class="asong_album_label ellipsis">' + album + '</span></li>'+
-                            '</ul>').fadeIn();
+                            '</ul></div>').fadeIn();
                 }
                 $('#dynamic_c').empty();
                 for (song in queue['queue']) {
@@ -214,6 +214,14 @@ $("#queue_add").keyup(function(e){
 $("#am_clear").click(function() {       
     queue_control("Clear", null);
 });
+
+
+/////////////////////////////
+//     Search Handlers     //
+/////////////////////////////
+
+
+
 
 /////////////////////////////
 // Control Button Handlers //
