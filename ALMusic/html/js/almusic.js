@@ -183,6 +183,14 @@ $("#am_enqueue").click(function() {
     }
 });
 
+$("#am_search").click(function() {       
+    query = $('#queue_add').val();
+    if (query.length > 0){        
+        search_control(query);
+        $('#queue_add').val('');
+    }
+});
+
 $("#queue_add").bind("enterKey",function() {       
     query = $('#queue_add').val();
     if (query.length > 0){
@@ -205,8 +213,7 @@ function fail_add(){
 }
 
 $("#queue_add").keyup(function(e){
-    if(e.keyCode == 13)
-    {
+    if(e.keyCode == 13){
         $(this).trigger("enterKey");
     }
 });
@@ -219,6 +226,16 @@ $("#am_clear").click(function() {
 /////////////////////////////
 //     Search Handlers     //
 /////////////////////////////
+
+function search_control(data) {
+    $.getService('ALMusic', function(ALMusic) {
+        ALMusic.search(data, 5).done(function(result){
+            console.log(result)
+        });
+    });
+}
+
+
 
 
 
