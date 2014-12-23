@@ -365,7 +365,6 @@ class ALMusic(object):
 
             try:
                 song = SimpleSong(song_search.next())
-                self.song_queue.append(song)
                 search_results.append(song.__dict__())
             except StopIteration:
                 break
