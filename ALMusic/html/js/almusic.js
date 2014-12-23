@@ -141,6 +141,68 @@ function generateQueue() {
 }
 
 
+/////////////////////////////
+//     Search Handler     //
+/////////////////////////////
+
+
+function generateSearchResult(data) {
+    $.getService('ALMusic', function(ALMusic) {
+        ALMusic.search(data, 5).done(
+            function(result){
+                
+                var id;
+                var title;
+                var artist;
+                var album;
+
+                $('#result_c').empty();
+                for (song in result) {
+                    id = result[song]['id'];
+                    title = result[song]['title'];
+                    artist = result[song]['artist'];
+                    album = result[song]['album'];
+
+                    $('#result_c').append(
+                        '<div id="' + id + '" class="queue_card result card_shadow">' +
+                            '<div class="queue_card_info">' +
+                            '<div class="qc_info_field">' +
+                            '<span class="title_label">' + title + '</span></div>' +
+                            '<div class="qc_info_field">' + 
+                            '<span class="artist_label">' + artist + '</span></div></div>' +
+                            '<div class="queue_card_controls">' +                            
+                            '<div id="' + id + '-controls-remove" class="qc_controls_remove">' +
+                            '<a id="' + id + '-Remove" class="btn" href="#"><i class="fa fa-plus fa-fw"></i>');
+                }
+                console.log(result)
+            })
+    });
+}
+
+
+
+
+$("#am_search").click(function() {       
+    query = $('#queue_add').val();
+    if (query.length > 0){        
+        generateSearchResult(query);
+        // $('#queue_add').val('');
+    }
+});
+
+$("#queue_add").bind("enterKey",function() {       
+    query = $('#queue_add').val();
+    if (query.length > 0){
+        generateSearchResult(query);
+        // $('#queue_add').val('');
+    }
+});
+
+$("#queue_add").keyup(function(e){
+    if(e.keyCode == 13){
+        $(this).trigger("enterKey");
+    }
+});
 
 ////////////////////
 // Queue Handlers //
@@ -175,23 +237,8 @@ function queue_control(action, data) {
     });
 }
 
+
 $("#am_enqueue").click(function() {       
-    query = $('#queue_add').val();
-    if (query.length > 0){
-        queue_control("Enqueue", query);
-        $('#queue_add').val('');
-    }
-});
-
-$("#am_search").click(function() {       
-    query = $('#queue_add').val();
-    if (query.length > 0){        
-        search_control(query);
-        $('#queue_add').val('');
-    }
-});
-
-$("#queue_add").bind("enterKey",function() {       
     query = $('#queue_add').val();
     if (query.length > 0){
         queue_control("Enqueue", query);
@@ -212,32 +259,9 @@ function fail_add(){
     $('#add_icon').effect('pulsate', {times:3}, 800);
 }
 
-$("#queue_add").keyup(function(e){
-    if(e.keyCode == 13){
-        $(this).trigger("enterKey");
-    }
-});
-
 $("#am_clear").click(function() {       
     queue_control("Clear", null);
 });
-
-
-/////////////////////////////
-//     Search Handlers     //
-/////////////////////////////
-
-function search_control(data) {
-    $.getService('ALMusic', function(ALMusic) {
-        ALMusic.search(data, 5).done(function(result){
-            console.log(result)
-        });
-    });
-}
-
-
-
-
 
 
 /////////////////////////////

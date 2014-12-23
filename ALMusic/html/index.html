@@ -50,30 +50,35 @@
           </div>
         </div>
       </div>
-      <div id="queue_c" class="queue_container">
-        <!-- BEGIN DYNAMICALLY GENERATED QUEUE CARDS -->
-        <div id="active_song" class="card card_shadow card_rounded
-             queue_card queue_active_card" style="display:none;"></div>
-        <div id="dynamic_c"> </div>
-        <!-- END DYNAMICALLY GENERATED QUEUE CARDS -->
-        <div id="static_c">
-          <div id="add" class="queue_card queue_add_card card card_shadow card_rounded">
-            <div id="add-info" class="queue_card_add">
-              <div id="add-info-artist" class="qc_info_field">
-                <i id="input_icon" class="fa fa-chevron-right fa-fw"></i>&nbsp;&nbsp;&nbsp;&nbsp;<input id="queue_add" type="text" size="59" class="queue_add">
+      <div id="mighty_c" class="mighty_container">
+        <div id="queue_c" class="queue_container">
+          <!-- BEGIN DYNAMICALLY GENERATED QUEUE CARDS -->
+          <div id="active_song" class="card card_shadow card_rounded
+               queue_card queue_active_card" style="display:none;"></div>
+          <div id="dynamic_c"> </div>
+          <!-- END DYNAMICALLY GENERATED QUEUE CARDS -->
+        </div>
+        <div id="search_c" class="search_container">
+          <div id="static_c">
+            <div id="add" class="queue_card queue_add_card search card_shadow card_rounded">
+              <div id="add-info" class="queue_card_add">
+                <div id="add-info-artist" class="qc_info_field">
+                  <i id="input_icon" class="fa fa-chevron-right fa-fw"></i>&nbsp;&nbsp;&nbsp;&nbsp;<input id="queue_add" type="text" size="59" class="queue_add">
+                </div>
+              </div>
+              <div id="add-controls" class="queue_card_controls">
+                <div id="search-control" class="queue_card_control">
+                  <a id="am_search" class="btn label" href="#"><i id="search_icon" class="fa fa-search fa-flip-horizontal  fa-fw"></i></a>
+                </div>
+                <div id="lucky-add-control" class="queue_card_control">
+                  <a id="am_enqueue" class="btn label" href="#"><i id="add_icon" class="fa fa-magic fa-fw"></i></a>
+                </div>
               </div>
             </div>
-            <div id="add-controls" class="queue_card_controls">
-              <div id="search-control" class="queue_card_control">
-                <a id="am_search" class="btn label" href="#"><i id="search_icon" class="fa fa-search fa-flip-horizontal  fa-fw"></i></a>
-              </div>
-              <div id="lucky-add-control" class="queue_card_control">
-                <a id="am_enqueue" class="btn label" href="#"><i id="add_icon" class="fa fa-magic fa-fw"></i></a>
-              </div>
+            <div id="result_c"></div>
+            <div id="clear" class="queue_card queue_clear_card card card_rounded">
+              <a id="am_clear" class="btn label" href="#">Clear</a>
             </div>
-          </div>
-          <div id="clear" class="queue_card queue_clear_card card card_rounded">
-            <a id="am_clear" class="btn label" href="#">Clear</a>
           </div>
         </div>
       </div>

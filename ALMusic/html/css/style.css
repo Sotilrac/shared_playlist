@@ -99,9 +99,24 @@ body {
     font-size: 42px;
 }
 
+.mighty_container {
+    margin: 0 auto;
+}
+
 .queue_container {
     margin: 0 auto;
     padding: 20px 0 0;
+    /* float: left; */
+    width: 50%;
+    min-width: 1000px;
+}
+
+.search_container {
+    margin: 0 auto;
+    padding: 20px 0 0;
+    /* float: left; */
+    width: 50%;
+    min-width: 1000px;
 }
 
 .queue_card {
@@ -113,6 +128,14 @@ body {
 }
 
 .card {
+    background-color: rgba(242,242,242,0.9);
+}
+
+.search {
+    background-color: rgba(242,242,242,1.0);
+}
+
+.result {
     background-color: rgba(242,242,242,0.9);
 }
 
@@ -168,18 +191,19 @@ body {
 .queue_add {
     border: 0px solid #000000;
     border-width: 0 0 2px 0;
-    background-color: rgba(242,242,242,0.0);
+    background-color: rgba(242,242,242,0.1);
     font-family: BebasNeue-Bold;
     font-size: 24px;
 }
 
 .queue_active_card {
     height: 200px;
-    background-color: rgba(242,242,242,0.8);
-    margin: 0 auto 3px;
+    background-color: rgba(242,242,242,1.0);
+    margin: 0 auto;
 }
 
 .queue_add_card {
+    margin-top: 6px;
     height: 60px;
     font-size: 24px;
     padding-top: 20px;
@@ -190,7 +214,7 @@ body {
     height: 42px;
     font-size: 24px;
     padding-top: 8px;
-    background-color: rgba(242,242,242,0.3);
+    background-color: rgba(242,242,242,0.0);
     text-align: center;
 }
 
