@@ -186,7 +186,7 @@ function generateSearchResult(data) {
                                         function(response) {
                                             spinID(id, false);
                                             if(Object.keys(response).length === 0){
-                                                errorizeID(id);
+                                                errorizeID(id, true);
                                                 pulsateID(id);
                                             }
                                             else {
@@ -306,7 +306,7 @@ function pulsateID(id){
     $('#' + id  + '-Add').children(0).effect('pulsate', {times:3}, 800);
 }
 
-function errorizeID(enable){
+function errorizeID(id, enable){
     if(enable){
         $('#' + id + '-Add').children(0).removeClass('fa-plus');
         $('#' + id  + '-Add').children(0).addClass('fa-exclamation-triangle');
