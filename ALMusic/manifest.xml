@@ -18,6 +18,6 @@ Go to {robot adress}/apps/almusic-83e4ea to use the web interface</description>
   <robotRequirement model="NAO"/>
  </requirements>
  <services>
-  <service autorun="true" execStart="/usr/bin/python2 lib/almusic.py" name="ALMusic-serv"/>
+  <service autorun="true" execStart="/usr/bin/python2 lib/almusic.py" name="ALMusic"/>
  </services>
 </package>

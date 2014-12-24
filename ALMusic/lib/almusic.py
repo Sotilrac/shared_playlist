@@ -406,9 +406,14 @@ class ALMusic(object):
              methodName="remove")
     def remove(self, song_id):
         """Remove song from the queue by id."""
-        self.song_queue = [s for s in self.song_queue if s.id != song_id]
-        self.memory.raiseEvent('ALMusic/onQueueChange', 'remove')
-
+        try:
+            song = [s for s in self.song_queue if s.id == song_id][0]
+            delete_file(song.path)
+            self.song_queue.remove(song)
+            self.memory.raiseEvent('ALMusic/onQueueChange', 'remove')
+            return True
+        except IndexError:
+            return False
 
     @qi.nobind
     def _init_radio_names(self):
