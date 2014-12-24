@@ -89,9 +89,9 @@ function switch_to_spanish() {
 function generateQueue() {
     // Do stuff with queue
     ALMusic.getQueue().done(function(queue) {
-        var generate_active = function() {
-            $('#active_song').fadeOut().empty();
-            for (song in queue['active']) {
+        $('#active_song').empty();
+        for (song in queue['active']) {
+            var generate_active = function() {
                 var id = queue['active'][song]['id'];
                 var title = queue['active'][song]['title'];
                 var artist = queue['active'][song]['artist'];
@@ -107,10 +107,11 @@ function generateQueue() {
                         '<li class="asong_album"><span class="asong_album_label ellipsis">' + album + '</span></li>'+
                         '</ul></div>').fadeIn();
             }
+            generate_active();
         }
-        var generate_queue = function() {
-            $('#dynamic_c').empty();
-            for (song in queue['queue']) {
+        $('#dynamic_c').empty();
+        for (song in queue['queue']) {
+            var generate_queue = function() {
                 var id = queue['queue'][song]['id'];
                 var title = queue['queue'][song]['title'];
                 var artist = queue['queue'][song]['artist'];
@@ -121,22 +122,16 @@ function generateQueue() {
                         '<div class="qc_info_field">' +
                         '<span class="title_label">' + title + '</span></div>' +
                         '<div class="qc_info_field">' + 
-                        '<span class="artist_label">' + artist + '</span></div></div>' +
-                        '<div class="queue_card_controls">' +
-                        '<div class="qc_controls_reorder">' +
-                        '<div><a id="' + id + '-Move_Up" class="btn" href="#">' +
-                        '<i class="fa fa-sort-asc fa-fw"></i></a></div>' +
-                        '<div><a id="' + id + '-Move_Down" class="btn" href="#">' +
-                        '<i class="fa fa-sort-desc fa-fw"></i></a></div></div>' +
-                        '<div id="' + id + '-controls-remove" class="qc_controls_remove">' +
+                        '<span class="artist_label">' + artist + '</span></div></div>' +                      
+                        '<div class="queue_card_controls">' +                            
+                        '<div id="' + id + '-controls-remove" class="c_controls_solo">' +
                         '<a id="' + id + '-Remove" class="btn" href="#"><i class="fa fa-remove fa-fw"></i>');
                 $('#' + id + '-Remove').click(function() {
                     queue_control('Remove', id);
                 });                       
             }
+            generate_queue();
         }
-        generate_active();
-        generate_queue();
     })
 }
 
@@ -172,7 +167,7 @@ function generateSearchResult(data) {
                             '<div class="qc_info_field">' + 
                             '<span class="artist_label">' + artist + '</span></div></div>' +
                             '<div class="queue_card_controls">' +                            
-                            '<div id="' + id + '-controls-add" class="sc_controls_add">' +
+                            '<div id="' + id + '-controls-add" class="c_controls_solo">' +
                             '<a id="' + id + '-Add" class="btn" href="#"><i class="fa fa-plus fa-fw"></i>');
 
                     $('#' + id + '-Add').click(function() {
@@ -196,33 +191,54 @@ function generateSearchResult(data) {
     })
 }
 
-$("#am_search").click(function() {       
-    query = $('#queue_add').val();
-    if (query.length > 0){        
-        generateSearchResult(query);
-        // $('#queue_add').val('');
-    }
-    else {
-        $('#result_c').empty();
-    }
+// $("#queue_add").change(function() {       
+//     query = $('#queue_add').val();
+//     if (query.length > 0){        
+//         generateSearchResult(query);
+//         // $('#queue_add').val('');
+//     }
+//     else {
+//         $('#result_c').empty();
+//     }
+// });
+
+$("#queue_add").blur(function() {       
+    query = $(this).val('');
+    query_handler();
 });
 
-$("#queue_add").bind("enterKey",function() {       
-    query = $('#queue_add').val();
-    if (query.length > 0){
-        generateSearchResult(query);
-        // $('#queue_add').val('');
-    }
-    else {
-        $('#result_c').empty();
-    }
+$("#queue_add").click(function() {       
+    query_handler();
 });
 
+$("#am_search").click(function() {  
+    query_handler();
+});
+
+$("#queue_add").bind("enterKey",function() {   
+    query_handler();    
+});
+
+var timer;
 $("#queue_add").keyup(function(e){
     if(e.keyCode == 13){
         $(this).trigger("enterKey");
     }
+    else {
+        clearTimeout(timer)
+        timer = setTimeout(function(){ query_handler(); }, 200);
+    }
 });
+
+function query_handler() {
+    query = $('#queue_add').val();
+    if (query.length > 0){        
+        generateSearchResult(query);
+    }
+    else {
+        $('#result_c').empty();
+    }
+}
 
 ////////////////////
 // Queue Handlers //
