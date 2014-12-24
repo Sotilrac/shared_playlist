@@ -29,7 +29,6 @@
         <File name="almusic" src="html/js/almusic.js" />
         <File name="jquery-ui.min" src="html/js/jquery-ui.min.js" />
         <File name="crossdomain" src="html/crossdomain.xml" />
-        <File name="broweserconfig" src="html/broweserconfig.xml" />
         <File name="font-awesome" src="html/css/font-awesome.css" />
         <File name="font-awesome.min" src="html/css/font-awesome.min.css" />
         <File name="normalize" src="html/css/normalize.css" />
@@ -54,8 +53,8 @@
         <File name="apple-touch-icon-60x60" src="html/apple-touch-icon-60x60.png" />
         <File name="apple-touch-icon-72x72" src="html/apple-touch-icon-72x72.png" />
         <File name="apple-touch-icon-76x76" src="html/apple-touch-icon-76x76.png" />
-        <File name="apple-touch-icon-precomposed src="html/apple-touch-icon-precomposed.png" />
-        <File name="apple-touch-icon src="html/apple-touch-icon.png" />
+        <File name="apple-touch-icon-precomposed" src="html/apple-touch-icon-precomposed.png" />
+        <File name="apple-touch-icon" src="html/apple-touch-icon.png" />
         <File name="BEBAS___" src="html/fonts/BEBAS___.ttf" />
         <File name="Roboto-Regular" src="html/fonts/Roboto-Regular.ttf" />
         <File name="Softplain" src="html/fonts/Softplain.ttf" />
