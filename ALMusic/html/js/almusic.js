@@ -90,52 +90,54 @@ function generateQueue() {
     $.getService('ALMusic', function(ALMusic) {
         ALMusic.getQueue().done(
             function(queue) {
-
-                var id;
-                var title;
-                var artist;
-                var album;
-                var cover;
-
-                $('#active_song').fadeOut().empty();
-                for (song in queue['active']) {
-                    id = queue['active'][song]['id'];
-                    title = queue['active'][song]['title'];
-                    artist = queue['active'][song]['artist'];
-                    album = queue['active'][song]['album'];
-                    cover = queue['active'][song]['cover'];
-                    
-                    $('#active_song').append(
-                        '<img class="asong_cover" src="' + cover + '" alt="' + title + '"/>'+
-                            '<div class="asong_info" id="song_data">' +
-                            '<ul>' +
-                            '<li class="asong_title"><span class="asong_title_label ellipsis">' + title + '</span></li>'+
-                            '<li class="asong_artist"><span class="asong_artist_label ellipsis">' + artist + '</span></li>'+
-                            '<li class="asong_album"><span class="asong_album_label ellipsis">' + album + '</span></li>'+
-                            '</ul></div>').fadeIn();
+                var generate_active = function() {
+                    $('#active_song').fadeOut().empty();
+                    for (song in queue['active']) {
+                        var id = queue['active'][song]['id'];
+                        var title = queue['active'][song]['title'];
+                        var artist = queue['active'][song]['artist'];
+                        var album = queue['active'][song]['album'];
+                        var cover = queue['active'][song]['cover'];
+                        
+                        $('#active_song').append(
+                            '<img class="asong_cover" src="' + cover + '" alt="' + title + '"/>'+
+                                '<div class="asong_info" id="song_data">' +
+                                '<ul>' +
+                                '<li class="asong_title"><span class="asong_title_label ellipsis">' + title + '</span></li>'+
+                                '<li class="asong_artist"><span class="asong_artist_label ellipsis">' + artist + '</span></li>'+
+                                '<li class="asong_album"><span class="asong_album_label ellipsis">' + album + '</span></li>'+
+                                '</ul></div>').fadeIn();
+                    }
                 }
-                $('#dynamic_c').empty();
-                for (song in queue['queue']) {
-                    id = queue['queue'][song]['id'];
-                    title = queue['queue'][song]['title'];
-                    artist = queue['queue'][song]['artist'];
+                var generate_queue = function() {
+                    $('#dynamic_c').empty();
+                    for (song in queue['queue']) {
+                        var id = queue['queue'][song]['id'];
+                        var title = queue['queue'][song]['title'];
+                        var artist = queue['queue'][song]['artist'];
 
-                    $('#dynamic_c').append(
-                        '<div id="' + id + '" class="queue_card card card_shadow">' +
-                            '<div class="queue_card_info">' +
-                            '<div class="qc_info_field">' +
-                            '<span class="title_label">' + title + '</span></div>' +
-                            '<div class="qc_info_field">' + 
-                            '<span class="artist_label">' + artist + '</span></div></div>' +
-                            '<div class="queue_card_controls">' +
-                            '<div class="qc_controls_reorder">' +
-                            '<div><a id="' + id + '-Move_Up" class="btn" href="#">' +
-                            '<i class="fa fa-sort-asc fa-fw"></i></a></div>' +
-                            '<div><a id="' + id + '-Move_Down" class="btn" href="#">' +
-                            '<i class="fa fa-sort-desc fa-fw"></i></a></div></div>' +
-                            '<div id="' + id + '-controls-remove" class="qc_controls_remove">' +
-                            '<a id="' + id + '-Remove" class="btn" href="#"><i class="fa fa-remove fa-fw"></i>');
+                        $('#dynamic_c').append(
+                            '<div id="' + id + '" class="queue_card card card_shadow">' +
+                                '<div class="queue_card_info">' +
+                                '<div class="qc_info_field">' +
+                                '<span class="title_label">' + title + '</span></div>' +
+                                '<div class="qc_info_field">' + 
+                                '<span class="artist_label">' + artist + '</span></div></div>' +
+                                '<div class="queue_card_controls">' +
+                                '<div class="qc_controls_reorder">' +
+                                '<div><a id="' + id + '-Move_Up" class="btn" href="#">' +
+                                '<i class="fa fa-sort-asc fa-fw"></i></a></div>' +
+                                '<div><a id="' + id + '-Move_Down" class="btn" href="#">' +
+                                '<i class="fa fa-sort-desc fa-fw"></i></a></div></div>' +
+                                '<div id="' + id + '-controls-remove" class="qc_controls_remove">' +
+                                '<a id="' + id + '-Remove" class="btn" href="#"><i class="fa fa-remove fa-fw"></i>');
+                        $('#' + id + '-Remove').click(function() {
+                            queue_control('Remove', id);
+                        });                       
+                    }
                 }
+                generate_active();
+                generate_queue();
             })
     });
 }
@@ -150,31 +152,54 @@ function generateSearchResult(data) {
     $.getService('ALMusic', function(ALMusic) {
         ALMusic.search(data, 5).done(
             function(result){
-                
-                var id;
-                var title;
-                var artist;
-                var album;
-
-                $('#result_c').empty();
-                for (song in result) {
-                    id = result[song]['id'];
-                    title = result[song]['title'];
-                    artist = result[song]['artist'];
-                    album = result[song]['album'];
-
+                if(result.length < 1) {
                     $('#result_c').append(
-                        '<div id="' + id + '" class="queue_card result card_shadow">' +
-                            '<div class="queue_card_info">' +
-                            '<div class="qc_info_field">' +
-                            '<span class="title_label">' + title + '</span></div>' +
-                            '<div class="qc_info_field">' + 
-                            '<span class="artist_label">' + artist + '</span></div></div>' +
-                            '<div class="queue_card_controls">' +                            
-                            '<div id="' + id + '-controls-remove" class="qc_controls_remove">' +
-                            '<a id="' + id + '-Remove" class="btn" href="#"><i class="fa fa-plus fa-fw"></i>');
+                        '<div id="no-results" class="queue_card result card_shadow">' +
+                            '<div class="queue_card_empty">' +
+                            'No results' +
+                            '</div></div>');
                 }
-                console.log(result)
+                else {
+                    $('#result_c').empty();
+                    for (song in result) {
+                        var generate_result = function() {
+                            var id = result[song]['id'];
+                            var title = result[song]['title'];
+                            var artist = result[song]['artist'];
+                            var album = result[song]['album'];
+
+                            $('#result_c').append(
+                                '<div id="' + id + '" class="queue_card result card_shadow">' +
+                                    '<div class="queue_card_info">' +
+                                    '<div class="qc_info_field">' +
+                                    '<span class="title_label">' + title + '</span></div>' +
+                                    '<div class="qc_info_field">' + 
+                                    '<span class="artist_label">' + artist + '</span></div></div>' +
+                                    '<div class="queue_card_controls">' +                            
+                                    '<div id="' + id + '-controls-add" class="sc_controls_add">' +
+                                    '<a id="' + id + '-Add" class="btn" href="#"><i class="fa fa-plus fa-fw"></i>');
+
+                            $('#' + id + '-Add').click(function() {
+                                spinID(id, true);
+                                $.getService('ALMusic', function(ALMusic) {                                
+                                    ALMusic.enqueueId(id).done(                                    
+                                        function(response) {
+                                            spinID(id, false);
+                                            if(Object.keys(response).length === 0){
+                                                errorizeID(id);
+                                                pulsateID(id);
+                                            }
+                                            else {
+                                                $('#result_c').empty();
+                                                $('#queue_add').val('');
+                                            }
+                                        })
+                                });
+                            });
+                        }
+                        generate_result();
+                    }
+                }
             })
     });
 }
@@ -188,6 +213,9 @@ $("#am_search").click(function() {
         generateSearchResult(query);
         // $('#queue_add').val('');
     }
+    else {
+        $('#result_c').empty();
+    }
 });
 
 $("#queue_add").bind("enterKey",function() {       
@@ -195,6 +223,9 @@ $("#queue_add").bind("enterKey",function() {
     if (query.length > 0){
         generateSearchResult(query);
         // $('#queue_add').val('');
+    }
+    else {
+        $('#result_c').empty();
     }
 });
 
@@ -212,17 +243,19 @@ function queue_control(action, data) {
     $.getService('ALMusic', function(ALMusic) {
         switch(action) {
         case "Enqueue":
-            wait_add(true)
+            spin(true)
             ALMusic.enqueue(data).done(function(song){
                 console.log(song);
-                wait_add(false);
-                if(song){
-                    fail_add();
+                spin(false);
+                if(Object.keys(song).length === 0){
+                    pulsate();                    
                 }
             });
             break;
         case "Remove":
-            console.log("Remove functionality not implemented.");
+            ALMusic.remove(data).done(function(response) {
+                console.log("remove song from queue")
+            });
             break;
         case "Clear":
             ALMusic.clearQueue();
@@ -243,10 +276,11 @@ $("#am_enqueue").click(function() {
     if (query.length > 0){
         queue_control("Enqueue", query);
         $('#queue_add').val('');
+        $('#result_c').empty();
     }
 });
 
-function wait_add(enable){
+function spin(enable){
     if(enable){
         $('#add_icon').addClass('fa-spin');
     }
@@ -255,9 +289,34 @@ function wait_add(enable){
     }
 }
 
-function fail_add(){
+function spinID(id, enable){
+    if(enable){
+        $('#' + id  + '-Add').children(0).addClass('fa-spin');
+    }
+    else{
+        $('#' + id + '-Add').children(0).removeClass('fa-spin');
+    }
+}
+
+function pulsate(){
     $('#add_icon').effect('pulsate', {times:3}, 800);
 }
+
+function pulsateID(id){
+    $('#' + id  + '-Add').children(0).effect('pulsate', {times:3}, 800);
+}
+
+function errorizeID(enable){
+    if(enable){
+        $('#' + id + '-Add').children(0).removeClass('fa-plus');
+        $('#' + id  + '-Add').children(0).addClass('fa-exclamation-triangle');
+    }
+    else{
+        $('#' + id + '-Add').children(0).removeClass('fa-exclamation-triangle');
+        $('#' + id  + '-Add').children(0).addClass('fa-plus');
+    }
+}
+
 
 $("#am_clear").click(function() {       
     queue_control("Clear", null);
