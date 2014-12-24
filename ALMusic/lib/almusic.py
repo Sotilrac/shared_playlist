@@ -93,10 +93,10 @@ class ALMusic(object):
 
         self.client = grooveshark.Client()
         self.client.init()
-        self.song_queue = []
+        self.song_queue = list()
         self.active_song = None
-        self.previous_songs = []
-        self.player_ids = []
+        self.previous_songs = list()
+        self.player_ids = list()
         self.playing = False
         self.radio_names = None
         self._init_radio_names()
@@ -104,6 +104,7 @@ class ALMusic(object):
         self.say_song_name = False
         self.volume = 1.0
         self.pan = 0
+        self.search_results = list()
 
 
     def _connect_services(self):
@@ -167,7 +168,7 @@ class ALMusic(object):
             self.memory.raiseEvent('ALMusic/onQueueChange', 'add')
             return song.__dict__()
         except StopIteration:
-            return {}
+            return dict()
 
 
     @qi.bind(returnType=qi.Map(qi.String, qi.List(qi.Map(qi.String, qi.String))),
@@ -179,7 +180,7 @@ class ALMusic(object):
         try:
             active = [self.active_song.__dict__()]
         except AttributeError:
-            active = []
+            active = list()
 
         return {'queue':queue,
                 'active':active}
@@ -247,6 +248,7 @@ class ALMusic(object):
         while len(self.song_queue) < count:
             try:
                 song = SimpleSong(song_generator.song)
+                song.fetch()
                 self.song_queue.append(song)  
             except StopIteration:
                 self.periodic.stop()
@@ -256,6 +258,7 @@ class ALMusic(object):
         while len(self.song_queue) < count:
             try:
                 song = SimpleSong(song_generator.next())
+                song.fetch()
                 self.song_queue.append(song)  
             except StopIteration:
                 self.periodic.stop()
@@ -286,16 +289,16 @@ class ALMusic(object):
             self.memory.raiseEvent('ALMusic/onQueueChange', 'add')
             return song.__dict__()
         except StopIteration:
-            return {}
+            return dict()
         except IndexError:
             self.logger.warning('Invalid index: {}'.format(position))
-            return {}
+            return dict()
 
 
     @qi.bind(methodName="clearQueue")
     def clear_queue(self):
         """Clears queue."""
-        self.song_queue = []
+        self.song_queue = list()
         self.memory.raiseEvent('ALMusic/onQueueChange', 'clear')
         self._clear_cache()
 
@@ -343,6 +346,7 @@ class ALMusic(object):
 
     def _clear_cache(self):
         """Clears the song cache. Not implemented :( ."""
+        self.search_results = list()
         for song in os.listdir(self.cache_path):
             f_path = os.path.join(self.cache_path, song)
             if os.path.isfile(f_path):
@@ -375,10 +379,35 @@ class ALMusic(object):
             try:
                 song = SimpleSong(song_search.next())
                 search_results.append(song.__dict__())
+                self.search_results.append(song)
             except StopIteration:
                 break
 
         return search_results
+
+    
+    @qi.bind(returnType=qi.Map(qi.String, qi.String),
+             paramsType=(qi.String,),
+             methodName="enqueueId")
+    def enqueue_by_id(self, song_id):
+        """Add song to the queue by id."""
+        try:
+            song = [s for s in self.search_results if s.id == song_id][0]
+            song.fetch()
+            self.song_queue.append(song)
+            self.memory.raiseEvent('ALMusic/onQueueChange', 'add')
+            return song.__dict__()
+        except IndexError:
+            return dict()
+
+
+    @qi.bind(returnType=qi.Bool,
+             paramsType=(qi.String,),
+             methodName="remove")
+    def remove(self, song_id):
+        """Remove song from the queue by id."""
+        self.song_queue = [s for s in self.song_queue if s.id != song_id]
+        self.memory.raiseEvent('ALMusic/onQueueChange', 'remove')
 
 
     @qi.nobind
