@@ -84,6 +84,12 @@ function switch_to_french() {
 function switch_to_spanish() {
     //
 }
+var music;
+$.qim.service("ALMusic").done(function (service) {
+    music = service;
+  }).fail(function (error) {
+    console.log("An error occurred:", error);
+  });
 
 function generateQueue() {
     // Do stuff with queue
