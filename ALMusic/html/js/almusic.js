@@ -125,7 +125,7 @@ function generateQueue() {
                         '<span class="artist_label">' + artist + '</span></div></div>' +                      
                         '<div class="queue_card_controls">' +                            
                         '<div id="' + id + '-controls-remove" class="c_controls_solo">' +
-                        '<a id="' + id + '-Remove" class="btn" href="#"><i class="fa fa-remove fa-fw"></i>');
+                        '<i id="' + id + '-Remove" class="btn fa fa-remove fa-fw"></i></div></div>');
                 $('#' + id + '-Remove').click(function() {
                     queue_control('Remove', id);
                 });                       
@@ -168,7 +168,7 @@ function generateSearchResult(data) {
                         '<span class="artist_label">' + artist + '</span></div></div>' +
                         '<div class="queue_card_controls">' +                            
                         '<div id="' + id + '-controls-add" class="c_controls_solo">' +
-                        '<a id="' + id + '-Add" class="btn" href="#"><i class="fa fa-plus fa-fw"></i>');
+                        '<i id="' + id + '-Add" class="btn fa fa-plus fa-fw"></i></div></div>');
 
                     $('#' + id + '-Add').click(function() {
                         spinID(id, true);
@@ -294,10 +294,10 @@ function spin(enable){
 
 function spinID(id, enable){
     if(enable){
-        $('#' + id  + '-Add').children(0).addClass('fa-spin');
+        $('#' + id  + '-Add').addClass('fa-spin');
     }
     else{
-        $('#' + id + '-Add').children(0).removeClass('fa-spin');
+        $('#' + id + '-Add').removeClass('fa-spin');
     }
 }
 
@@ -306,7 +306,7 @@ function pulsate(){
 }
 
 function pulsateID(id){
-    $('#' + id  + '-Add').children(0).effect('pulsate', {times:3}, 800);
+    $('#' + id  + '-Add').effect('pulsate', {times:3}, 800);
 }
 
 function errorizeID(id, enable){

@@ -346,3 +346,7 @@ a:hover {
     overflow: hidden;
     display: block;
 }
+
+.btn {
+    cursor: pointer;
+}
