@@ -161,14 +161,14 @@ function generateSearchResult(data) {
 
                     $('#result_c').append(
                         '<div id="' + id + '" class="queue_card result card_shadow">' +
-                            '<div class="queue_card_info">' +
-                            '<div class="qc_info_field">' +
-                            '<span class="title_label">' + title + '</span></div>' +
-                            '<div class="qc_info_field">' + 
-                            '<span class="artist_label">' + artist + '</span></div></div>' +
-                            '<div class="queue_card_controls">' +                            
-                            '<div id="' + id + '-controls-add" class="c_controls_solo">' +
-                            '<a id="' + id + '-Add" class="btn" href="#"><i class="fa fa-plus fa-fw"></i>');
+                        '<div class="queue_card_info">' +
+                        '<div class="qc_info_field">' +
+                        '<span class="title_label">' + title + '</span></div>' +
+                        '<div class="qc_info_field">' + 
+                        '<span class="artist_label">' + artist + '</span></div></div>' +
+                        '<div class="queue_card_controls">' +                            
+                        '<div id="' + id + '-controls-add" class="c_controls_solo">' +
+                        '<a id="' + id + '-Add" class="btn" href="#"><i class="fa fa-plus fa-fw"></i>');
 
                     $('#' + id + '-Add').click(function() {
                         spinID(id, true);
@@ -202,10 +202,10 @@ function generateSearchResult(data) {
 //     }
 // });
 
-$("#queue_add").blur(function() {       
-    query = $(this).val('');
-    query_handler();
-});
+// $("#queue_add").blur(function() {       
+//     query = $(this).val('');
+//     query_handler();
+// });
 
 $("#queue_add").click(function() {       
     query_handler();
