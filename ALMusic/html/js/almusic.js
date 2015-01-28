@@ -88,7 +88,6 @@ function switch_to_spanish() {
 
 function generateQueue() {
     // Do stuff with queue
-    console.log('generateQueue')
     ALMusic.getQueue().done(function(queue) {
         $('#active_song').empty();
         if (Object.keys(queue['active']).length == 0) {
