@@ -88,26 +88,31 @@ function switch_to_spanish() {
 
 function generateQueue() {
     // Do stuff with queue
+    console.log('generateQueue')
     ALMusic.getQueue().done(function(queue) {
         $('#active_song').empty();
-        for (song in queue['active']) {
-            var generate_active = function() {
-                var id = queue['active'][song]['id'];
-                var title = queue['active'][song]['title'];
-                var artist = queue['active'][song]['artist'];
-                var album = queue['active'][song]['album'];
-                var cover = queue['active'][song]['cover'];
-                
-                $('#active_song').append(
-                    '<img class="asong_cover" src="' + cover + '" alt="' + title + '"/>'+
-                        '<div class="asong_info" id="song_data">' +
-                        '<ul>' +
-                        '<li class="asong_title"><span class="asong_title_label ellipsis">' + title + '</span></li>'+
-                        '<li class="asong_artist"><span class="asong_artist_label ellipsis">' + artist + '</span></li>'+
-                        '<li class="asong_album"><span class="asong_album_label ellipsis">' + album + '</span></li>'+
-                        '</ul></div>').fadeIn();
+        if (Object.keys(queue['active']).length == 0) {
+            $('#active_song').fadeOut();
+        } else {
+            for (song in queue['active']) {
+                var generate_active = function() {
+                    var id = queue['active'][song]['id'];
+                    var title = queue['active'][song]['title'];
+                    var artist = queue['active'][song]['artist'];
+                    var album = queue['active'][song]['album'];
+                    var cover = queue['active'][song]['cover'];
+                    
+                    $('#active_song').append(
+                        '<img class="asong_cover" src="' + cover + '" alt="' + title + '"/>'+
+                            '<div class="asong_info" id="song_data">' +
+                            '<ul>' +
+                            '<li class="asong_title"><span class="asong_title_label ellipsis">' + title + '</span></li>'+
+                            '<li class="asong_artist"><span class="asong_artist_label ellipsis">' + artist + '</span></li>'+
+                            '<li class="asong_album"><span class="asong_album_label ellipsis">' + album + '</span></li>'+
+                            '</ul></div>').fadeIn();
+                }
+                generate_active();
             }
-            generate_active();
         }
         $('#dynamic_c').empty();
         for (song in queue['queue']) {
