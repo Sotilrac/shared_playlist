@@ -420,12 +420,24 @@ $("#am_next").click(function() {
 
 //////////////////////////
 
+$( window ).resize(function() {
+    center_and_size_dj();
+});
+
+function center_and_size_dj() {
+    $('#dj').textfill({ 
+        explicitHeight: $('#dj').height(),
+        explicitWidth: $('#dj').width()    
+    });
+}
+
+//////////////////////////
+
 
 // ALMemory Subscriptions
 $.subscribeToALMemoryEvent('ALMusic/onQueueChange', function(eventValue) {
     generateQueue();
 });
-
 
 // Connect/Disconnect signals
 $.qim.socket().on('connect', init() );

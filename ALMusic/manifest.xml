@@ -1,12 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<package version="1.0.2" uuid="almusic-83e4ea">
+<package version="1.5.1" uuid="music">
  <names>
-  <name lang="en_US">ALMusic</name>
+  <name lang="en_US">Music</name>
  </names>
  <descriptions>
-  <description lang="en_US">Naoqi service allowing to etch music from the internet and play it.
+  <description lang="en_US">Naoqi service allowing to fetch music from the internet and play it.
 
-Go to {robot adress}/apps/almusic-83e4ea to use the web interface</description>
+Go to {robot adress}/apps/music to use the web interface
+
+Previously known as ALMusic.</description>
  </descriptions>
  <descriptionLanguages>
   <language>en_US</language>
