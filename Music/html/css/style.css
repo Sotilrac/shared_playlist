@@ -190,11 +190,13 @@ body {
 .queue_card_controls {
     float: left;
     width: 20%;
+    height: 100%;
     text-align: center;
 }
 
 .queue_card_control {
     width: 50%;
+    height: 100%;
     float: left;
 }
 
