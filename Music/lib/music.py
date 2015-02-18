@@ -32,6 +32,7 @@ class SimpleSong(object):
         self.id = str(uuid.uuid1())
         self.cache_path = os.path.expanduser('~/.music_cache')
         self.path = None
+        self.favorite_level = 0
         self.song_obj = song
 
     def __str__(self):
@@ -44,6 +45,7 @@ class SimpleSong(object):
                 'cover': self.cover,
                 'duration': self.duration,
                 'id': self.id,
+                'f_level': self.favorite_level,
                 'song_id': self.song_id}
 
     def fetch(self):
@@ -407,6 +409,12 @@ class Music(object):
              paramsType=(qi.String, qi.Int32),
              methodName="setFavoriteLevel")
     def set_favorite_level(self, song_id, level):
+        pass
+
+    @qi.bind(returnType=qi.List(qi.Map(qi.String, qi.String)),
+             paramsType=(qi.String,),
+             methodName="getFavorites")
+    def get_favorites(self):
         pass
 
     @qi.nobind
