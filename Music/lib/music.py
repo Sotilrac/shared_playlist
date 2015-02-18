@@ -1,23 +1,25 @@
 #!/usr/bin/env python
 # encoding: utf-8
-"""almusic.py
+"""music.py
 
-Created by Aldebaran Boston Studio.
+Created by the tenacious Aldebaran Boston Studio.
 """
 import qi
 import os
 import string
-import time
 import functools
 import uuid
 import grooveshark
 import logging as logger
 
+
 class SimpleSong(object):
+
     """Class SimpleSong
 
     Contains simple information about a song.
     """
+
     def __init__(self, song):
 
         self.title = song.name.encode('utf8', 'replace')
@@ -27,20 +29,22 @@ class SimpleSong(object):
         self.duration = song.duration
         self.cover = song.album._cover_url
         self.id = str(uuid.uuid1())
-        self.cache_path = os.path.expanduser('~/.almusic_cache')
+        self.cache_path = os.path.expanduser('~/.music_cache')
         self.path = None
+        self.f_level = "0"
         self.song_obj = song
 
     def __str__(self):
         return '{} by {}. {}'.format(self.title, self.artist, self.album)
 
     def __dict__(self):
-        return {'title':self.title,
-                'artist':self.artist,
-                'album':self.album,
-                'cover':self.cover,
-                'duration':self.duration,
-                'id':self.id,
+        return {'title': self.title,
+                'artist': self.artist,
+                'album': self.album,
+                'cover': self.cover,
+                'duration': self.duration,
+                'id': self.id,
+                'f_level': self.f_level,
                 'song_id': self.song_id}
 
     def fetch(self):
@@ -59,35 +63,36 @@ class SimpleSong(object):
         self.path = song_path
         return song_path
 
+
 @qi.multiThreaded()
-class ALMusic(object):
-    """Class: ALMusic
+class Music(object):
+
+    """Class: Music
 
     Pump up the jam
 
-    IMPORTANT: ALMusic module is based on qimessaging, therefore
+    IMPORTANT: Music module is based on qimessaging, therefore
     session.service must be used (instead of ALProxy).
 
     """
 
     def __init__(self, session):
         self.session = session
-        logger.basicConfig(filename='ALAdvancedTouch.log', level=logger.DEBUG)
+        logger.basicConfig(filename='Music.log', level=logger.DEBUG)
         self.logger = logger
 
-        ## Connect services
+        # Connect services
         self.serv_timeout = 300 * 1000000
         self.run = True
         self.memory = None
         self.audio_player = None
-        self.tts = None
-        self._connect_services()
-        self.memory.declareEvent('ALMusic/onQueueChange')
-        
+        self.services_connected = None
+        self._connect_services(30)
+        self.memory.declareEvent('Music/onQueueChange')
 
-        ## Initialize cache directory where songs will be temporarily stored.
+        # Initialize cache directory where songs will be temporarily stored.
 
-        self.cache_path = os.path.expanduser('~/.almusic_cache')
+        self.cache_path = os.path.expanduser('~/.music_cache')
         if not os.path.isdir(self.cache_path):
             os.mkdir(self.cache_path)
 
@@ -101,32 +106,47 @@ class ALMusic(object):
         self.radio_names = None
         self._init_radio_names()
         self.periodic = None
-        self.say_song_name = False
         self.volume = 1.0
         self.pan = 0
         self.search_results = list()
+        self.favorites = list()
 
+    @qi.nobind
+    def _connect_services(self, timeout):
+        """Connect to all services required.
+        :param timeout: timeout in seconds after wich acquiring services is
+                        abandonned."""
+        self.services_connected = qi.Promise()
+        services_connected_fut = self.services_connected.future()
+        timeout = int(max([1, timeout]) * 1000)
+        period = int(min([2, timeout / 2]) * 1000000)
 
-    def _connect_services(self):
-        """Attempt to get references to other services (avoid race conditions).
-        """
+        self.logger.info('Timeout: {} ms'.format(timeout))
+        self.logger.info('Period: {} us'.format(period))
 
-        def timeout():
-            """Give up connecting to services on timeout."""
-            self.run = False
-        qi.async(timeout, delay=self.serv_timeout)
-
-        while self.run:
+        def get_services():
+            """Attempt to get all services"""
             try:
                 self.memory = self.session.service('ALMemory')
                 self.audio_player = self.session.service('ALAudioPlayer')
-                self.tts = self.session.service('ALTextToSpeech')
-                break
+                self.services_connected.setValue(True)
             except RuntimeError as err:
-                time.sleep(1)
-                self.logger.warning('missing:\n {}'.format(err))
+                self.logger.warning(err)
 
-        
+        get_services_task = qi.PeriodicTask()
+        get_services_task.setCallback(get_services)
+        get_services_task.setUsPeriod(period)
+        get_services_task.start(True)
+
+        try:
+            services_connected_fut.value(timeout)
+            get_services_task.stop()
+        except RuntimeError:
+            get_services_task.stop()
+            self.logger.info(
+                'Failed to reach all services after {} ms'.format(timeout))
+            raise RuntimeError
+
     @qi.bind(returnType=qi.Float,
              paramsType=(qi.Float,),
              methodName="setVolume")
@@ -135,13 +155,11 @@ class ALMusic(object):
         self.volume = max([0, min([volume, 1])])
         return self.volume
 
-
     @qi.bind(returnType=qi.Float, paramsType=(qi.Float,), methodName="setPan")
     def set_pan(self, pan):
         """Set the pan of the songs to be played"""
         self.pan = max([-1, min([pan, 1])])
         return self.pan
-
 
     @qi.bind(returnType=qi.Map(qi.String, qi.String),
              paramsType=(qi.String,),
@@ -154,7 +172,6 @@ class ALMusic(object):
             self.play_queue()
         return success
 
-
     @qi.bind(returnType=qi.Map(qi.String, qi.String),
              paramsType=(qi.String,),
              methodName="enqueue")
@@ -165,13 +182,13 @@ class ALMusic(object):
             song = SimpleSong(song_search.next())
             song.fetch()
             self.song_queue.append(song)
-            self.memory.raiseEvent('ALMusic/onQueueChange', 'add')
+            self.memory.raiseEvent('Music/onQueueChange', 'add')
             return song.__dict__()
         except StopIteration:
             return dict()
 
-
-    @qi.bind(returnType=qi.Map(qi.String, qi.List(qi.Map(qi.String, qi.String))),
+    @qi.bind(returnType=qi.Map(qi.String,
+                               qi.List(qi.Map(qi.String, qi.String))),
              methodName="getQueue")
     def get_queue(self):
         """Get current queue as a list of dictionaries."""
@@ -182,22 +199,22 @@ class ALMusic(object):
         except AttributeError:
             active = list()
 
-        return {'queue':queue,
-                'active':active}
-
+        return {'queue': queue,
+                'active': active}
 
     @qi.bind(returnType=qi.Bool, methodName="play")
     def play_queue(self):
         """Plays the queue until it is empty."""
         if not self.playing:
             self.playing = True
+
             def go_through_queue():
                 """Pop the queue while there are songs in it"""
                 while self.song_queue and self.playing:
                     self.pop_queue()
                 self.playing = False
                 self.active_song = None
-                self.memory.raiseEvent('ALMusic/onQueueChange', 'remove')
+                self.memory.raiseEvent('Music/onQueueChange', 'remove')
             qi.async(go_through_queue)
         return self.playing
 
@@ -242,14 +259,13 @@ class ALMusic(object):
         except StopIteration:
             return False
 
-
     def _maintain_radio_queue(self, song_generator, count):
         """Maintains the queue to be of length "count". """
         while len(self.song_queue) < count:
             try:
                 song = SimpleSong(song_generator.song)
                 song.fetch()
-                self.song_queue.append(song)  
+                self.song_queue.append(song)
             except StopIteration:
                 self.periodic.stop()
 
@@ -259,23 +275,21 @@ class ALMusic(object):
             try:
                 song = SimpleSong(song_generator.next())
                 song.fetch()
-                self.song_queue.append(song)  
+                self.song_queue.append(song)
             except StopIteration:
                 self.periodic.stop()
-
 
     @qi.nobind
     def pop_queue(self):
         """Plays first item in the queue."""
         self.active_song = self.song_queue.pop(0)
-        self.memory.raiseEvent('ALMusic/onQueueChange', 'remove')
+        self.memory.raiseEvent('Music/onQueueChange', 'remove')
         path = self.active_song.path
         self.previous_songs.append(self.active_song)
         self.audio_player.playFile(path, self.volume, self.pan)
-        self.memory.raiseEvent('ALMusic/onQueueChange', 'remove')
+        self.memory.raiseEvent('Music/onQueueChange', 'remove')
         delete_file(path)
         return self.active_song
-
 
     @qi.bind(returnType=qi.Map(qi.String, qi.String),
              paramsType=(qi.String, qi.Int32),
@@ -286,7 +300,7 @@ class ALMusic(object):
         try:
             song = SimpleSong(song_search.next())
             self.song_queue.insert(position, song)
-            self.memory.raiseEvent('ALMusic/onQueueChange', 'add')
+            self.memory.raiseEvent('Music/onQueueChange', 'add')
             return song.__dict__()
         except StopIteration:
             return dict()
@@ -294,20 +308,17 @@ class ALMusic(object):
             self.logger.warning('Invalid index: {}'.format(position))
             return dict()
 
-
     @qi.bind(methodName="clearQueue")
     def clear_queue(self):
         """Clears queue."""
         self.song_queue = list()
-        self.memory.raiseEvent('ALMusic/onQueueChange', 'clear')
+        self.memory.raiseEvent('Music/onQueueChange', 'clear')
         self._clear_cache()
-
 
     @qi.bind(methodName="next")
     def next(self):
         """Stops curently playing song or radio."""
         self.audio_player.stopAll()
-
 
     @qi.bind(methodName="stop")
     def stop(self):
@@ -316,7 +327,6 @@ class ALMusic(object):
             self.periodic.stop()
         self.playing = False
         self.next()
-        
 
     @qi.nobind
     def pause(self):
@@ -328,22 +338,6 @@ class ALMusic(object):
         """Plays next song in current mix. Not implemented :( """
         pass
 
-
-    @qi.nobind
-    def enable_say_song_name(self):
-        """ALMusic uses ALTextToSpeech to enunciate the song name and artist
-        before playing it.
-        """
-        self.say_song_name = True
-
-
-    @qi.nobind
-    def disable_say_song_name(self):
-        """ALMusic does not use ALTextToSpeech to enunciate the song name and
-        artist before playing it."""
-        self.say_song_name = False
-
-
     def _clear_cache(self):
         """Clears the song cache. Not implemented :( ."""
         self.search_results = list()
@@ -352,7 +346,6 @@ class ALMusic(object):
             if os.path.isfile(f_path):
                 os.unlink(f_path)
 
-
     @qi.nobind
     def _maintain_cache(self, max_size):
         """Removes old files form the cache until they cache size is less than
@@ -360,12 +353,10 @@ class ALMusic(object):
         """
         pass
 
-
     @qi.bind(returnType=qi.List(qi.String), methodName="getRadioStations")
     def get_radio_stations(self):
         """Returns the possible radio station names."""
         return self.radio_names.keys()
-
 
     @qi.bind(returnType=qi.List(qi.Map(qi.String, qi.String)),
              paramsType=(qi.String, qi.Int32),
@@ -375,7 +366,6 @@ class ALMusic(object):
         song_search = self.client.search(query)
         search_results = list()
         while len(search_results) < results:
-
             try:
                 song = SimpleSong(song_search.next())
                 search_results.append(song.__dict__())
@@ -385,7 +375,6 @@ class ALMusic(object):
 
         return search_results
 
-    
     @qi.bind(returnType=qi.Map(qi.String, qi.String),
              paramsType=(qi.String,),
              methodName="enqueueId")
@@ -395,11 +384,10 @@ class ALMusic(object):
             song = [s for s in self.search_results if s.id == song_id][0]
             song.fetch()
             self.song_queue.append(song)
-            self.memory.raiseEvent('ALMusic/onQueueChange', 'add')
+            self.memory.raiseEvent('Music/onQueueChange', 'add')
             return song.__dict__()
         except IndexError:
             return dict()
-
 
     @qi.bind(returnType=qi.Bool,
              paramsType=(qi.String,),
@@ -410,10 +398,46 @@ class ALMusic(object):
             song = [s for s in self.song_queue if s.id == song_id][0]
             delete_file(song.path)
             self.song_queue.remove(song)
-            self.memory.raiseEvent('ALMusic/onQueueChange', 'remove')
+            self.memory.raiseEvent('Music/onQueueChange', 'remove')
             return True
         except IndexError:
             return False
+
+    @qi.bind(returnType=None,
+             paramsType=(qi.String, qi.Int32),
+             methodName="setFavoriteLevel")
+    def set_favorite_level(self, song_id, level):
+        """Set the favorite level of a song."""
+        try:
+            song = [s for s in self.search_results +
+                    self.favorites if s.id == song_id][0]
+        except IndexError:
+            raise RuntimeError('Invalid song_id: {}'.format(song_id))
+
+        try:
+            level = int(level) % 3
+        except ValueError:
+            raise RuntimeError('Invalid level: {}'.format(level))
+
+        song.f_level = str(level)
+
+        if level > 0:
+            if song not in self.favorites:
+                self.favorites.append(song)
+
+        else:
+            try:
+                self.favorites.remove(song)
+            except ValueError:
+                pass
+        self.memory.raiseEvent('Music/onFavoriteChange',
+                               '{} to level {}'.format(song_id, level))
+
+    @qi.bind(returnType=qi.List(qi.Map(qi.String, qi.String)),
+             methodName="getFavorites")
+    def get_favorites(self):
+        """Gets list of favorite songs."""
+        return [s.__dict__() for s in self.favorites]
 
     @qi.nobind
     def _init_radio_names(self):
@@ -493,7 +517,7 @@ class ALMusic(object):
             'pagode': grooveshark.Radio.GENRE_PAGODE,
             'pop rock': grooveshark.Radio.GENRE_POPROCK,
             'screamo': grooveshark.Radio.GENRE_SCREAMO,
-        'contemporary christian': grooveshark.Radio.GENRE_CONTEMPORARYCHRISTIAN,
+            'contemporary christian': grooveshark.Radio.GENRE_CONTEMPORARYCHRISTIAN,
             'downtempo': grooveshark.Radio.GENRE_DOWNTEMPO,
             'classic country': grooveshark.Radio.GENRE_CLASSICCOUNTRY,
             'soundtrack': grooveshark.Radio.GENRE_SOUNDTRACK,
@@ -582,7 +606,8 @@ class ALMusic(object):
             'cumbia': grooveshark.Radio.GENRE_CUMBIA,
             'jungle': grooveshark.Radio.GENRE_JUNGLE,
             'zydeco': grooveshark.Radio.GENRE_ZYDECO
-                            }
+        }
+
 
 def make_file_name(song):
     """Returns a valid file name for a song object."""
@@ -601,37 +626,3 @@ def delete_file(f_path):
         return True
     else:
         return False
-
-        
-def register_as_service(service_class, robot_ip="127.0.1"):
-    """Register service."""
-    session = qi.Session()
-    session.connect("tcp://%s:9559" % robot_ip)
-    service_name = service_class.__name__
-    instance = service_class(session)
-    try:
-        session.registerService(service_name, instance)
-        print 'Successfully registered service: {}'.format(service_name)
-    except RuntimeError:
-        print '{} already registered, attempt re-register'.format(service_name)
-        for info in session.services():
-            try:
-                if info['name'] == service_name:
-                    session.unregisterService(info['serviceId'])
-                    print "Unregistered {} as {}".format(service_name,
-                                                         info['serviceId'])
-                    break
-            except (KeyError, IndexError):
-                pass
-        session.registerService(service_name, instance)
-        print 'Successfully registered service: {}'.format(service_name)
-
-
-def main():
-    """Registers service"""
-    register_as_service(ALMusic)
-    app = qi.Application()
-    app.run()
-
-if __name__ == "__main__":
-    main()

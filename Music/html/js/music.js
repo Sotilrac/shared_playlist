@@ -1,4 +1,4 @@
-var ALMusic;
+var Music;
 global_vol = 0
 var dataset = 'global';
 var favorite_to_icon = ['fa-heart-o', 'fa-heart-o color-heart', 'fa-heart color-heart'];
@@ -94,7 +94,7 @@ function switch_to_spanish() {
 
 function generateQueue() {
     // Do stuff with queue
-    ALMusic.getQueue().done(function(queue) {
+    Music.getQueue().done(function(queue) {
         $('#active_song').empty();
         if (Object.keys(queue['active']).length == 0) {
             $('#active_song').fadeOut();
@@ -176,7 +176,7 @@ function generateQueue() {
 
 
 function generateSearchResult(data) {
-    ALMusic.search(data, 5).done(function(result){
+    Music.search(data, 5).done(function(result){
         if(result.length < 1) {
             $('#result_c').append(
                 '<div id="no-results" class="queue_card result card_shadow">' +
@@ -206,7 +206,7 @@ function generateSearchResult(data) {
 
                     $('#' + id + '-Add').click(function() {
                         spinID(id, true);
-                        ALMusic.enqueueId(id).done(function(response) {
+                        Music.enqueueId(id).done(function(response) {
                             spinID(id, false);
                             if(Object.keys(response).length === 0){
                                 errorizeID(id, true);
@@ -319,7 +319,7 @@ function queue_control(action, data) {
     switch(action) {
     case "Enqueue":
         spin(true)
-        ALMusic.enqueue(data).done(function(song){
+        Music.enqueue(data).done(function(song){
             console.log(song);
             spin(false);
             if(Object.keys(song).length === 0){
@@ -328,12 +328,12 @@ function queue_control(action, data) {
         });
         break;
     case "Remove":
-        ALMusic.remove(data).done(function(response) {
+        Music.remove(data).done(function(response) {
             console.log("remove song from queue")
         });
         break;
     case "Clear":
-        ALMusic.clearQueue();
+        Music.clearQueue();
         break;
     case "Move_Up":
         console.log("Move Up functionality not implemented.");
@@ -445,16 +445,16 @@ $("#am_vol_up").click(function() {
 function playback_control(action) {
     switch(action) {
     case "Play":
-        ALMusic.play();
+        Music.play();
         break;
     case "Pause":
         console.log("Pause functionality not implemented.");
         break;
     case "Stop":
-        ALMusic.stop();
+        Music.stop();
         break;
     case "Next":
-        ALMusic.next();
+        Music.next();
         break;
     }
 }
@@ -501,7 +501,7 @@ $.qim.socket().on('connect', init() );
 
 function init() {
     $.qim.service("Music").done(function (service) {
-        ALMusic = service;
+        Music = service;
         $.when(get_robot_name()).done(function(){
             get_language();
         });

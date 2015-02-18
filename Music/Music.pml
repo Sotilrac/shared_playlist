@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Package name="ALMusic" format_version="4">
+<Package name="Music" format_version="4">
     <Manifest src="manifest.xml" />
     <BehaviorDescriptions />
     <Dialogs />
@@ -19,14 +19,15 @@
         <File name="tags" src="lib/grooveshark/utils/tags.py" />
         <File name="tokens" src="lib/grooveshark/utils/tokens.py" />
         <File name="version" src="lib/grooveshark/version.py" />
-        <File name="almusic" src="lib/almusic.py" />
+        <File name="music" src="lib/music.py" />
+        <File name="register_service" src="lib/register_service.py" />
         <File name="index" src="html/index.html" />
         <File name="jquery.qimhelpers" src="html/js/jquery.qimhelpers.js" />
         <File name="jquery.textfill.min" src="html/js/jquery.textfill.min.js" />
         <File name="pixastic.custom" src="html/js/pixastic.custom.js" />
         <File name="jquery-2.1.1.min" src="html/js/jquery-2.1.1.min.js" />
         <File name="utils" src="html/js/utils.js" />
-        <File name="almusic" src="html/js/almusic.js" />
+        <File name="music" src="html/js/music.js" />
         <File name="jquery-ui.min" src="html/js/jquery-ui.min.js" />
         <File name="crossdomain" src="html/crossdomain.xml" />
         <File name="font-awesome" src="html/css/font-awesome.css" />
