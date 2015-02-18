@@ -424,6 +424,12 @@ class Music(object):
         if level > 0:
             if song not in self.favorites:
                 self.favorites.append(song)
+
+        else:
+            try:
+                self.favorites.remove(song)
+            except ValueError:
+                pass
         self.memory.raiseEvent('Music/onFavoriteChange',
                                '{} to level {}'.format(song_id, level))
 
