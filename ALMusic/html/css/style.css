@@ -238,6 +238,7 @@ body {
     height: 200px;
     background-color: rgba(242,242,242,1.0);
     margin: 0 auto;
+    display: flex;
 }
 
 .queue_add_card {
@@ -309,17 +310,24 @@ a:hover {
 }
 
 .asong_cover {
-    height:200px;
+    width: 200px; 
+    height: 200px;
     position: relative;
     float: left;
+    /* display: flex; */
 }
 
 .asong_info {
     font-size: 25px;
-    width: 60%;
+    /* max-width: 600px; */
+    /* width: 54%; */
+    /* min-width: 180px; */
     position: relative;
     float: left;
-    padding: 30px 2%;
+    padding: 28px 0;
+    margin: 0 2%;
+    flex-shrink: 2;
+    /* display: flex; */
 }
 
 .asong_title_label {
@@ -344,6 +352,31 @@ a:hover {
     line-height: 48px;
 }
 
+.asong_controls {
+    float: left;
+    width: 200px;
+    /* position: fixed; */
+    height: 100%;
+    text-align: center;
+    /* display: flex;    */
+    flex-wrap: wrap;
+}
+
+.asong_controls_single {
+    width: 200px;
+    height: 50%;
+    float: left;
+    text-align: center;
+    line-height: 100px;
+}
+
+.asong_controls_double {
+    width: 100px;
+    height: 50%;
+    float: left;
+    line-height: 100px;
+}
+
 .dj_name {
     display: inline-block;
     /* width: 334px; */
@@ -364,7 +397,7 @@ a:hover {
 }
 
 .ellipsis {
-    max-with: 555px;
+    max-width: 555px;
     width: 100%;
     text-overflow: ellipsis;
     white-space: nowrap;

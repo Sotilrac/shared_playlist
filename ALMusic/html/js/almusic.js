@@ -1,6 +1,8 @@
 var ALMusic;
 global_vol = 0
 var dataset = 'global';
+var favorite_to_icon = ['fa-heart-o', 'fa-heart-o color-heart', 'fa-heart color-heart'];
+
 
 //Change Qimessaging connection if robot name is passed in URL
 if (robotAddress != '') {
@@ -50,6 +52,7 @@ function get_robot_color(name) {
     $('<style>a:active{color:' + colors[robot_color] + '}</style>').appendTo("head");
     $("#am_search").css( "color", colors[robot_color] );
     $("#am_search").parent().css( "box-shadow", "inset 0px -4px 0px 0px" + colors[robot_color] );
+    $('<style>color-heart{color:' + colors[robot_color] + '}</style>').appendTo("head");
 }
 
 function get_language() {
@@ -99,11 +102,12 @@ function generateQueue() {
             for (song in queue['active']) {
                 var generate_active = function() {
                     var id = queue['active'][song]['id'];
+                    var flevel = queue['active'][song]['f_level'];
                     var title = queue['active'][song]['title'];
                     var artist = queue['active'][song]['artist'];
                     var album = queue['active'][song]['album'];
-                    var cover = queue['active'][song]['cover'];
-                    
+                    var cover = queue['active'][song]['cover'];                
+
                     $('#active_song').append(
                         '<img class="asong_cover" src="' + cover + '" alt="' + title + '"/>'+
                             '<div class="asong_info" id="song_data">' +
@@ -111,7 +115,24 @@ function generateQueue() {
                             '<li class="asong_title"><span class="asong_title_label ellipsis">' + title + '</span></li>'+
                             '<li class="asong_artist"><span class="asong_artist_label ellipsis">' + artist + '</span></li>'+
                             '<li class="asong_album"><span class="asong_album_label ellipsis">' + album + '</span></li>'+
-                            '</ul></div>').fadeIn();
+                            '</ul>' +
+                            '</div>' +
+                            '<div class="asong_controls">' +                            
+                            '<div id="am_play_stop" class="asong_controls_double">' +
+                            '<i id="am_play_stop_icon" class="btn fa fa-play fa-fw"></i>' +
+                            '</div>' +
+                            '<div id="new_am_next" class="asong_controls_double">' +
+                            '<i class="btn fa fa-fast-forward fa-fw"></i>' +
+                            '</div>' +
+                            '<div id="favorite-' + id + '" class="asong_controls_single">' +
+                            '<i id="favorite-' + id + '-icon" class="btn fa ' + favorite_to_icon[ parseInt(flevel) ] +
+                            ' fa-fw"></i>' + 
+                            '</div>' +
+                            '</div>').fadeIn();
+
+                    $('#favorite-' + id).click(function() {
+                        favorite_control(id);
+                    });                       
                 }
                 generate_active();
             }
@@ -127,12 +148,18 @@ function generateQueue() {
                     '<div id="' + id + '" class="queue_card card card_shadow">' +
                         '<div class="queue_card_info">' +
                         '<div class="qc_info_field">' +
-                        '<span class="title_label">' + title + '</span></div>' +
+                        '<span class="title_label">' + title + '</span>' +
+                        '</div>' +
                         '<div class="qc_info_field">' + 
-                        '<span class="artist_label">' + artist + '</span></div></div>' +                      
+                        '<span class="artist_label">' + artist + '</span>' +
+                        '</div>' + 
+                        '</div>' +                      
                         '<div class="queue_card_controls">' +                            
                         '<div id="' + id + '-controls-remove" class="c_controls_solo">' +
-                        '<i id="' + id + '-Remove" class="btn fa fa-remove fa-fw"></i></div></div>');
+                        '<i id="' + id + '-Remove" class="btn fa fa-remove fa-fw"></i>' +
+                        '</div>' +
+                        '</div>');
+
                 $('#' + id + '-Remove').click(function() {
                     queue_control('Remove', id);
                 });                       
@@ -273,6 +300,15 @@ function switch_search_dataset(clicked) {
     default:
         break;
     }    
+}
+
+///////////////////////
+// Favorite Handlers //
+///////////////////////
+
+function favorite_control(id) {
+
+
 }
 
 ////////////////////
@@ -456,7 +492,7 @@ function center_and_size_dj() {
 
 
 // ALMemory Subscriptions
-$.subscribeToALMemoryEvent('ALMusic/onQueueChange', function(eventValue) {
+$.subscribeToALMemoryEvent('Music/onQueueChange', function(eventValue) {
     generateQueue();
 });
 
@@ -464,7 +500,7 @@ $.subscribeToALMemoryEvent('ALMusic/onQueueChange', function(eventValue) {
 $.qim.socket().on('connect', init() );
 
 function init() {
-    $.qim.service("ALMusic").done(function (service) {
+    $.qim.service("Music").done(function (service) {
         ALMusic = service;
         $.when(get_robot_name()).done(function(){
             get_language();
