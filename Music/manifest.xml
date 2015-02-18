@@ -6,9 +6,8 @@
  <descriptions>
   <description lang="en_US">Naoqi service allowing to fetch music from the internet and play it.
 
-Go to {robot adress}/apps/music to use the web interface
-
-Previously known as ALMusic.</description>
+Go to {robot adress}/apps/music to use the web interface.
+</description>
  </descriptions>
  <descriptionLanguages>
   <language>en_US</language>
@@ -20,6 +19,6 @@ Previously known as ALMusic.</description>
   <robotRequirement model="NAO"/>
  </requirements>
  <services>
-  <service autorun="true" execStart="/usr/bin/python2 lib/almusic.py" name="ALMusic"/>
+  <service autorun="true" execStart="/usr/bin/python2 lib/register_service.py" name="Music"/>
  </services>
 </package>
