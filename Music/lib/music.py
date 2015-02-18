@@ -7,7 +7,6 @@ Created by the tenacious Aldebaran Boston Studio.
 import qi
 import os
 import string
-import time
 import functools
 import uuid
 import grooveshark
@@ -32,7 +31,7 @@ class SimpleSong(object):
         self.id = str(uuid.uuid1())
         self.cache_path = os.path.expanduser('~/.music_cache')
         self.path = None
-        self.favorite_level = "0"
+        self.f_level = "0"
         self.song_obj = song
 
     def __str__(self):
@@ -45,7 +44,7 @@ class SimpleSong(object):
                 'cover': self.cover,
                 'duration': self.duration,
                 'id': self.id,
-                'f_level': self.favorite_level,
+                'f_level': self.f_level,
                 'song_id': self.song_id}
 
     def fetch(self):
@@ -79,7 +78,7 @@ class Music(object):
 
     def __init__(self, session):
         self.session = session
-        logger.basicConfig(filename='ALAdvancedTouch.log', level=logger.DEBUG)
+        logger.basicConfig(filename='Music.log', level=logger.DEBUG)
         self.logger = logger
 
         # Connect services
@@ -87,7 +86,8 @@ class Music(object):
         self.run = True
         self.memory = None
         self.audio_player = None
-        self._connect_services()
+        self.services_connected = None
+        self._connect_services(30)
         self.memory.declareEvent('Music/onQueueChange')
 
         # Initialize cache directory where songs will be temporarily stored.
@@ -106,28 +106,46 @@ class Music(object):
         self.radio_names = None
         self._init_radio_names()
         self.periodic = None
-        self.say_song_name = False
         self.volume = 1.0
         self.pan = 0
         self.search_results = list()
+        self.favorites = list()
 
-    def _connect_services(self):
-        """Attempt to get references to other services (avoid race conditions).
-        """
+    @qi.nobind
+    def _connect_services(self, timeout):
+        """Connect to all services required.
+        :param timeout: timeout in seconds after wich acquiring services is
+                        abandonned."""
+        self.services_connected = qi.Promise()
+        services_connected_fut = self.services_connected.future()
+        timeout = int(max([1, timeout]) * 1000)
+        period = int(min([2, timeout / 2]) * 1000000)
 
-        def timeout():
-            """Give up connecting to services on timeout."""
-            self.run = False
-        qi.async(timeout, delay=self.serv_timeout)
+        self.logger.info('Timeout: {} ms'.format(timeout))
+        self.logger.info('Period: {} us'.format(period))
 
-        while self.run:
+        def get_services():
+            """Attempt to get all services"""
             try:
                 self.memory = self.session.service('ALMemory')
                 self.audio_player = self.session.service('ALAudioPlayer')
-                break
+                self.services_connected.setValue(True)
             except RuntimeError as err:
-                time.sleep(1)
-                self.logger.warning('missing:\n {}'.format(err))
+                self.logger.warning(err)
+
+        get_services_task = qi.PeriodicTask()
+        get_services_task.setCallback(get_services)
+        get_services_task.setUsPeriod(period)
+        get_services_task.start(True)
+
+        try:
+            services_connected_fut.value(timeout)
+            get_services_task.stop()
+        except RuntimeError:
+            get_services_task.stop()
+            self.logger.info(
+                'Failed to reach all services after {} ms'.format(timeout))
+            raise RuntimeError
 
     @qi.bind(returnType=qi.Float,
              paramsType=(qi.Float,),
@@ -320,19 +338,6 @@ class Music(object):
         """Plays next song in current mix. Not implemented :( """
         pass
 
-    @qi.nobind
-    def enable_say_song_name(self):
-        """Music uses ALTextToSpeech to enunciate the song name and artist
-        before playing it.
-        """
-        self.say_song_name = True
-
-    @qi.nobind
-    def disable_say_song_name(self):
-        """Music does not use ALTextToSpeech to enunciate the song name and
-        artist before playing it."""
-        self.say_song_name = False
-
     def _clear_cache(self):
         """Clears the song cache. Not implemented :( ."""
         self.search_results = list()
@@ -361,7 +366,6 @@ class Music(object):
         song_search = self.client.search(query)
         search_results = list()
         while len(search_results) < results:
-
             try:
                 song = SimpleSong(song_search.next())
                 search_results.append(song.__dict__())
@@ -400,22 +404,34 @@ class Music(object):
             return False
 
     @qi.bind(returnType=None,
-             paramsType=(qi.String,),
-             methodName="updateFavorite")
-    def update_favorite_level(self, song_id):
-        pass
-
-    @qi.bind(returnType=None,
              paramsType=(qi.String, qi.Int32),
              methodName="setFavoriteLevel")
     def set_favorite_level(self, song_id, level):
-        pass
+        """Set the favorite level of a song."""
+        try:
+            song = [s for s in self.search_results +
+                    self.favorites if s.id == song_id][0]
+        except IndexError:
+            raise RuntimeError('Invalid song_id: {}'.format(song_id))
+
+        try:
+            level = int(level) % 3
+        except ValueError:
+            raise RuntimeError('Invalid level: {}'.format(level))
+
+        song.f_level = str(level)
+
+        if level > 0:
+            if song not in self.favorites:
+                self.favorites.append(song)
+        self.memory.raiseEvent('Music/onFavoriteChange',
+                               '{} to level {}'.format(song_id, level))
 
     @qi.bind(returnType=qi.List(qi.Map(qi.String, qi.String)),
-             paramsType=(qi.String,),
              methodName="getFavorites")
     def get_favorites(self):
-        pass
+        """Gets list of favorite songs."""
+        return [s.__dict__() for s in self.favorites]
 
     @qi.nobind
     def _init_radio_names(self):
