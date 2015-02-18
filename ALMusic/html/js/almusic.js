@@ -1,5 +1,6 @@
 var ALMusic;
 global_vol = 0
+var dataset = 'global';
 
 //Change Qimessaging connection if robot name is passed in URL
 if (robotAddress != '') {
@@ -47,6 +48,8 @@ function get_robot_color(name) {
     }
     $('body').css('background-color', colors[robot_color]);
     $('<style>a:active{color:' + colors[robot_color] + '}</style>').appendTo("head");
+    $("#am_search").css( "color", colors[robot_color] );
+    $("#am_search").parent().css( "box-shadow", "inset 0px -4px 0px 0px" + colors[robot_color] );
 }
 
 function get_language() {
@@ -215,13 +218,20 @@ $("#queue_add").click(function() {
     query_handler();
 });
 
-$("#am_search").click(function() {  
+$("#am_search").click(function() { 
+    switch_search_dataset("#am_search");
     query_handler();
 });
 
 $("#queue_add").bind("enterKey",function() {   
     query_handler();    
 });
+
+$("#am_favorites").click(function() {       
+    switch_search_dataset("#am_favorites");
+    query_handler();
+});
+
 
 var timer;
 $("#queue_add").keyup(function(e){
@@ -242,6 +252,27 @@ function query_handler() {
     else {
         $('#result_c').empty();
     }
+}
+
+function switch_search_dataset(clicked) {
+    switch (clicked) {
+    case "#am_search":
+        dataset = 'global';
+        $("#am_favorites").css( "color", "#000" );
+        $("#am_favorites").parent().css( "box-shadow", "inset 0px 0px 0px 0px #000" );
+        $("#am_search").css( "color", colors[robot_color] );
+        $("#am_search").parent().css( "box-shadow", "inset 0px -4px 0px 0px" + colors[robot_color] );
+        break;
+    case "#am_favorites":
+        dataset = 'favorites';
+        $("#am_search").css( "color", "#000" );
+        $("#am_search").parent().css( "box-shadow", "inset 0px 0px 0px 0px #000" );
+        $("#am_favorites").css( "color", colors[robot_color] );
+        $("#am_favorites").parent().css( "box-shadow", "inset 0px -4px 0px 0px" + colors[robot_color] );
+        break;
+    default:
+        break;
+    }    
 }
 
 ////////////////////
@@ -276,16 +307,6 @@ function queue_control(action, data) {
         break;
     }
 }
-
-
-$("#am_enqueue").click(function() {       
-    query = $('#queue_add').val();
-    if (query.length > 0){
-        queue_control("Enqueue", query);
-        $('#queue_add').val('');
-        $('#result_c').empty();
-    }
-});
 
 function spin(enable){
     if(enable){
