@@ -397,6 +397,18 @@ class Music(object):
         except IndexError:
             return False
 
+    @qi.bind(returnType=None,
+             paramsType=(qi.String,),
+             methodName="updateFavorite")
+    def update_favorite_level(self, song_id):
+        pass
+
+    @qi.bind(returnType=None,
+             paramsType=(qi.String, qi.Int32),
+             methodName="setFavoriteLevel")
+    def set_favorite_level(self, song_id, level):
+        pass
+
     @qi.nobind
     def _init_radio_names(self):
         """Sets the radio station names."""
