@@ -19,7 +19,7 @@
         <File name="tags" src="lib/grooveshark/utils/tags.py" />
         <File name="tokens" src="lib/grooveshark/utils/tokens.py" />
         <File name="version" src="lib/grooveshark/version.py" />
-        <File name="almusic" src="lib/music.py" />
+        <File name="music" src="lib/music.py" />
         <File name="register_service" src="lib/register_service.py" />
         <File name="index" src="html/index.html" />
         <File name="jquery.qimhelpers" src="html/js/jquery.qimhelpers.js" />
