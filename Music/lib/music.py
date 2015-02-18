@@ -32,7 +32,7 @@ class SimpleSong(object):
         self.id = str(uuid.uuid1())
         self.cache_path = os.path.expanduser('~/.music_cache')
         self.path = None
-        self.favorite_level = 0
+        self.favorite_level = "0"
         self.song_obj = song
 
     def __str__(self):
