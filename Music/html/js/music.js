@@ -109,6 +109,7 @@ function generateQueue() {
                 var generate_active = function() {
                     var qas = queue['active'][song];
                     var id = queue['active'][song]['uid'];
+                    var song_id = queue['active'][song]['id'];
                     var flevel = queue['active'][song]['f_level'];
                     var title = queue['active'][song]['name'];
                     var artist = queue['active'][song]['artist'];
@@ -132,7 +133,7 @@ function generateQueue() {
                             '<i class="btn fa fa-fast-forward fa-fw"></i>' +
                             '</div>' +
                             '<div id="favorite-' + id + '" class="asong_controls_single">' +
-                            '<i id="favorite-' + id + '-icon" class="btn fa ' + favorite_to_icon[ parseInt(flevel) ] +
+                            '<i id="favorite-' + id + '-icon" class="btn fa ' + favorite_to_icon[ get_flevel(song_id) ] +
                             ' fa-fw"></i>' + 
                             '</div>' +
                             '</div>').fadeIn();
@@ -328,15 +329,22 @@ function display_results(result) {
 // Favorite Handlers //
 ///////////////////////
 
-function favorite_control(id) {
-    var flevel = 1;
+function get_flevel(song_id){
+    var flevel = 0;
     for (song in favorites) {
-        if (favorites[song]['id'] == id) {
-            flevel = favorites[song]['f_level'];
-            flevel = (flevel + 1) % 3;
+        if (favorites[song]['id'] == song_id) {
+            flevel = parseInt(favorites[song]['f_level']);
         }
     }
-    Music.setFavoriteLevel(id, flevel).done( function() {
+    return flevel;
+}
+
+
+function favorite_control(song) {
+    id = song['id'];
+    var flevel = get_flevel(id) + 1;
+    console.log('new F level: ' + flevel);
+    Music.setFavoriteLevel(song, flevel).done( function() {
         update_favorites();
     });
 }
@@ -556,8 +564,8 @@ function init() {
             get_language();
         });
         get_robot_icon();
-        generateQueue();
         update_favorites();
+        generateQueue();
         $('body').fadeIn();
     }).fail(function (error) {
         console.log("An error occurred:", error);

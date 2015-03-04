@@ -57,7 +57,10 @@ class SimpleSong(object):
         :param level: integer from 0 to 2 denoting: (0) Not a favorite,
                       (1) Favorite, and (2) Cached Favorite
         """
-        self.f_level = int(level) % 3
+        level = int(level) % 3
+        initial_level = self.f_level
+        self.f_level = level
+        return self.f_level != initial_level
 
 
 @qi.multiThreaded()
@@ -396,26 +399,34 @@ class Music(object):
              methodName="setFavoriteLevel")
     def set_favorite_level(self, song, level):
         """Set the favorite level of a song."""
+
+        # Find song in favorites and remove it if found
+        try:
+            song = [s for s in self.favorites if song['id'] == s['id']][0]
+            self.favorites.remove(song)
+        except IndexError:
+            pass
+
+        # Create song object
         song = grooveshark.Song.from_export(song, self.client.connection)
         song = SimpleSong(song)
 
-        song.set_favorite_level(level)
+        # Adjust favorite level
+        update_favorites = song.set_favorite_level(level)
+
+        # Save song in favorites if necesary
         if song.f_level > 0:
-            if song not in self.favorites:
-                self.favorites.append(song)
-        else:
-            try:
-                self.favorites.remove(song)
-            except ValueError:
-                pass
-        self._save_favorites()
-        self.memory.raiseEvent('Music/onFavoriteChange',
-                               '{} to level {}'.format(song.uid, level))
+            self.favorites.append(song.__dict__())
+
+        if update_favorites:
+            self._save_favorites()
+            self.memory.raiseEvent('Music/onFavoriteChange',
+                                   '{} to level {}'.format(song.uid, level))
 
     @qi.bind(methodName="getFavorites")
     def get_favorites(self):
         """Gets list of favorite songs."""
-        return [s.__dict__() for s in self.favorites]
+        return self.favorites
 
     @qi.nobind
     def _restore_favorites(self):
