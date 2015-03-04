@@ -13,6 +13,8 @@ import grooveshark
 import logging as logger
 import pickle
 
+CACHE_PATH = os.path.expanduser('~/.music_cache')
+
 
 class SimpleSong(object):
 
@@ -22,47 +24,39 @@ class SimpleSong(object):
     """
 
     def __init__(self, song):
-
-        self.title = song.name.encode('utf8', 'replace')
-        self.artist = song.artist.name.encode('utf8', 'replace')
-        self.album = song.album.name.encode('utf8', 'replace')
-        self.song_id = song.id
-        self.duration = song.duration
-        self.cover = song.album._cover_url
-        self.id = str(uuid.uuid1())
-        self.cache_path = os.path.expanduser('~/.music_cache')
+        # self.title = song.name.encode('utf8', 'replace')
+        # self.artist = song.artist.name.encode('utf8', 'replace')
+        # self.album = song.album.name.encode('utf8', 'replace')
+        self.uid = str(uuid.uuid1())
         self.path = None
-        self.f_level = "0"
-        self.song_obj = song
+        self.f_level = 0
+        self.song = song
 
     def __str__(self):
-        return '{} by {}. {}'.format(self.title, self.artist, self.album)
+        return str(self.song)
 
     def __dict__(self):
-        return {'title': self.title,
-                'artist': self.artist,
-                'album': self.album,
-                'cover': self.cover,
-                'duration': self.duration,
-                'id': self.id,
-                'f_level': self.f_level,
-                'song_id': self.song_id}
+        song_dic = self.song.export()
+        song_dic['f_level'] = str(self.f_level)
+        song_dic['uid'] = self.uid
+        return song_dic
 
     def fetch(self):
         """Downloads a song and returns a path to a file."""
-        song_file_name = "{} - {}".format(self.id,
-                                          make_file_name(self.song_obj))
+        song_file_name = "%a - %s - {}".format(self.uid)
 
-        song_path = os.path.join(self.cache_path,
-                                 song_file_name)
+        song_file_name = self.song.download(CACHE_PATH, song_file_name)
 
-        if not os.path.exists(song_path):
-            with open(song_path, 'w') as song_file:
-                data = self.song_obj.safe_download()
-                song_file.write(data)
+        self.path = os.path.join(CACHE_PATH, song_file_name)
+        return self.path
 
-        self.path = song_path
-        return song_path
+    def set_favorite_level(self, level):
+        """Set the favorite level of the song. and limits it to values od 0, 1
+        and 2.
+        :param level: integer from 0 to 2 denoting: (0) Not a favorite,
+                      (1) Favorite, and (2) Cached Favorite
+        """
+        self.f_level = int(level) % 3
 
 
 @qi.multiThreaded()
@@ -109,7 +103,6 @@ class Music(object):
         self.periodic = None
         self.volume = 1.0
         self.pan = 0
-        self.search_results = list()
         self.favorites = list()
         self._restore_favorites()
 
@@ -189,9 +182,7 @@ class Music(object):
         except StopIteration:
             return dict()
 
-    @qi.bind(returnType=qi.Map(qi.String,
-                               qi.List(qi.Map(qi.String, qi.String))),
-             methodName="getQueue")
+    @qi.bind(methodName="getQueue")
     def get_queue(self):
         """Get current queue as a list of dictionaries."""
 
@@ -342,7 +333,6 @@ class Music(object):
 
     def _clear_cache(self):
         """Clears the song cache. Not implemented :( ."""
-        self.search_results = list()
         for song in os.listdir(self.cache_path):
             f_path = os.path.join(self.cache_path, song)
             if os.path.isfile(f_path):
@@ -360,8 +350,7 @@ class Music(object):
         """Returns the possible radio station names."""
         return self.radio_names.keys()
 
-    @qi.bind(returnType=qi.List(qi.Map(qi.String, qi.String)),
-             paramsType=(qi.String, qi.Int32),
+    @qi.bind(paramsType=(qi.String, qi.Int32),
              methodName="search")
     def search(self, query, results):
         """Returns song search results for a given query."""
@@ -371,33 +360,31 @@ class Music(object):
             try:
                 song = SimpleSong(song_search.next())
                 search_results.append(song.__dict__())
-                self.search_results.append(song)
             except StopIteration:
                 break
 
         return search_results
 
-    @qi.bind(returnType=qi.Map(qi.String, qi.String),
-             paramsType=(qi.String,),
-             methodName="enqueueId")
-    def enqueue_by_id(self, song_id):
-        """Add song to the queue by id."""
-        try:
-            song = [s for s in self.search_results if s.id == song_id][0]
-            song.fetch()
-            self.song_queue.append(song)
-            self.memory.raiseEvent('Music/onQueueChange', 'add')
-            return song.__dict__()
-        except IndexError:
-            return dict()
+    @qi.bind(returnType=None,
+             methodName="enqueueSong")
+    def enqueue_song(self, song):
+        """Add a song to the queue using a song object.
+        :param song: song dictionaty.
+        """
+        song = grooveshark.Song.from_export(song, self.client.connection)
+        song = SimpleSong(song)
+
+        song.fetch()
+        self.song_queue.append(song)
+        self.memory.raiseEvent('Music/onQueueChange', 'add')
 
     @qi.bind(returnType=qi.Bool,
              paramsType=(qi.String,),
              methodName="remove")
-    def remove(self, song_id):
-        """Remove song from the queue by id."""
+    def remove(self, song_uid):
+        """Remove song from the queue by uid."""
         try:
-            song = [s for s in self.song_queue if s.id == song_id][0]
+            song = [s for s in self.song_queue if s.uid == song_uid][0]
             delete_file(song.path)
             self.song_queue.remove(song)
             self.memory.raiseEvent('Music/onQueueChange', 'remove')
@@ -406,27 +393,16 @@ class Music(object):
             return False
 
     @qi.bind(returnType=None,
-             paramsType=(qi.String, qi.Int32),
              methodName="setFavoriteLevel")
-    def set_favorite_level(self, song_id, level):
+    def set_favorite_level(self, song, level):
         """Set the favorite level of a song."""
-        try:
-            song = [s for s in self.search_results +
-                    self.favorites if s.id == song_id][0]
-        except IndexError:
-            raise RuntimeError('Invalid song_id: {}'.format(song_id))
+        song = grooveshark.Song.from_export(song, self.client.connection)
+        song = SimpleSong(song)
 
-        try:
-            level = int(level) % 3
-        except ValueError:
-            raise RuntimeError('Invalid level: {}'.format(level))
-
-        song.f_level = str(level)
-
-        if level > 0:
+        song.set_favorite_level(level)
+        if song.f_level > 0:
             if song not in self.favorites:
                 self.favorites.append(song)
-
         else:
             try:
                 self.favorites.remove(song)
@@ -434,7 +410,7 @@ class Music(object):
                 pass
         self._save_favorites()
         self.memory.raiseEvent('Music/onFavoriteChange',
-                               '{} to level {}'.format(song_id, level))
+                               '{} to level {}'.format(song.uid, level))
 
     @qi.bind(returnType=qi.List(qi.Map(qi.String, qi.String)),
              methodName="getFavorites")
