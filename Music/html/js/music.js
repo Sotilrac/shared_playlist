@@ -1,6 +1,7 @@
 var Music;
 global_vol = 0
 var dataset = 'global';
+var favorites;
 var favorite_to_icon = ['fa-heart-o', 'fa-heart-o color-heart', 'fa-heart color-heart'];
 
 
@@ -50,9 +51,10 @@ function get_robot_color(name) {
     }
     $('body').css('background-color', colors[robot_color]);
     $('<style>a:active{color:' + colors[robot_color] + '}</style>').appendTo("head");
+    $('<style>.btn:active{color:' + colors[robot_color] + '}</style>').appendTo("head");
     $("#am_search").css( "color", colors[robot_color] );
     $("#am_search").parent().css( "box-shadow", "inset 0px -4px 0px 0px" + colors[robot_color] );
-    $('<style>color-heart{color:' + colors[robot_color] + '}</style>').appendTo("head");
+    $('<style>.color-heart{color:' + colors[robot_color] + '}</style>').appendTo("head");
 }
 
 function get_language() {
@@ -98,7 +100,11 @@ function generateQueue() {
         $('#active_song').empty();
         if (Object.keys(queue['active']).length == 0) {
             $('#active_song').fadeOut();
+            if (Object.keys(queue['queue']).length != 0) {
+                $('#start').fadeIn();
+            }
         } else {
+            $('#start').fadeOut();
             for (song in queue['active']) {
                 var generate_active = function() {
                     var id = queue['active'][song]['id'];
@@ -118,10 +124,10 @@ function generateQueue() {
                             '</ul>' +
                             '</div>' +
                             '<div class="asong_controls">' +                            
-                            '<div id="am_play_stop" class="asong_controls_double">' +
-                            '<i id="am_play_stop_icon" class="btn fa fa-play fa-fw"></i>' +
+                            '<div id="am_stop" class="asong_controls_double">' +
+                            '<i id="am_stop_icon" class="btn fa fa-stop fa-fw"></i>' +
                             '</div>' +
-                            '<div id="new_am_next" class="asong_controls_double">' +
+                            '<div id="am_next" class="asong_controls_double">' +
                             '<i class="btn fa fa-fast-forward fa-fw"></i>' +
                             '</div>' +
                             '<div id="favorite-' + id + '" class="asong_controls_single">' +
@@ -176,60 +182,21 @@ function generateQueue() {
 
 
 function generateSearchResult(data) {
-    Music.search(data, 5).done(function(result){
-        if(result.length < 1) {
-            $('#result_c').append(
-                '<div id="no-results" class="queue_card result card_shadow">' +
-                    '<div class="queue_card_empty">' +
-                    'No results' +
-                    '</div></div>');
-        }
-        else {
-            $('#result_c').empty();
-            for (song in result) {
-                var generate_result = function() {
-                    var id = result[song]['id'];
-                    var title = result[song]['title'];
-                    var artist = result[song]['artist'];
-                    var album = result[song]['album'];
-
-                    $('#result_c').append(
-                        '<div id="' + id + '" class="queue_card result card_shadow">' +
-                        '<div class="queue_card_info">' +
-                        '<div class="qc_info_field">' +
-                        '<span class="title_label">' + title + '</span></div>' +
-                        '<div class="qc_info_field">' + 
-                        '<span class="artist_label">' + artist + '</span></div></div>' +
-                        '<div class="queue_card_controls">' +                            
-                        '<div id="' + id + '-controls-add" class="c_controls_solo">' +
-                        '<i id="' + id + '-Add" class="btn fa fa-plus fa-fw"></i></div></div>');
-
-                    $('#' + id + '-Add').click(function() {
-                        spinID(id, true);
-                        Music.enqueueId(id).done(function(response) {
-                            spinID(id, false);
-                            if(Object.keys(response).length === 0){
-                                errorizeID(id, true);
-                                pulsateID(id);
-                            }
-                            else {
-                                $('#result_c').empty();
-                                $('#queue_add').val('');
-                            }
-                        })
-                    });
-                }
-                generate_result();
-            }
-        }
-    })
+    if (dataset == 'global') {
+        Music.search(data, 5).done(function(result){
+            display_results(result);
+        });
+    }
+    else {
+        display_results(search_favorites(data));
+    }
 }
 
 // $("#queue_add").change(function() {       
 //     query = $('#queue_add').val();
 //     if (query.length > 0){        
 //         generateSearchResult(query);
-//         // $('#queue_add').val('');
+//         // $('#queue_add').val('');]
 //     }
 //     else {
 //         $('#result_c').empty();
@@ -277,7 +244,11 @@ function query_handler() {
         generateSearchResult(query);
     }
     else {
-        $('#result_c').empty();
+        if (dataset == 'global') {
+            $('#result_c').empty();
+        } else {
+            display_results(favorites);
+        }
     }
 }
 
@@ -302,13 +273,81 @@ function switch_search_dataset(clicked) {
     }    
 }
 
+function display_results(result) {
+    if(result.length < 1) {
+        $('#result_c').empty();
+        $('#result_c').append(
+            '<div id="no-results" class="queue_card result card_shadow">' +
+                '<div class="queue_card_empty">' +
+                'No results' +
+                '</div></div>');
+    }
+    else {
+        $('#result_c').empty();
+        for (song in result) {
+            var generate_result = function() {
+                var id = result[song]['id'];
+                var title = result[song]['title'];
+                var artist = result[song]['artist'];
+                var album = result[song]['album'];
+
+                $('#result_c').append(
+                    '<div id="' + id + '" class="queue_card result card_shadow">' +
+                        '<div class="queue_card_info">' +
+                        '<div class="qc_info_field">' +
+                        '<span class="title_label">' + title + '</span></div>' +
+                        '<div class="qc_info_field">' + 
+                        '<span class="artist_label">' + artist + '</span></div></div>' +
+                        '<div class="queue_card_controls">' +                            
+                        '<div id="' + id + '-controls-add" class="c_controls_solo">' +
+                        '<i id="' + id + '-Add" class="btn fa fa-plus fa-fw"></i></div></div>');
+
+                $('#' + id + '-Add').click(function() {
+                    spinID(id, true);
+                    Music.enqueueId(id).done(function(response) {
+                        spinID(id, false);
+                        if(Object.keys(response).length === 0){
+                            errorizeID(id, true);
+                            pulsateID(id);
+                        }
+                        else {
+                            $('#result_c').empty();
+                            $('#queue_add').val('');
+                        }
+                    })
+                });
+            }
+            generate_result();
+        }
+    }
+}
+
 ///////////////////////
 // Favorite Handlers //
 ///////////////////////
 
 function favorite_control(id) {
+    var flevel = 1;
+    for (song in favorites) {
+        if (favorites[song]['id'] == id) {
+            flevel = favorites[song]['f_level'];
+            flevel = (flevel + 1) % 3;
+        }
+    }
+    Music.setFavoriteLevel(id, flevel).done( function() {
+        update_favorites();
+    });
+}
 
+function update_favorites() {
+    console.log("Updating favorites...");
+    Music.getFavorites().done( function(favorite_list) {
+        favorites = favorite_list;
+    });
+}
 
+function search_favorites(query) {
+    return favorites;
 }
 
 ////////////////////
@@ -463,15 +502,27 @@ $("#am_play").click(function() {
     playback_control("Play");
 });
 
-$("#am_pause").click(function() {
-    playback_control("Pause");
+$("#old_am_play").click(function() {
+    playback_control("Play");
 });
 
-$("#am_stop").click(function() {
+// $("#am_pause").click(function() {
+//     playback_control("Pause");
+// });
+
+$("#old_am_stop").click(function() {
     playback_control("Stop");
 });
 
-$("#am_next").click(function() {
+$("#old_am_next").click(function() {
+    playback_control("Next");
+});
+
+$(document).on("click", '#am_stop', function(e){
+    playback_control("Stop");
+});
+
+$(document).on("click", '#am_next', function(e){
     playback_control("Next");
 });
 
@@ -490,10 +541,13 @@ function center_and_size_dj() {
 
 //////////////////////////
 
-
 // ALMemory Subscriptions
 $.subscribeToALMemoryEvent('Music/onQueueChange', function(eventValue) {
     generateQueue();
+});
+
+$.subscribeToALMemoryEvent('Music/onFavoriteChange', function(eventValue) {
+    update_favorites();
 });
 
 // Connect/Disconnect signals
@@ -507,6 +561,7 @@ function init() {
         });
         get_robot_icon();
         generateQueue();
+        update_favorites();
         $('body').fadeIn();
     }).fail(function (error) {
         console.log("An error occurred:", error);

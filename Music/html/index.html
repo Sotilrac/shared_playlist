@@ -53,6 +53,20 @@
       </div>
       <div id="mighty_c" class="mighty_container">
         <div id="queue_c" class="queue_container">
+          <div id="start" class="queue_card queue_add_card start card_shadow card_rounded" style="display:none;">
+            <div id="tagline_c" class="queue_card_add">
+              <div id="tagline" class="qc_info_field">
+                Search / Enqueue / Favorite / Play / Party
+              </div>
+            </div>
+            <div id="start_control" class="queue_card_controls">
+              <div id="play-control" class="queue_card_control_solo">
+                <a id="am_play" class="btn label" href="#">
+                  <i class="fa fa-play fa-fw"></i>
+                </a>
+              </div>
+            </div>
+          </div>
           <!-- BEGIN DYNAMICALLY GENERATED QUEUE CARDS -->
           <div id="active_song" class="card card_shadow card_rounded
                queue_card queue_active_card" style="display:none;"></div>
@@ -92,9 +106,9 @@
       <div id="control_pane" class="controls">
         <div id="playback_controls" class="playback_control">
           <ul class="control_buttons">
-            <li><a id="am_play" class="btn" href="#"><i class="fa fa-play fa-fw"></i></a></li>
-            <li><a id="am_stop" class="btn" href="#"><i class="fa fa-stop fa-fw"></i></a></li>
-            <li><a id="am_next" class="btn" href="#"><i class="fa fa-fast-forward fa-fw"></i></a></li>
+            <li><a id="old_am_play" class="btn" href="#"><i class="fa fa-play fa-fw"></i></a></li>
+            <li><a id="old_am_stop" class="btn" href="#"><i class="fa fa-stop fa-fw"></i></a></li>
+            <li><a id="old_am_next" class="btn" href="#"><i class="fa fa-fast-forward fa-fw"></i></a></li>
           </ul>
         </div>
       </div>
