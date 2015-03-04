@@ -107,9 +107,10 @@ function generateQueue() {
             $('#start').fadeOut();
             for (song in queue['active']) {
                 var generate_active = function() {
-                    var id = queue['active'][song]['id'];
+                    var qas = queue['active'][song];
+                    var id = queue['active'][song]['uid'];
                     var flevel = queue['active'][song]['f_level'];
-                    var title = queue['active'][song]['title'];
+                    var title = queue['active'][song]['name'];
                     var artist = queue['active'][song]['artist'];
                     var album = queue['active'][song]['album'];
                     var cover = queue['active'][song]['cover'];                
@@ -137,7 +138,7 @@ function generateQueue() {
                             '</div>').fadeIn();
 
                     $('#favorite-' + id).click(function() {
-                        favorite_control(id);
+                        favorite_control(qas);
                     });                       
                 }
                 generate_active();
@@ -146,8 +147,8 @@ function generateQueue() {
         $('#dynamic_c').empty();
         for (song in queue['queue']) {
             var generate_queue = function() {
-                var id = queue['queue'][song]['id'];
-                var title = queue['queue'][song]['title'];
+                var id = queue['queue'][song]['uid'];
+                var title = queue['queue'][song]['name'];
                 var artist = queue['queue'][song]['artist'];
 
                 $('#dynamic_c').append(
@@ -286,8 +287,9 @@ function display_results(result) {
         $('#result_c').empty();
         for (song in result) {
             var generate_result = function() {
-                var id = result[song]['id'];
-                var title = result[song]['title'];
+                var rs = result[song];
+                var id = result[song]['uid'];
+                var title = result[song]['name'];
                 var artist = result[song]['artist'];
                 var album = result[song]['album'];
 
@@ -304,16 +306,16 @@ function display_results(result) {
 
                 $('#' + id + '-Add').click(function() {
                     spinID(id, true);
-                    Music.enqueueId(id).done(function(response) {
+                    Music.enqueueSong(rs).done(function() {
                         spinID(id, false);
-                        if(Object.keys(response).length === 0){
-                            errorizeID(id, true);
-                            pulsateID(id);
-                        }
-                        else {
+                        // if(Object.keys(response).length === 0){
+                        //     errorizeID(id, true);
+                        //     pulsateID(id);
+                        // }
+                        // else {
                             $('#result_c').empty();
                             $('#queue_add').val('');
-                        }
+                        //}
                     })
                 });
             }
