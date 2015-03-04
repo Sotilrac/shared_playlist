@@ -481,6 +481,15 @@ $("#am_vol_up").click(function() {
     volume_control("Up");
 });
 
+$("#am_vol").click(function() {
+    if ($('#sfa_c').is(':visible')){
+        $('#sfa_c').fadeOut();
+    }
+    else {
+        $('#sfa_c').fadeIn();
+    }
+});
+
 function playback_control(action) {
     switch(action) {
     case "Play":
