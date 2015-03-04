@@ -541,6 +541,7 @@ $.subscribeToALMemoryEvent('Music/onQueueChange', function(eventValue) {
 
 $.subscribeToALMemoryEvent('Music/onFavoriteChange', function(eventValue) {
     update_favorites();
+    generateQueue();
 });
 
 // Connect/Disconnect signals
