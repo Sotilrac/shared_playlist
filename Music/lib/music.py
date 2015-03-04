@@ -39,6 +39,7 @@ class SimpleSong(object):
         song_dic = self.song.export()
         song_dic['f_level'] = str(self.f_level)
         song_dic['uid'] = self.uid
+        song_dic['path'] = str(self.path)
         return song_dic
 
     def fetch(self):
@@ -47,7 +48,7 @@ class SimpleSong(object):
 
         song_file_name = self.song.download(CACHE_PATH, song_file_name)
 
-        self.path = os.path.join(CACHE_PATH, song_file_name)
+        self.path = os.path.join(CACHE_PATH, song_file_name + '.mp3')
         return self.path
 
     def set_favorite_level(self, level):
@@ -86,10 +87,8 @@ class Music(object):
         self.memory.declareEvent('Music/onQueueChange')
 
         # Initialize cache directory where songs will be temporarily stored.
-
-        self.cache_path = os.path.expanduser('~/.music_cache')
-        if not os.path.isdir(self.cache_path):
-            os.mkdir(self.cache_path)
+        if not os.path.isdir(CACHE_PATH):
+            os.mkdir(CACHE_PATH)
 
         self.client = grooveshark.Client()
         self.client.init()
@@ -195,7 +194,8 @@ class Music(object):
         return {'queue': queue,
                 'active': active}
 
-    @qi.bind(returnType=qi.Bool, methodName="play")
+    @qi.bind(returnType=qi.Bool,
+             methodName="play")
     def play_queue(self):
         """Plays the queue until it is empty."""
         if not self.playing:
@@ -333,8 +333,8 @@ class Music(object):
 
     def _clear_cache(self):
         """Clears the song cache. Not implemented :( ."""
-        for song in os.listdir(self.cache_path):
-            f_path = os.path.join(self.cache_path, song)
+        for song in os.listdir(CACHE_PATH):
+            f_path = os.path.join(CACHE_PATH, song)
             if os.path.isfile(f_path):
                 os.unlink(f_path)
 
@@ -412,8 +412,7 @@ class Music(object):
         self.memory.raiseEvent('Music/onFavoriteChange',
                                '{} to level {}'.format(song.uid, level))
 
-    @qi.bind(returnType=qi.List(qi.Map(qi.String, qi.String)),
-             methodName="getFavorites")
+    @qi.bind(methodName="getFavorites")
     def get_favorites(self):
         """Gets list of favorite songs."""
         return [s.__dict__() for s in self.favorites]
@@ -423,19 +422,23 @@ class Music(object):
         """Downloads a song and returns a path to a file."""
         fav_file_name = 'favorites'
 
-        fav_path = os.path.join(self.cache_path,
+        fav_path = os.path.join(CACHE_PATH,
                                 fav_file_name)
 
         if os.path.exists(fav_path):
             with open(fav_path, 'r') as fav_file:
-                self.favorites = pickle.load(fav_file)
+                try:
+                    self.favorites = pickle.load(fav_file)
+                except EOFError:
+                    self.logger.warning('Deleting invalid favorite file.')
+                    delete_file(fav_path)
 
     @qi.nobind
     def _save_favorites(self):
         """Downloads a song and returns a path to a file."""
         fav_file_name = 'favorites'
 
-        fav_path = os.path.join(self.cache_path,
+        fav_path = os.path.join(CACHE_PATH,
                                 fav_file_name)
 
         with open(fav_path, 'w') as fav_file:
