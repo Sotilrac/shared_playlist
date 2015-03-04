@@ -102,24 +102,36 @@
         </div>
       </div>
     </div>
-    <div id="cc" class="control_container">
-      <div id="control_pane" class="controls">
-        <div id="playback_controls" class="playback_control">
-          <ul class="control_buttons">
-            <li><a id="old_am_play" class="btn" href="#"><i class="fa fa-play fa-fw"></i></a></li>
-            <li><a id="old_am_stop" class="btn" href="#"><i class="fa fa-stop fa-fw"></i></a></li>
-            <li><a id="old_am_next" class="btn" href="#"><i class="fa fa-fast-forward fa-fw"></i></a></li>
-          </ul>
+    <div id="fa_c" class="fa_container">
+      <div id="sfa_c" class="sub_fa_container" style="display: none;">
+        <div id="control_pane" class="controls">
+          <a id="am_vol_up" class="btn volume_control" href="#">
+            <span class="fa-stack">
+              <i class="fa fa-circle fa-stack-2x float-action"></i>
+              <i class="fa fa-volume-up fa-stack-1x"></i>
+            </span>
+          </a>
+          <a id="am_vol_down" class="btn volume_control" href="#">
+            <span class="fa-stack">
+              <i class="fa fa-circle fa-stack-2x float-action"></i>
+              <i class="fa fa-volume-down fa-stack-1x"></i>
+            </span>
+          </a>
+          <a id="am_vol_mute" class="btn volume_control" href="#">
+            <span class="fa-stack">
+              <i class="fa fa-circle fa-stack-2x float-action"></i>
+              <i class="fa fa-times fa-stack-1x"></i>
+            </span>
+          </a>
         </div>
       </div>
       <div id="control_pane" class="controls">
-        <div id="volume_controls" class="volume_control">
-          <ul class="control_buttons volume_control">
-            <li><a id="am_vol_mute" class="btn" href="#"><i class="fa fa-volume-off fa-fw"></i></a></li>
-            <li><a id="am_vol_down" class="btn" href="#"><i class="fa fa-volume-down fa-fw"></i></a></li>
-            <li><a id="am_vol_up" class="btn" href="#"><i class="fa fa-volume-up fa-fw"></i></a></li>
-          </ul>
-        </div>
+        <a id="am_vol" class="btn volume_control" href="#">
+          <span class="fa-stack">
+            <i class="fa fa-circle fa-stack-2x float-action"></i>
+            <i class="fa fa-volume-off fa-stack-1x"></i>
+          </span>
+        </a>
       </div>
     </div>
     <script language="JavaScript" src="js/music.js"></script>
