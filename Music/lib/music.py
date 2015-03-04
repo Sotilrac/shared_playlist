@@ -111,6 +111,7 @@ class Music(object):
         self.pan = 0
         self.search_results = list()
         self.favorites = list()
+        self._restore_favorites()
 
     @qi.nobind
     def _connect_services(self, timeout):
@@ -431,6 +432,7 @@ class Music(object):
                 self.favorites.remove(song)
             except ValueError:
                 pass
+        self._save_favorites()
         self.memory.raiseEvent('Music/onFavoriteChange',
                                '{} to level {}'.format(song_id, level))
 
