@@ -72,6 +72,12 @@
         <File name="BebasNeue-Thin" src="html/fonts/BebasNeue-Thin.ttf" />
         <File name="FFF_EULA_license" src="html/fonts/FFF_EULA_license.pdf" />
         <File name="Glober Pro Specimen" src="html/fonts/Glober Pro Specimen.pdf" />
+        <File name="" src=".directory" />
+        <File name="" src="html/.directory" />
+        <File name="browserconfig" src="html/browserconfig.xml" />
+        <File name="Flat-it License" src="html/fonts/Flat-it License.txt" />
+        <File name="Freeware License" src="html/fonts/Freeware License.txt" />
+        <File name="qimessaging" src="html/js/qimessaging.js" />
     </Resources>
     <Topics />
     <IgnoredPaths />

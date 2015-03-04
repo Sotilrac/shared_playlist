@@ -11,6 +11,7 @@ import functools
 import uuid
 import grooveshark
 import logging as logger
+import pickle
 
 
 class SimpleSong(object):
@@ -69,7 +70,7 @@ class Music(object):
 
     """Class: Music
 
-    Pump up the jam
+    Pump up the jam.
 
     IMPORTANT: Music module is based on qimessaging, therefore
     session.service must be used (instead of ALProxy).
@@ -440,6 +441,29 @@ class Music(object):
         return [s.__dict__() for s in self.favorites]
 
     @qi.nobind
+    def _restore_favorites(self):
+        """Downloads a song and returns a path to a file."""
+        fav_file_name = 'favorites'
+
+        fav_path = os.path.join(self.cache_path,
+                                fav_file_name)
+
+        if os.path.exists(fav_path):
+            with open(fav_path, 'r') as fav_file:
+                self.favorites = pickle.load(fav_file)
+
+    @qi.nobind
+    def _save_favorites(self):
+        """Downloads a song and returns a path to a file."""
+        fav_file_name = 'favorites'
+
+        fav_path = os.path.join(self.cache_path,
+                                fav_file_name)
+
+        with open(fav_path, 'w') as fav_file:
+            pickle.dump(self.favorites, fav_file)
+
+    @qi.nobind
     def _init_radio_names(self):
         """Sets the radio station names."""
         self.radio_names = {
@@ -517,7 +541,7 @@ class Music(object):
             'pagode': grooveshark.Radio.GENRE_PAGODE,
             'pop rock': grooveshark.Radio.GENRE_POPROCK,
             'screamo': grooveshark.Radio.GENRE_SCREAMO,
-            'contemporary christian': grooveshark.Radio.GENRE_CONTEMPORARYCHRISTIAN,
+        'contemporary christian': grooveshark.Radio.GENRE_CONTEMPORARYCHRISTIAN,
             'downtempo': grooveshark.Radio.GENRE_DOWNTEMPO,
             'classic country': grooveshark.Radio.GENRE_CLASSICCOUNTRY,
             'soundtrack': grooveshark.Radio.GENRE_SOUNDTRACK,
