@@ -511,22 +511,6 @@ $("#am_play").click(function() {
     playback_control("Play");
 });
 
-$("#old_am_play").click(function() {
-    playback_control("Play");
-});
-
-// $("#am_pause").click(function() {
-//     playback_control("Pause");
-// });
-
-$("#old_am_stop").click(function() {
-    playback_control("Stop");
-});
-
-$("#old_am_next").click(function() {
-    playback_control("Next");
-});
-
 $(document).on("click", '#am_stop', function(e){
     playback_control("Stop");
 });
