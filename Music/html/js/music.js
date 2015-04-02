@@ -16,6 +16,7 @@ function get_robot_name() {
             function (name){
                 get_robot_color(name);
                 $('#robot_name').html("DJ " + name ).css({'color': colors[robot_color]});
+                document.title = "Music by DJ " + name;
             })
     });
 }
@@ -24,7 +25,12 @@ function get_robot_icon() {
     $.getService('ALSystem', function(ALSystem) {
         ALSystem.robotIcon().done(
             function (buffer){
-                $('#logo').html("<img src=data:image/png;base64," + buffer + "></img>");
+                if (buffer == undefined){
+                    $('#logo').html("<img src=android-chrome-192x192.png></img>");
+                }
+                else {
+                    $('#logo').html("<img src=data:image/png;base64," + buffer + "></img>");
+                }
             })
     });
 }

@@ -35,9 +35,7 @@
         <File name="normalize" src="html/css/normalize.css" />
         <File name="style" src="html/css/style.css" />
         <File name="favicon" src="html/favicon.ico" />
-        <File name="favicon-160x160" src="html/favicon-160x160.png" />
         <File name="favicon-16x16" src="html/favicon-16x16.png" />
-        <File name="favicon-192x192" src="html/favicon-192x192.png" />
         <File name="favicon-32x32" src="html/favicon-32x32.png" />
         <File name="favicon-96x96" src="html/favicon-96x96.png" />
         <File name="mstile-144x144" src="html/mstile-144x144.png" />
@@ -77,7 +75,13 @@
         <File name="browserconfig" src="html/browserconfig.xml" />
         <File name="Flat-it License" src="html/fonts/Flat-it License.txt" />
         <File name="Freeware License" src="html/fonts/Freeware License.txt" />
-        <File name="qimessaging" src="html/js/qimessaging.js" />
+        <File name="android-chrome-144x144" src="html/android-chrome-144x144.png" />
+        <File name="android-chrome-192x192" src="html/android-chrome-192x192.png" />
+        <File name="android-chrome-36x36" src="html/android-chrome-36x36.png" />
+        <File name="android-chrome-48x48" src="html/android-chrome-48x48.png" />
+        <File name="android-chrome-72x72" src="html/android-chrome-72x72.png" />
+        <File name="android-chrome-96x96" src="html/android-chrome-96x96.png" />
+        <File name="manifest" src="html/manifest.json" />
     </Resources>
     <Topics />
     <IgnoredPaths />
