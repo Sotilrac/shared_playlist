@@ -158,8 +158,7 @@ class Music(object):
         self.pan = max([-1, min([pan, 1])])
         return self.pan
 
-    @qi.bind(returnType=qi.Map(qi.String, qi.String),
-             paramsType=(qi.String,),
+    @qi.bind(paramsType=(qi.String,),
              methodName="play")
     def play(self, search_string):
         """Searches for a song and plays it."""
@@ -169,8 +168,7 @@ class Music(object):
             self.play_queue()
         return success
 
-    @qi.bind(returnType=qi.Map(qi.String, qi.String),
-             paramsType=(qi.String,),
+    @qi.bind(paramsType=(qi.String,),
              methodName="enqueue")
     def enqueue(self, search_string):
         """Add song to the queue."""
