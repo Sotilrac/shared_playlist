@@ -9,10 +9,25 @@
 Go to {robot adress}/apps/music to use the web interface.
 </description>
  </descriptions>
+ <supportedLanguages>
+  <language>en_US</language>
+ </supportedLanguages>
  <descriptionLanguages>
   <language>en_US</language>
  </descriptionLanguages>
- <contents/>
+ <contents>
+  <behaviorContent path=".">
+   <userRequestable/>
+   <nature>interactive</nature>
+   <triggerSentences>
+    <sentence lang="en_US">Music</sentence>
+    <sentence lang="en_US">Jukebox</sentence>
+   </triggerSentences>
+   <loadingResponses/>
+   <autonomous/>
+   <permissions/>
+  </behaviorContent>
+ </contents>
  <requirements>
   <naoqiRequirement minVersion="2.1.0.19"/>
   <robotRequirement model="JULIETTE"/>
