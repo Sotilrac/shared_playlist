@@ -1,5 +1,6 @@
 var Music;
 global_vol = 0
+var queue_count = 2147483646;
 var dataset = 'global';
 var favorites;
 var favorite_to_icon = ['fa-heart-o', 'fa-heart-o color-heart', 'fa-heart color-heart'];
@@ -108,6 +109,8 @@ function generateQueue() {
             $('#active_song').fadeOut();
             if (Object.keys(queue['queue']).length != 0) {
                 $('#start').fadeIn();
+            } else {
+                $('#start').fadeOut();
             }
         } else {
             $('#start').fadeOut();
@@ -131,17 +134,17 @@ function generateQueue() {
                             '<li class="asong_album"><span class="asong_album_label ellipsis">' + album + '</span></li>'+
                             '</ul>' +
                             '</div>' +
+                            '</div>' +
                             '<div class="asong_controls">' +                            
-                            '<div id="am_stop" class="asong_controls_double">' +
+                            '<div id="am_stop" class="asong_controls_single">' +
                             '<i id="am_stop_icon" class="btn fa fa-stop fa-fw"></i>' +
                             '</div>' +
-                            '<div id="am_next" class="asong_controls_double">' +
+                            '<div id="am_next" class="asong_controls_single">' +
                             '<i class="btn fa fa-fast-forward fa-fw"></i>' +
                             '</div>' +
                             '<div id="favorite-' + id + '" class="asong_controls_single">' +
                             '<i id="favorite-' + id + '-icon" class="btn fa ' + favorite_to_icon[ get_flevel(song_id) ] +
                             ' fa-fw"></i>' + 
-                            '</div>' +
                             '</div>').fadeIn();
 
                     $('#favorite-' + id).click(function() {
@@ -159,7 +162,7 @@ function generateQueue() {
                 var artist = queue['queue'][song]['artist'];
 
                 $('#dynamic_c').append(
-                    '<div id="' + id + '" class="queue_card card card_shadow">' +
+                    '<div id="' + id + '" class="queue_card card card_shadow" style="z-index: ' + queue_count-- + '">' +
                         '<div class="queue_card_info">' +
                         '<div class="qc_info_field">' +
                         '<span class="title_label">' + title + '</span>' +

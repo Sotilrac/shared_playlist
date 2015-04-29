@@ -135,6 +135,7 @@ body {
 }
 
 .queue_card {
+    position: relative;
     margin: 0 auto;
     height: 80px;
     font-size: 24px;
@@ -160,7 +161,7 @@ body {
 }
 
 .card_shadow {
-    box-shadow: 0 8px 6px -6px rgba(0,0,0, 0.5);
+    box-shadow: 0 8px 6px -3px rgba(0,0,0, 0.5);
 }
 
 .card_rounded {
@@ -245,10 +246,11 @@ body {
 }
 
 .queue_active_card {
+    position: relative;
     height: 200px;
-    background-color: rgba(242,242,242,1.0);
     margin: 0 auto;
     display: flex;
+    z-index: 2147483647;
 }
 
 .queue_add_card {
@@ -316,15 +318,16 @@ a:hover {
 }
 
 .asong_info {
+    background-color: rgba(242,242,242,1.0);
     font-size: 25px;
     max-width: 600px;
     width: 56%;
     min-width: 180px;
     position: relative;
     float: left;
-    padding: 28px 0;
-    margin: 0 2%;
+    padding: 28px 2%;
     flex-shrink: 2;
+    box-shadow: 6px 0px 6px -6px rgba(0,0,0, 0.5);
 }
 
 .asong_title_label {
@@ -350,6 +353,7 @@ a:hover {
 }
 
 .asong_controls {
+    background-color: rgba(232,232,232,0.9) !important;
     float: left;
     width: 200px;
     height: 100%;
@@ -359,10 +363,10 @@ a:hover {
 
 .asong_controls_single {
     width: 200px;
-    height: 50%;
+    height: 33%;
     float: left;
     text-align: center;
-    line-height: 100px;
+    line-height: 67px;
 }
 
 .asong_controls_double {
