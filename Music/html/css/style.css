@@ -52,7 +52,8 @@ body {
 }
 
 .header_container {
-    height: 220px;
+    position: relative;
+    height: 170px;
     text-align: center;
     background-color: rgba(242,242,242,1.0);
     box-shadow: 0 8px 6px -6px rgba(0,0,0, 0.5);
@@ -61,41 +62,25 @@ body {
     overflow-x: hidden;
     min-width: 600px;
     width: 100%;
-    /* max-width: 1000px; */
 }
 
 .header {
     height: 100%;
-    width: 100%;
-    margin: 0px auto;
-}
-
-.logo {
-    float: left;
-    width: 45%;
-    height: 100%;
+    /* width: 100%; */
+    /* margin: 0px auto; */
+    text-align: center;
     overflow: hidden;
-    /* padding-top: 10px; */
-/*    padding-right: 2%; */
-    text-align: right;
-    /* background-color: red; */
 }
 
-.logo img {
+.header img {
     width: auto;
-    height: 90%;
-}
-
-.title_container{
-    float: right;
-    width: 55%;
-    height: 100%;
-    text-align: left;
+    height: 120px;
 }
 
 .title{
     font-family: Bebas;
-    font-size: 112px;
+    font-size: 120px;
+    line-height: 160px;
 }
 
 .dj {
@@ -106,8 +91,11 @@ body {
     min-width: 300px;
 }
 
+.graffiti {
+    text-shadow: 2px 2px 5px #000000;
+}
+
 #dj_name_c {
-    display: inline-block;
     width: 100%;
     height: 100%;
 }
@@ -119,13 +107,14 @@ body {
 .queue_container {
     margin: 0 auto;
     padding: 20px 0 0;
-    /* float: left; */
     max-width: 1000px;
     width: 100%;
     min-width: 600px;
 }
 
 .search_container {
+    position: relative;
+    z-index: 2147483646;
     margin: 0 auto;
     padding: 20px 0 0;
     /* float: left; */
@@ -252,7 +241,7 @@ body {
     height: 200px;
     margin: 0 auto;
     display: flex;
-    z-index: 2147483647;
+    z-index: 2147483646;
 }
 
 .queue_add_card {
@@ -271,8 +260,18 @@ body {
     text-align: center;
 }
 
+.signature_container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    color: rgba(0,0,0,0.7);
+    background-color: rgba(242,242,242,0.0);
+    font-size: 24pt;
+}
+
 .fa_container {
     position: fixed;
+    z-index: 2147483647;
     bottom: 20px;
     right: 20px;
     max-width: 96px;
@@ -381,6 +380,11 @@ a:hover {
 .dj_name {
     display: inline-block;
     font-size: 56px;
+}
+
+.by {
+    font-family: Bebas;
+    font-size: 24pt;
 }
 
 .label {

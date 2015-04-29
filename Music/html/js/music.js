@@ -1,6 +1,6 @@
 var Music;
 global_vol = 0
-var queue_count = 2147483646;
+var queue_count = 2147483645;
 var dataset = 'global';
 var favorites;
 var favorite_to_icon = ['fa-heart-o', 'fa-heart-o color-heart', 'fa-heart color-heart'];
@@ -27,10 +27,10 @@ function get_robot_icon() {
         ALSystem.robotIcon().done(
             function (buffer){
                 if (buffer == undefined){
-                    $('#logo').html("<img src=android-chrome-192x192.png></img>");
+                    $('#header').prepend("<img src=android-chrome-192x192.png></img>");
                 }
                 else {
-                    $('#logo').html("<img src=data:image/png;base64," + buffer + "></img>");
+                    $('#header').prepend("<img src=data:image/png;base64," + buffer + "></img>");
                 }
             })
     });
