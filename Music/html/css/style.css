@@ -157,11 +157,12 @@ body {
 }
 
 .result {
+    margin-top: 10px;
     background-color: rgba(242,242,242,0.9);
 }
 
 .card_shadow {
-    box-shadow: 0 8px 6px -3px rgba(0,0,0, 0.5);
+    box-shadow: 0 8px 6px -3px rgba(0,0,0, 0.3);
 }
 
 .card_rounded {
