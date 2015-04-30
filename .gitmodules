@@ -1,0 +1,3 @@
+[submodule "Music/lib/butane"]
+	path = Music/lib/butane
+	url = git@gitlab.aldebaran.lan:boston-studio/butane.git

@@ -101,6 +101,7 @@ class MyClass(GeneratedClass):
 
     def onLoad(self):
         self.motion = self.session().service('ALMotion')
+        self.gesture = self.session().service('ALTactileGesture')
 
     def onUnload(self):
         #put clean-up code here
