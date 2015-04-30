@@ -15,83 +15,7 @@
             <BehaviorLayer name="behavior_layer1">
                 <BehaviorKeyframe name="keyframe1" index="1">
                     <Diagram scale="100">
-                        <Box name="Show App" id="2" localization="8" tooltip="Loads the application on the tablet, if it exists, and displays the webview.&#x0A;&#x0A;V1.0.0&#x0A;" x="254" y="80">
-                            <bitmap>media/images/box/root.png</bitmap>
-                            <script language="4">
-                                <content>
-                                    <![CDATA[
-
-class MyClass(GeneratedClass):
-
-    def __init__(self):
-        GeneratedClass.__init__(self)
-
-    def onLoad(self):
-        self.isRunning = False
-        self.frameManager = None
-        try:
-            self.frameManager = ALProxy("ALFrameManager")
-        except Exception as e:
-            self.logger.error(e)
-
-    def onUnload(self):
-        self.isRunning = False
-
-    def _getTabletService(self):
-        tabletService = None
-        try:
-            tabletService = self.session().service("ALTabletService")
-        except Exception as e:
-            self.logger.error(e)
-        return tabletService
-
-    def _getAppName(self):
-        import os
-        if self.frameManager:
-            behaviorPath = os.path.normpath(self.frameManager.getBehaviorPath(self.behaviorId))
-            if os.path.isdir(behaviorPath):
-               behaviorPath = os.path.join(behaviorPath, "")
-            appsFolderFragment = os.path.join("PackageManager", "apps")
-            if not (appsFolderFragment in behaviorPath):
-                    self.logger.error("appsFolderFragment is not in behaviorPath")
-                    return None
-            fragment = behaviorPath.split(appsFolderFragment, 1)[1]
-            return fragment.lstrip("\\/")
-        else:
-            self.logger.warning("No ALFrameManager")
-            return None
-
-    def onInput_onStart(self):
-        if self.isRunning:
-            return # already running, nothing to do
-        self.isRunning = True
-        # We create TabletService here in order to avoid
-        # problems with connections and disconnections of the tablet during the life of the application
-        tabletService = self._getTabletService()
-        appName = self._getAppName()
-        state = False
-        if appName:
-            if tabletService:
-                if tabletService.loadApplication(appName):
-                    self.logger.info("Successfully set application: %s" % appName)
-                    tabletService.showWebview()
-                    state = True
-                else:
-                    self.logger.warning("Got tablet service, but failed to set application: %s" % appName)
-            else:
-                self.logger.warning("Couldn't find tablet service, so can't set application: %s" % appName)
-        if state:
-            self.onSuccess()
-        else:
-            self.onFailure()]]>
-</content>
-                            </script>
-                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
-                            <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
-                            <Output name="onSuccess" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished successfully." id="3" />
-                            <Output name="onFailure" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished unsuccessfully." id="4" />
-                        </Box>
-                        <Box name="Check robot" id="1" localization="8" tooltip="" x="114" y="43">
+                        <Box name="Start" id="1" localization="8" tooltip="" x="214" y="30">
                             <bitmap>media/images/box/box-python-script.png</bitmap>
                             <script language="4">
                                 <content>
@@ -100,20 +24,19 @@ class MyClass(GeneratedClass):
         GeneratedClass.__init__(self)
 
     def onLoad(self):
-        self.motion = self.session().service('ALMotion')
-        self.gesture = self.session().service('ALTactileGesture')
-
-    def onUnload(self):
-        #put clean-up code here
         pass
 
+    def onUnload(self):
+        self.music_interface.on_unload()
+        self.onStopped()
+
     def onInput_onStart(self):
-        robot_type = self.motion.getRobotConfig()
-        self.onStopped() if 'nao' in robot_type[0][1] else self.isPepper()
+        self.music_interface = music_interface.MusicInterface(self)
+        self.music_interface.main()
 
     def onInput_onStop(self):
-        self.onUnload() #it is recommended to reuse the clean-up as the box is stopped
-        self.onStopped() #activate the output of the box]]>
+        self.music_interface.stop()
+        self.onUnload()]]>
 </content>
                             </script>
                             <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
@@ -122,10 +45,73 @@ class MyClass(GeneratedClass):
                             <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" />
                             <Output name="isPepper" type="1" type_size="1" nature="2" inner="0" tooltip="" id="5" />
                         </Box>
-                        <Link inputowner="0" indexofinput="4" outputowner="2" indexofoutput="4" />
-                        <Link inputowner="1" indexofinput="2" outputowner="0" indexofoutput="2" />
-                        <Link inputowner="2" indexofinput="2" outputowner="1" indexofoutput="5" />
+                        <Box name="Load Libs" id="4" localization="8" tooltip='Loads all python modules in the &quot;lib&quot; subfolder by extension (.py)' x="83" y="27">
+                            <bitmap>media/images/box/interaction/vocabulary.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[import sys
+import os
+
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        self.modules = dict()
+        self.importPath = os.path.join(self.behaviorAbsolutePath(), "lib")
+        if self.importPath not in sys.path:
+            sys.path.insert(0, self.importPath)
+        for filename in os.listdir(self.importPath):
+            moduleName = None
+            if os.path.isdir(os.path.join(self.importPath, filename)):
+                moduleName = filename
+            elif filename.endswith(".py"):
+                moduleName = filename[:-3]
+            if moduleName:
+                self.log("import module: {} ...".format(moduleName))
+                module = __import__(moduleName, globals=globals())
+                reload(module)
+                globals()[moduleName] = module
+                self.modules[moduleName] = module
+
+    def onUnload(self):
+        # Try to pretend the module was never loaded... provided it's mine!
+        while self.importPath in sys.path:
+            sys.path.remove(self.importPath)
+        for moduleName, module in self.modules.iteritems():
+            if sys.modules.get(moduleName, -1) is module:
+                del sys.modules[moduleName]
+                self.log("unload module: {}".format(moduleName))
+
+        # Note that we do not delete globals()[moduleName]
+        # This way other boxes can still use them for cleanup in OnUnload(),
+        # but if someone imports a module of the same name again, it will replace
+        # this one (as inclusion in sys.modules is the criteria for reimport)
+
+    def onInput_onStart(self):
+        self.onStopped()]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="" id="2" />
+                            <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="" id="3" />
+                        </Box>
+                        <Box name="MusicMenu" id="3" localization="8" tooltip="" x="343" y="61">
+                            <dialogFile>MusicMenu/MusicMenu.dlg</dialogFile>
+                            <bitmap>media/images/box/box-dialog.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+                            <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" />
+                            <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" />
+                        </Box>
                         <Link inputowner="0" indexofinput="4" outputowner="1" indexofoutput="4" />
+                        <Link inputowner="4" indexofinput="2" outputowner="0" indexofoutput="2" />
+                        <Link inputowner="1" indexofinput="2" outputowner="4" indexofoutput="3" />
                     </Diagram>
                 </BehaviorKeyframe>
             </BehaviorLayer>

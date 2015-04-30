@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<package version="1.5.5" uuid="music">
+<package version="2.0.0" uuid="music">
  <names>
   <name lang="en_US">Music</name>
  </names>
@@ -23,8 +23,6 @@ Go to {robot adress}/apps/music to use the web interface.
     <sentence lang="en_US">Music</sentence>
     <sentence lang="en_US">Jukebox</sentence>
    </triggerSentences>
-   <loadingResponses/>
-   <autonomous/>
    <permissions/>
   </behaviorContent>
  </contents>
@@ -34,6 +32,6 @@ Go to {robot adress}/apps/music to use the web interface.
   <robotRequirement model="NAO"/>
  </requirements>
  <services>
-  <service name="Music" autorun="true" execStart="/usr/bin/python2 lib/register_service.py"/>
+  <service autorun="true" name="Music" execStart="/usr/bin/python2 lib/register_service.py"/>
  </services>
 </package>

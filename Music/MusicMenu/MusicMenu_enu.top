@@ -1,0 +1,21 @@
+topic: ~MusicMenu()
+language: enu
+
+concept:(play_x) ["play {me} {a} [song something jam track tune]"]
+concept:(play_queue) ["play {the} queue" "let's party"]
+concept:(enqueue) ["[add enqueue] {another a} song"]
+concept:(stop) ["stop playing" "that's enough" "cut it out" "knock it off" "party's over"]
+concept:(next) ["next [song track]"]
+concept:(clear) ["[clear empty] the queue"]
+concept:(nevermind) [mevermind "forget it" nothing]
+
+proposal: %menu ^rand["What do you want me to do?"]
+    u1:(~play_x) What do you want to hear?
+        u2:(_*) $yield="play;$1"
+    u1:(~play_queue) You got it. $yield="play_queue"
+    u1:(~enqueue) What do you want me to enqueue?
+        u2:(_*) $yield="enqueue;$1"
+    u1:(~stop) $yield="stop"
+    u1:(~next) $yield="next"
+    u1:(~clear) $yield="clear"
+    u1:(~nevermind) $yield="null"

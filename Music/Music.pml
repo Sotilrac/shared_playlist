@@ -3,8 +3,13 @@
     <Manifest src="manifest.xml" />
     <BehaviorDescriptions>
         <BehaviorDescription name="behavior" src="." xar="behavior.xar" />
+        <BehaviorDescription name="behavior" src="lib/butane/tests/TestBehavior" xar="behavior.xar" />
     </BehaviorDescriptions>
-    <Dialogs />
+    <Dialogs>
+        <Dialog name="Lexicon" src="lib/butane/dialog/Lexicon/Lexicon.dlg" />
+        <Dialog name="TestTopic" src="lib/butane/tests/TestBehavior/dialog/TestTopic/TestTopic.dlg" />
+        <Dialog name="MusicMenu" src="MusicMenu/MusicMenu.dlg" />
+    </Dialogs>
     <Resources>
         <File name="icon" src="icon.png" />
         <File name="__init__" src="lib/grooveshark/__init__.py" />
@@ -84,7 +89,33 @@
         <File name="android-chrome-72x72" src="html/android-chrome-72x72.png" />
         <File name="android-chrome-96x96" src="html/android-chrome-96x96.png" />
         <File name="manifest" src="html/manifest.json" />
+        <File name="" src="lib/butane/.git" />
+        <File name="" src="lib/butane/.gitignore" />
+        <File name="README" src="lib/butane/README" />
+        <File name="__init__" src="lib/butane/__init__.py" />
+        <File name="conversation" src="lib/butane/conversation.py" />
+        <File name="fuel" src="lib/butane/fuel.py" />
+        <File name="language_utils" src="lib/butane/language_utils.py" />
+        <File name="package_utils" src="lib/butane/package_utils.py" />
+        <File name="README" src="lib/butane/tests/README" />
+        <File name="" src="lib/butane/tests/TestBehavior/.metadata" />
+        <File name="Test" src="lib/butane/tests/TestBehavior/Test.pml" />
+        <File name="manifest" src="lib/butane/tests/TestBehavior/manifest.xml" />
+        <File name="__init__" src="lib/butane/tests/__init__.py" />
+        <File name="conftest" src="lib/butane/tests/conftest.py" />
+        <File name="lu_string_test" src="lib/butane/tests/lu_string_test.json" />
+        <File name="test_butane" src="lib/butane/tests/test_butane.py" />
+        <File name="test_conversation" src="lib/butane/tests/test_conversation.py" />
+        <File name="test_fuel" src="lib/butane/tests/test_fuel.py" />
+        <File name="test_language_utils" src="lib/butane/tests/test_language_utils.py" />
+        <File name="test_package_utils" src="lib/butane/tests/test_package_utils.py" />
+        <File name="music_interface" src="lib/music_interface.py" />
+        <File name="strategy1" src="strategy1.ini" />
     </Resources>
-    <Topics />
+    <Topics>
+        <Topic name="Lexicon_enu" src="lib/butane/dialog/Lexicon/Lexicon_enu.top" topicName="Lexicon" language="en_US" />
+        <Topic name="TestTopic_enu" src="lib/butane/tests/TestBehavior/dialog/TestTopic/TestTopic_enu.top" topicName="TestTopic" language="en_US" />
+        <Topic name="MusicMenu_enu" src="MusicMenu/MusicMenu_enu.top" topicName="MusicMenu" language="en_US" />
+    </Topics>
     <IgnoredPaths />
 </Package>
