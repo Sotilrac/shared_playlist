@@ -15,7 +15,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="New document 1">
+   sodipodi:docname="icon.svg"
+   inkscape:export-filename="/home/carlos/dev/Hack/music/Music/icon.png"
+   inkscape:export-xdpi="97.400002"
+   inkscape:export-ydpi="97.400002">
   <defs
      id="defs4">
     <linearGradient
@@ -145,9 +148,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="72.079283"
-     inkscape:cy="141.71692"
+     inkscape:zoom="1.4"
+     inkscape:cx="211.32757"
+     inkscape:cy="235.29248"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
